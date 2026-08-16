@@ -1,0 +1,16 @@
+# OS
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Exporty vygenerované appkou
+beerpong-zapasy_*.csv
+beerpong-statistiky_*.csv
+beerpong-rozpis_*.txt
+beerpong-turnaj_*.json
