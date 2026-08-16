@@ -40,16 +40,29 @@ Počet stolov (1–8) je nezávislý od počtu skupín. Zápasy, ktoré sa dajú
 
 ## Odhad trvania
 
-Na karte *Nastavenie* zadáš dĺžku zápasu a prestávku medzi kolami. Appka dopočíta počet zápasov, kôl a hlavne **koľko zápasov musí jeden stôl odohrať za sebou** — to je to, čo turnaj naozaj naťahuje. Odhad neráta rozohrávky ani zdržania.
+Na karte *Nastavenie* si **naklikáš počet tímov** (rýchle tlačidlá 4–24 alebo ručne), zadáš dĺžku zápasu a prestávku medzi kolami. Nemusíš mať pridaný ani jeden tím — odhad si vieš pozrieť dopredu a porovnať formáty.
+
+Appka dopočíta počet zápasov, kôl a hlavne **koľko zápasov musí jeden stôl odohrať za sebou** — to je to, čo turnaj naozaj naťahuje. Odhad neráta rozohrávky ani zdržania.
 
 ## Zápis výsledkov
 
-Klikneš na ktorýkoľvek zápas a otvorí sa panel. Pre každý tím zadáš:
-
-- **trafené poháre** — víťaz sa z nich určí automaticky
-- **vyfuknutia**
+Klikneš na ktorýkoľvek zápas a otvorí sa panel. Pre každý tím zadáš **trafené poháre** — víťaz sa z nich určí automaticky. Podľa nastavení k tomu pribudnú vyfuknutia, strelci a Blowjob King.
 
 **Remíza** je povolená v skupinách a švajčiarskych kolách (1 bod pre oboch). V pavúku nie — tam musí byť jasné, kto postupuje.
+
+## Hráči a individuálne štatistiky
+
+V nastaveniach si vyberáš, či zapisuješ **iba tímy**, alebo **tímy + mená** dvoch hráčov. Pri menách sa odomknú tri voliteľné veci:
+
+| Voľba | Čo pribudne |
+|-------|-------------|
+| **Vyfuknutia** | Koľkokrát tím vyfúkol loptičku. Funguje aj bez mien hráčov. |
+| **Strelci** | Pri zápase zapíšeš, koľko pohárov trafil ktorý hráč. Pribudne tabuľka najlepších strelcov a ich stupienok. |
+| **Blowjob King** | K vyfuknutiam sa zapíše, kto ich urobil. Kto ich má najviac, je Blowjob King. |
+
+Pravidlo vyfuknutia: keď sa loptička roztočí v poháriku a ešte sa nedotkla piva, súper ju smie vyfúknuť — pohár sa potom neráta.
+
+Hráči nemôžu mať dokopy viac pohárov ani vyfuknutí, než tím v danom zápase naozaj mal; appka to nepustí ďalej. Nechať časť nepriradenú sa dá — tabuľka to vtedy poznámkou prizná.
 
 ## Tabuľky a poradie
 
@@ -66,7 +79,7 @@ O dáta prídeš len v anonymnom okne alebo pri vymazaní dát prehliadania. Na 
 | Export | Na čo |
 |--------|-------|
 | **TXT** | Čitateľný výpis — tímy, rozpis, tabuľky, pavúk. Na vytlačenie alebo do chatu. |
-| **CSV** | Zápasy a štatistiky pre Excel (oddelené bodkočiarkou). |
+| **CSV** | Zápasy, tímové štatistiky a (pri zapnutých strelcoch) aj hráči — pre Excel, oddelené bodkočiarkou. |
 | **JSON** | Plná záloha turnaja. Dá sa načítať späť tu aj na inom zariadení. |
 
 ## Technické poznámky
