@@ -45,7 +45,7 @@ header.masthead{
   gap:20px;
   flex-wrap:wrap;
 }
-.brand{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;min-width:0}
 .brand h1{
   margin:0;
   font-size:clamp(28px,6vw,46px);
@@ -53,13 +53,6 @@ header.masthead{
   font-weight:800;
   text-transform:uppercase;
   line-height:.95;
-}
-.brand .sub{
-  font-family:var(--mono);
-  font-size:11px;
-  letter-spacing:.22em;
-  text-transform:uppercase;
-  color:var(--muted);
 }
 .masthead-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .saveflag{
@@ -182,30 +175,7 @@ h2.section{
 }
 .hero-art{color:var(--ink)}
 .hero-art svg{width:100%;height:auto;display:block}
-.hero-art .ball{
-  animation:toss 3.4s cubic-bezier(.4,0,.6,1) infinite;
-}
-.hero-art .arc{
-  stroke-dasharray:5 6;
-  animation:dash 3.4s linear infinite;
-  opacity:.45;
-}
-.hero-art .cups ellipse:nth-child(1){animation:sink 3.4s ease-in-out infinite}
-@keyframes toss{
-  0%   {transform:translate(0,0);opacity:1}
-  55%  {transform:translate(100px,-66px);opacity:1}
-  70%  {transform:translate(102px,-64px);opacity:0}
-  100% {transform:translate(0,0);opacity:0}
-}
-@keyframes dash{to{stroke-dashoffset:-44}}
-@keyframes sink{
-  0%,55%   {opacity:1}
-  70%,88%  {opacity:.18}
-  100%     {opacity:1}
-}
-@media(prefers-reduced-motion:reduce){
-  .hero-art .ball,.hero-art .arc,.hero-art .cups ellipse{animation:none}
-}
+.hero-art .arc{stroke-dasharray:5 6;opacity:.4}
 
 .hero-title{
   margin:6px 0 10px;
@@ -893,7 +863,6 @@ hr.rule{border:0;border-top:var(--stroke) solid var(--ink);margin:44px 0 28px}
   <header class="masthead">
     <div class="brand">
       <h1>Beerpong</h1>
-      <span class="sub">Turnaj &middot; 2 stoly</span>
     </div>
     <div class="masthead-actions">
       <span class="saveflag" id="save-flag"></span>
@@ -1150,7 +1119,15 @@ const PLAYERS_PER_TEAM = 2;
 
 const restoredState = loadState();
 let state = restoredState || emptyState();
-let activeTab = "teams";
+const TABS = ["setup", "teams", "groups", "bracket", "results"];
+
+/**
+ * Reopen on the tab the user left off on. A brand new tournament starts on
+ * the setup page; anything unrecognised falls back to it too.
+ */
+let activeTab = (restoredState && TABS.indexOf(restoredState.activeTab) !== -1)
+  ? restoredState.activeTab
+  : "setup";
 let openMatchId = null;
 
 function emptyState(){
@@ -2154,7 +2131,10 @@ function renderTabs(){
 
   // never leave the user staring at a tab that just got disabled
   const active = document.querySelector(`nav.tabs button[data-tab="${activeTab}"]`);
-  if(active && active.disabled) activeTab = state.drawn ? "teams" : "setup";
+  if(active && active.disabled){
+    activeTab = state.drawn ? "teams" : "setup";
+    rememberTab();
+  }
 
   document.querySelectorAll(".view").forEach(v => {
     v.classList.toggle("on", v.id === "view-" + activeTab);
@@ -2163,8 +2143,16 @@ function renderTabs(){
 
 function setTab(tab){
   activeTab = tab;
+  rememberTab();
   renderTabs();
   window.scrollTo({ top:0, behavior:"smooth" });
+}
+
+/** Persist the open tab so a refresh comes back to the same place. */
+function rememberTab(){
+  if(state.activeTab === activeTab) return;
+  state.activeTab = activeTab;
+  save();
 }
 
 /* ---------- Nastavenie (landing) ---------- */
