@@ -19,6 +19,10 @@
 
 *,*::before,*::after{box-sizing:border-box}
 
+/* Any author rule that sets `display` outranks the browser's own
+   [hidden] { display: none }, so state it once and make it stick. */
+[hidden]{display:none !important}
+
 html{-webkit-text-size-adjust:100%}
 
 body{
@@ -162,21 +166,10 @@ h2.section{
 
 /* ---------- Setup / landing ---------- */
 .hero{
-  display:grid;
-  grid-template-columns:minmax(0,260px) 1fr;
-  gap:34px;
-  align-items:center;
-  border:var(--stroke) solid var(--ink);
-  padding:30px;
+  border-bottom:var(--stroke) solid var(--ink);
+  padding-bottom:30px;
   margin-bottom:40px;
 }
-@media(max-width:700px){
-  .hero{grid-template-columns:1fr;gap:22px;padding:24px}
-}
-.hero-art{color:var(--ink)}
-.hero-art svg{width:100%;height:auto;display:block}
-.hero-art .arc{stroke-dasharray:5 6;opacity:.4}
-
 .hero-title{
   margin:6px 0 10px;
   font-size:clamp(24px,5vw,38px);
@@ -882,34 +875,9 @@ hr.rule{border:0;border-top:var(--stroke) solid var(--ink);margin:44px 0 28px}
   <!-- ============ NASTAVENIE (landing) ============ -->
   <section class="view on" id="view-setup">
     <div class="hero">
-      <div class="hero-art" aria-hidden="true">
-        <svg viewBox="0 0 260 150" role="img">
-          <!-- table -->
-          <path d="M14 126 H246" stroke="currentColor" stroke-width="3" fill="none"/>
-          <!-- ten-cup rack, seen from above as a triangle -->
-          <g class="cups" fill="none" stroke="currentColor" stroke-width="2.5">
-            <ellipse cx="130" cy="40"  rx="13" ry="7"/>
-            <ellipse cx="115" cy="60"  rx="13" ry="7"/>
-            <ellipse cx="145" cy="60"  rx="13" ry="7"/>
-            <ellipse cx="100" cy="80"  rx="13" ry="7"/>
-            <ellipse cx="130" cy="80"  rx="13" ry="7"/>
-            <ellipse cx="160" cy="80"  rx="13" ry="7"/>
-            <ellipse cx="85"  cy="100" rx="13" ry="7"/>
-            <ellipse cx="115" cy="100" rx="13" ry="7"/>
-            <ellipse cx="145" cy="100" rx="13" ry="7"/>
-            <ellipse cx="175" cy="100" rx="13" ry="7"/>
-          </g>
-          <!-- ball arcing in -->
-          <path class="arc" d="M28 104 Q78 12 128 38" stroke="currentColor" stroke-width="2"
-                fill="none" stroke-dasharray="5 6"/>
-          <circle class="ball" cx="28" cy="104" r="7" fill="currentColor"/>
-        </svg>
-      </div>
-      <div class="hero-copy">
-        <p class="eyebrow">Nový turnaj</p>
-        <h2 class="hero-title">Nastav si turnaj</h2>
-        <p class="hero-lead">Vyber formát, počet stolov a odhadni si, dokedy to potrvá. Meniť sa to dá, kým nerozlosuješ.</p>
-      </div>
+      <p class="eyebrow">Nový turnaj</p>
+      <h2 class="hero-title">Nastav si turnaj</h2>
+      <p class="hero-lead">Vyber formát, počet stolov a odhadni si, dokedy to potrvá. Meniť sa to dá, kým nerozlosuješ.</p>
     </div>
 
     <h3 class="setup-h">Formát turnaja</h3>
