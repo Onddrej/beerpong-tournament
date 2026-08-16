@@ -252,8 +252,7 @@ table.data td .rank{
 .scroller{overflow-x:auto;-webkit-overflow-scrolling:touch}
 
 /* ---------- Match rows ---------- */
-.match-group{margin-top:26px}
-.match-group .round-label{
+.round-label{
   font-family:var(--mono);
   font-size:10px;
   letter-spacing:.18em;
@@ -275,7 +274,10 @@ table.data td .rank{
   text-align:left;
   font:inherit;
 }
-.match:first-of-type{border-top-width:1px}
+/* Matches sit as siblings separated by round labels, so :first-of-type would
+   only ever hit the very first match in the pane. Border the first one of each round. */
+.match:first-of-type,
+.round-label + .match{border-top-width:1px}
 .match:hover{background:var(--wash)}
 .match .side{display:flex;flex-direction:column;gap:2px;min-width:0}
 .match .side.right{align-items:flex-end;text-align:right}
