@@ -167,6 +167,159 @@ h2.section{
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0}
 @media(max-width:820px){.grid2{grid-template-columns:1fr}}
 
+/* ---------- Setup / landing ---------- */
+.hero{
+  display:grid;
+  grid-template-columns:minmax(0,260px) 1fr;
+  gap:34px;
+  align-items:center;
+  border:var(--stroke) solid var(--ink);
+  padding:30px;
+  margin-bottom:40px;
+}
+@media(max-width:700px){
+  .hero{grid-template-columns:1fr;gap:22px;padding:24px}
+}
+.hero-art{color:var(--ink)}
+.hero-art svg{width:100%;height:auto;display:block}
+.hero-art .ball{
+  animation:toss 3.4s cubic-bezier(.4,0,.6,1) infinite;
+}
+.hero-art .arc{
+  stroke-dasharray:5 6;
+  animation:dash 3.4s linear infinite;
+  opacity:.45;
+}
+.hero-art .cups ellipse:nth-child(1){animation:sink 3.4s ease-in-out infinite}
+@keyframes toss{
+  0%   {transform:translate(0,0);opacity:1}
+  55%  {transform:translate(100px,-66px);opacity:1}
+  70%  {transform:translate(102px,-64px);opacity:0}
+  100% {transform:translate(0,0);opacity:0}
+}
+@keyframes dash{to{stroke-dashoffset:-44}}
+@keyframes sink{
+  0%,55%   {opacity:1}
+  70%,88%  {opacity:.18}
+  100%     {opacity:1}
+}
+@media(prefers-reduced-motion:reduce){
+  .hero-art .ball,.hero-art .arc,.hero-art .cups ellipse{animation:none}
+}
+
+.hero-title{
+  margin:6px 0 10px;
+  font-size:clamp(24px,5vw,38px);
+  font-weight:800;
+  letter-spacing:-.03em;
+  text-transform:uppercase;
+  line-height:1.02;
+}
+.hero-lead{margin:0;color:var(--muted);font-size:15px;max-width:44ch}
+
+.setup-h{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--muted);
+  font-weight:600;
+  margin:0 0 14px;
+  padding-bottom:10px;
+  border-bottom:1px solid var(--hair);
+}
+
+.mode-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:-2px;margin-bottom:40px}
+.mode-grid{gap:0}
+.mode-card{
+  border:1px solid var(--hair);
+  margin:-0.5px 0 0 -0.5px;
+  padding:20px;
+  background:var(--paper);
+  cursor:pointer;
+  text-align:left;
+  font:inherit;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.mode-card:hover{background:var(--wash)}
+.mode-card[aria-pressed="true"]{
+  background:var(--ink);
+  color:var(--paper);
+  border-color:var(--ink);
+  position:relative;
+  z-index:1;
+}
+.mode-card .mc-name{font-weight:800;font-size:16px;letter-spacing:-.01em;text-transform:uppercase}
+.mode-card .mc-tag{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  opacity:.6;
+}
+.mode-card .mc-how{font-size:13px;line-height:1.45;opacity:.85}
+.mode-card .mc-best{
+  font-size:12px;
+  border-top:1px solid currentColor;
+  padding-top:8px;
+  margin-top:auto;
+  opacity:.6;
+}
+
+.opt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px;margin-bottom:40px}
+.opt{border:1px solid var(--hair);padding:18px}
+.opt label{
+  display:block;
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:10px;
+}
+.opt .opt-hint{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.4}
+.seg{display:flex;flex-wrap:wrap;gap:0}
+.seg button{
+  flex:1;
+  min-width:38px;
+  border:1px solid var(--ink);
+  margin-left:-1px;
+  background:var(--paper);
+  padding:9px 4px;
+  font-family:var(--mono);
+  font-size:13px;
+  cursor:pointer;
+}
+.seg button:first-child{margin-left:0}
+.seg button:hover{background:var(--wash)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+
+.estimator{border:var(--stroke) solid var(--ink);padding:24px}
+.est-inputs{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:20px;margin-bottom:24px}
+.est-out{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  gap:0;
+  border-top:1px solid var(--hair);
+  padding-top:20px;
+}
+.est-cell{padding:0 16px;border-left:1px solid #dcdcdc}
+.est-cell:first-child{border-left:0;padding-left:0}
+.est-cell .k{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--muted);
+  display:block;
+  margin-bottom:6px;
+}
+.est-cell .v{font-size:24px;font-weight:800;letter-spacing:-.02em;font-family:var(--mono)}
+.est-cell.total .v{font-size:30px}
+.est-note{margin:20px 0 0;font-size:12px;color:var(--muted);line-height:1.5}
+
 /* ---------- Teams ---------- */
 .team-form{display:flex;gap:0;max-width:520px;margin-bottom:8px}
 .team-form input{
@@ -659,14 +812,62 @@ hr.rule{border:0;border-top:var(--stroke) solid var(--ink);margin:44px 0 28px}
   </header>
 
   <nav class="tabs" role="tablist">
-    <button role="tab" data-tab="teams" aria-selected="true">Tímy</button>
+    <button role="tab" data-tab="setup" aria-selected="true">Nastavenie</button>
+    <button role="tab" data-tab="teams" aria-selected="false">Tímy</button>
     <button role="tab" data-tab="groups" aria-selected="false">Skupiny</button>
     <button role="tab" data-tab="bracket" aria-selected="false">Pavúk</button>
     <button role="tab" data-tab="results" aria-selected="false">Výsledky</button>
   </nav>
 
+  <!-- ============ NASTAVENIE (landing) ============ -->
+  <section class="view on" id="view-setup">
+    <div class="hero">
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 260 150" role="img">
+          <!-- table -->
+          <path d="M14 126 H246" stroke="currentColor" stroke-width="3" fill="none"/>
+          <!-- ten-cup rack, seen from above as a triangle -->
+          <g class="cups" fill="none" stroke="currentColor" stroke-width="2.5">
+            <ellipse cx="130" cy="40"  rx="13" ry="7"/>
+            <ellipse cx="115" cy="60"  rx="13" ry="7"/>
+            <ellipse cx="145" cy="60"  rx="13" ry="7"/>
+            <ellipse cx="100" cy="80"  rx="13" ry="7"/>
+            <ellipse cx="130" cy="80"  rx="13" ry="7"/>
+            <ellipse cx="160" cy="80"  rx="13" ry="7"/>
+            <ellipse cx="85"  cy="100" rx="13" ry="7"/>
+            <ellipse cx="115" cy="100" rx="13" ry="7"/>
+            <ellipse cx="145" cy="100" rx="13" ry="7"/>
+            <ellipse cx="175" cy="100" rx="13" ry="7"/>
+          </g>
+          <!-- ball arcing in -->
+          <path class="arc" d="M28 104 Q78 12 128 38" stroke="currentColor" stroke-width="2"
+                fill="none" stroke-dasharray="5 6"/>
+          <circle class="ball" cx="28" cy="104" r="7" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="hero-copy">
+        <p class="eyebrow">Nový turnaj</p>
+        <h2 class="hero-title">Nastav si turnaj</h2>
+        <p class="hero-lead">Vyber formát, počet stolov a odhadni si, dokedy to potrvá. Meniť sa to dá, kým nerozlosuješ.</p>
+      </div>
+    </div>
+
+    <h3 class="setup-h">Formát turnaja</h3>
+    <div class="mode-grid" id="mode-grid"></div>
+
+    <h3 class="setup-h">Nastavenia</h3>
+    <div class="opt-grid" id="opt-grid"></div>
+
+    <h3 class="setup-h">Ako dlho to potrvá</h3>
+    <div class="estimator" id="estimator"></div>
+
+    <div class="toolbar" style="margin-top:30px">
+      <button class="btn solid" id="btn-setup-next">Pokračovať na tímy</button>
+    </div>
+  </section>
+
   <!-- ============ TÍMY ============ -->
-  <section class="view on" id="view-teams">
+  <section class="view" id="view-teams">
     <p class="eyebrow">Krok 1</p>
     <h2 class="section">Prihlásené tímy</h2>
 
@@ -772,14 +973,63 @@ hr.rule{border:0;border-top:var(--stroke) solid var(--ink);margin:44px 0 28px}
 
 /* =========================================================================
    STAV
-   state.teams        [{id, name, group: 'A'|'B'|null}]
-   state.groupMatches [match]  — round robin v rámci skupiny
-   state.bracket      {size, rounds: [[match]], third: match|null} | null
-   match              {id, stage, group?, round, a, b, cupsA, cupsB, blowsA, blowsB, done}
+   state.config       {mode, tables, groupCount, swissRounds, matchMinutes, breakMinutes}
+   state.teams        [{id, name, group: 'A'|'B'|... |null}]
+   state.groupMatches [match]  — round robin (skupinový aj švajčiarsky)
+   state.bracket      {size, rounds: [[match]], third, losers?, grandFinal?} | null
+   match              {id, stage, group?, round, a, b, cupsA, cupsB, blowsA, blowsB, done, bye}
                       a/b sú teamId | null (null v pavúku = voľný žreb / ešte neznámy)
    ========================================================================= */
 
 const STORAGE_KEY = "beerpong-turnaj-v1";
+
+/** Tournament formats. `groups` / `bracket` say which phases the mode uses. */
+const MODES = {
+  "single-group": {
+    name: "Jedna skupina",
+    tagline: "Každý s každým",
+    how: "Všetci hrajú proti všetkým. Vyhráva ten, kto má na konci najviac bodov — žiadna vyraďovačka.",
+    best: "Do 8 tímov, keď chcete, aby si každý zahral čo najviac.",
+    groups: true, bracket: false, swiss: false
+  },
+  "groups-bracket": {
+    name: "Skupiny + pavúk",
+    tagline: "Skupiny, potom vyraďovačka",
+    how: "Tímy sa rozdelia do skupín a hrajú každý s každým. Potom postupujú do pavúka, kde sa hrá na vyradenie až do finále.",
+    best: "8–16 tímov. Klasika, ktorá spája istotu skupín s napätím pavúka.",
+    groups: true, bracket: true, swiss: false
+  },
+  "bracket-only": {
+    name: "Rovno pavúk",
+    tagline: "Kto prehrá, končí",
+    how: "Žiadne skupiny. Hneď sa losuje vyraďovačka — jedna prehra a ideš domov.",
+    best: "Keď máte málo času. Najrýchlejší formát, ale slabší tím odpadne hneď.",
+    groups: false, bracket: true, swiss: false
+  },
+  "double-elim": {
+    name: "Dvojitá eliminácia",
+    tagline: "Vypadneš až po druhej prehre",
+    how: "Dva pavúky. Kto prehrá v hornom, padá do spodného a hrá ďalej. Končíš až po druhej prehre. Vo finále sa stretnú víťazi oboch.",
+    best: "6–12 tímov. Najférovejšie — nikoho nevyradí jeden zlý zápas.",
+    groups: false, bracket: true, swiss: false
+  },
+  "swiss": {
+    name: "Švajčiarsky systém",
+    tagline: "Pevný počet kôl, nikto nevypadáva",
+    how: "Odohrá sa dopredu daný počet kôl. V každom ďalšom kole ťa appka nasadí proti tímu s podobnou bilanciou. Nikto nevypadáva, na konci rozhodne tabuľka.",
+    best: "12+ tímov, keď by každý s každým trval večnosť.",
+    groups: false, bracket: false, swiss: true
+  }
+};
+
+const DEFAULT_CONFIG = {
+  mode: "groups-bracket",
+  tables: 2,
+  groupCount: 2,
+  swissRounds: 5,
+  matchMinutes: 12,
+  breakMinutes: 5
+};
 
 const restoredState = loadState();
 let state = restoredState || emptyState();
@@ -787,18 +1037,32 @@ let activeTab = "teams";
 let openMatchId = null;
 
 function emptyState(){
-  return { teams: [], drawn: false, groupMatches: [], bracket: null };
+  return {
+    config: Object.assign({}, DEFAULT_CONFIG),
+    teams: [], drawn: false, groupMatches: [], bracket: null
+  };
 }
 
+/**
+ * Restore a saved tournament. Tournaments saved before configurable modes
+ * existed have no `config`; they were always two groups on two tables,
+ * so they are filled in with exactly that and keep working unchanged.
+ */
 function loadState(){
   try{
     const raw = localStorage.getItem(STORAGE_KEY);
     if(!raw) return null;
     const parsed = JSON.parse(raw);
     if(!parsed || !Array.isArray(parsed.teams)) return null;
+    parsed.config = Object.assign({}, DEFAULT_CONFIG, parsed.config || {});
     return parsed;
   }catch(e){ return null; }
 }
+
+/** Shorthand for the active tournament format. */
+function cfg(){ return state.config || (state.config = Object.assign({}, DEFAULT_CONFIG)); }
+function mode(){ return MODES[cfg().mode] ? cfg().mode : "groups-bracket"; }
+function modeInfo(){ return MODES[mode()]; }
 
 let saveFlagTimer = null;
 
@@ -883,9 +1147,12 @@ function esc(str){
 /** All matches across both phases, in playing order. */
 function allMatches(){
   const list = state.groupMatches.slice();
-  if(state.bracket){
-    state.bracket.rounds.forEach(r => list.push(...r));
-    if(state.bracket.third) list.push(state.bracket.third);
+  const br = state.bracket;
+  if(br){
+    br.rounds.forEach(r => list.push(...r));
+    if(br.losers) br.losers.forEach(r => list.push(...r));
+    if(br.third) list.push(br.third);
+    if(br.grandFinal) list.push(br.grandFinal);
   }
   return list;
 }
@@ -968,27 +1235,167 @@ function roundRobin(ids){
   return rounds;
 }
 
-/** Randomly split all teams into groups A and B, then build both schedules. */
+/** Group letters actually in play for the current mode. */
+function groupLetters(){
+  const info = modeInfo();
+  if(!info.groups) return [];
+  const n = mode() === "single-group" ? 1 : Math.max(1, Math.min(4, cfg().groupCount));
+  return ["A", "B", "C", "D"].slice(0, n);
+}
+
+/**
+ * Start the tournament: assign teams to groups (if the mode has them) and
+ * build the opening schedule. Which phases exist depends on the mode.
+ */
 function drawGroups(){
+  const letters = groupLetters();
   const order = shuffle(state.teams.map(t => t.id));
-  const half = Math.ceil(order.length / 2);
-  order.forEach((id, i) => {
-    const t = teamById(id);
-    if(t) t.group = i < half ? "A" : "B";
-  });
 
   state.groupMatches = [];
-  ["A", "B"].forEach(g => {
-    const ids = state.teams.filter(t => t.group === g).map(t => t.id);
-    roundRobin(ids).forEach((pairs, roundIdx) => {
-      pairs.forEach(([a, b]) => {
-        state.groupMatches.push(newMatch({ stage:"group", group:g, round:roundIdx, a, b }));
+  state.bracket = null;
+
+  if(letters.length > 0){
+    // deal teams out one by one so group sizes differ by at most one
+    order.forEach((id, i) => {
+      const t = teamById(id);
+      if(t) t.group = letters[i % letters.length];
+    });
+
+    letters.forEach(g => {
+      const ids = state.teams.filter(t => t.group === g).map(t => t.id);
+      roundRobin(ids).forEach((pairs, roundIdx) => {
+        pairs.forEach(([a, b]) => {
+          state.groupMatches.push(newMatch({ stage:"group", group:g, round:roundIdx, a, b }));
+        });
       });
     });
-  });
+  }else{
+    state.teams.forEach(t => { t.group = null; });
+  }
 
   state.drawn = true;
-  state.bracket = null;
+
+  // modes without a group phase start straight away
+  if(mode() === "swiss") buildSwissRound(0, order);
+  if(!modeInfo().groups && modeInfo().bracket) buildBracket(order);
+}
+
+/* =========================================================================
+   ŠVAJČIARSKY SYSTÉM
+   ========================================================================= */
+
+function swissRoundCount(){
+  const max = Math.max(1, state.teams.length - 1);
+  return Math.max(1, Math.min(max, cfg().swissRounds));
+}
+
+function swissRoundsPlayed(){
+  return state.groupMatches.length
+    ? Math.max(...state.groupMatches.map(m => m.round)) + 1
+    : 0;
+}
+
+function swissComplete(){
+  return swissRoundsPlayed() >= swissRoundCount()
+    && state.groupMatches.every(m => m.done || m.bye);
+}
+
+/** True once every match of the newest Swiss round has a result. */
+function swissRoundFinished(){
+  const r = swissRoundsPlayed() - 1;
+  if(r < 0) return false;
+  return state.groupMatches.filter(m => m.round === r).every(m => m.done || m.bye);
+}
+
+function havePlayed(x, y){
+  return state.groupMatches.some(m =>
+    (m.a === x && m.b === y) || (m.a === y && m.b === x));
+}
+
+/**
+ * Pair up one Swiss round. Teams are ordered by current standing and paired
+ * greedily with the nearest opponent they have not met yet; with an odd
+ * count the lowest-ranked unpaired team gets a walkover. `presetOrder`
+ * seeds the very first round at random.
+ */
+function buildSwissRound(roundIdx, presetOrder){
+  const ranked = roundIdx === 0 && presetOrder
+    ? presetOrder.slice()
+    : standings(null).map(r => r.id);
+
+  const pool = ranked.slice();
+  // odd count: the lowest-ranked team that has not had one yet sits out
+  let resting = null;
+  if(pool.length % 2 === 1){
+    let k = pool.length - 1;
+    while(k > 0 && hasHadBye(pool[k])) k--;
+    resting = pool.splice(k, 1)[0];
+  }
+
+  const pairs = pairUp(pool) || pairGreedy(pool);
+
+  pairs.forEach(([a, b]) => {
+    state.groupMatches.push(newMatch({ stage:"swiss", group:null, round:roundIdx, a, b }));
+  });
+
+  if(resting){
+    state.groupMatches.push(newMatch({
+      stage:"swiss", group:null, round:roundIdx, a: resting, b: null, bye: true
+    }));
+  }
+}
+
+function hasHadBye(id){
+  return state.groupMatches.some(m => m.bye && m.a === id);
+}
+
+/**
+ * Pair the whole field so that nobody meets an opponent twice. Works down
+ * the standings and backtracks when a choice leaves someone unpairable;
+ * gives up after a bounded number of attempts so a pathological field can
+ * never hang the browser.
+ */
+function pairUp(ids){
+  let steps = 0;
+  const STEP_LIMIT = 20000;
+
+  function search(rest){
+    if(rest.length === 0) return [];
+    if(++steps > STEP_LIMIT) return null;
+    const a = rest[0];
+    for(let i = 1; i < rest.length; i++){
+      const b = rest[i];
+      if(havePlayed(a, b)) continue;
+      const remaining = rest.filter((_, k) => k !== 0 && k !== i);
+      const tail = search(remaining);
+      if(tail) return [[a, b]].concat(tail);
+    }
+    return null;
+  }
+
+  return search(ids.slice());
+}
+
+/** Fallback when a rematch-free pairing does not exist: nearest opponent. */
+function pairGreedy(ids){
+  const pool = ids.slice();
+  const pairs = [];
+  while(pool.length > 1){
+    const a = pool.shift();
+    let j = pool.findIndex(b => !havePlayed(a, b));
+    if(j === -1) j = 0;
+    pairs.push([a, pool.splice(j, 1)[0]]);
+  }
+  return pairs;
+}
+
+/** Open the next Swiss round once the current one is finished. */
+function advanceSwiss(){
+  if(mode() !== "swiss") return false;
+  if(!swissRoundFinished()) return false;
+  if(swissRoundsPlayed() >= swissRoundCount()) return false;
+  buildSwissRound(swissRoundsPlayed());
+  return true;
 }
 
 /* =========================================================================
@@ -1017,7 +1424,16 @@ function standings(group){
   rows.forEach(r => { byId[r.id] = r; });
 
   state.groupMatches.forEach(m => {
-    if(m.group !== group || !m.done) return;
+    if(m.group !== group) return;
+
+    // Swiss walkover: the team sitting out is credited a win, no cups.
+    if(m.bye){
+      const solo = byId[m.a] || byId[m.b];
+      if(solo){ solo.wins++; solo.byes = (solo.byes || 0) + 1; }
+      return;
+    }
+
+    if(!m.done) return;
     const A = byId[m.a], B = byId[m.b];
     if(!A || !B) return;
     A.played++; B.played++;
@@ -1082,19 +1498,29 @@ function seedOrder(size){
 }
 
 /**
- * Build the knockout bracket. Every team advances; the group phase only
- * decides seeding. Seeds alternate between groups (A1, B1, A2, B2, ...)
- * so teams from the same group meet as late as possible. When the team
- * count is not a power of two, the top seeds get a walkover.
+ * Seeding taken from the group tables: winners first, then runners-up, and
+ * so on, cycling through the groups (A1, B1, C1, A2, B2, C2, ...) so teams
+ * from the same group meet as late as possible.
  */
-function buildBracket(){
-  const a = standings("A");
-  const b = standings("B");
+function seedsFromGroups(){
+  const tables = groupLetters().map(g => standings(g));
   const seeds = [];
-  for(let i = 0; i < Math.max(a.length, b.length); i++){
-    if(a[i]) seeds.push(a[i].id);
-    if(b[i]) seeds.push(b[i].id);
+  const deepest = Math.max(0, ...tables.map(t => t.length));
+  for(let i = 0; i < deepest; i++){
+    tables.forEach(t => { if(t[i]) seeds.push(t[i].id); });
   }
+  return seeds;
+}
+
+/**
+ * Build the knockout bracket. Every team advances; the group phase only
+ * decides seeding. When the team count is not a power of two, the top
+ * seeds get a walkover. Pass `presetSeeds` for modes without groups.
+ */
+function buildBracket(presetSeeds){
+  const seeds = presetSeeds && presetSeeds.length
+    ? presetSeeds.slice()
+    : seedsFromGroups();
 
   const n = seeds.length;
   if(n < 2) return;
@@ -1128,12 +1554,56 @@ function buildBracket(){
     r++;
   }
 
-  const third = rounds.length >= 2
+  const double = mode() === "double-elim";
+
+  // A third-place match only makes sense in single elimination; in double
+  // elimination third place is decided by the losers bracket itself.
+  const third = (!double && rounds.length >= 2)
     ? newMatch({ stage:"bracket", round:"third", idx:0 })
     : null;
 
-  state.bracket = { size, rounds, third, seeds };
+  state.bracket = { size, rounds, third, seeds, double: false };
+
+  if(double) attachLosersBracket(rounds.length);
+
   propagate();
+}
+
+/**
+ * Losers bracket for double elimination.
+ *
+ * For a winners bracket of R rounds it has 2·(R−1) rounds that alternate:
+ * an odd round pairs losers-bracket survivors against fresh losers dropping
+ * down from the winners bracket, an even round pairs survivors with each
+ * other. The grand final then puts the two bracket winners together.
+ */
+function attachLosersBracket(wbRounds){
+  const br = state.bracket;
+  const losers = [];
+
+  // Round 0 pairs up the winners-bracket first-round losers. After that the
+  // odd rounds take on a fresh wave of dropouts (so the count stays the same)
+  // and the even rounds halve the survivors.
+  let count = br.rounds[0].length / 2;
+  for(let r = 0; r < 2 * (wbRounds - 1); r++){
+    if(r >= 1) count = r % 2 === 1 ? count : count / 2;
+    const size = Math.max(1, Math.round(count));
+    const rnd = [];
+    for(let i = 0; i < size; i++){
+      rnd.push(newMatch({ stage:"losers", round:r, idx:i }));
+    }
+    losers.push(rnd);
+    count = size;
+  }
+
+  br.losers = losers;
+  br.grandFinal = newMatch({ stage:"grand", round:"grand", idx:0 });
+  br.double = true;
+}
+
+/** Which winners-bracket round drops its losers into losers round `r`. */
+function dropSourceRound(r){
+  return r === 0 ? 0 : (r + 1) / 2;
 }
 
 /**
@@ -1166,6 +1636,77 @@ function propagate(){
     br.third.a = l1;
     br.third.b = l2;
   }
+
+  if(br.double) propagateLosers();
+}
+
+/**
+ * Fill the losers bracket and the grand final. Runs after the winners
+ * bracket is settled, so dropouts are always current. A slot that ends up
+ * with a single team is a walkover; an emptied slot discards its result.
+ */
+function propagateLosers(){
+  const br = state.bracket;
+  if(!br.losers) return;
+
+  br.losers.forEach((rnd, r) => {
+    const prev = r > 0 ? br.losers[r - 1] : null;
+    const drops = (r === 0 || r % 2 === 1)
+      ? (br.rounds[dropSourceRound(r)] || []).map(loserOf)
+      : null;
+
+    rnd.forEach((m, i) => {
+      let a = null, b = null;
+      if(r === 0){
+        a = drops[2 * i] || null;            // pair up first-round dropouts
+        b = drops[2 * i + 1] || null;
+      }else if(r % 2 === 1){
+        a = prev[i] ? winnerOf(prev[i]) : null;
+        b = drops[i] || null;                // fresh dropout from above
+      }else{
+        a = prev[2 * i] ? winnerOf(prev[2 * i]) : null;
+        b = prev[2 * i + 1] ? winnerOf(prev[2 * i + 1]) : null;
+      }
+
+      if(m.a !== a || m.b !== b) clearResult(m);
+      m.a = a;
+      m.b = b;
+      // one side known and the other permanently empty -> walkover
+      m.bye = (!!a && !b && losersSlotSettled(r, i, "b"))
+           || (!a && !!b && losersSlotSettled(r, i, "a"));
+    });
+  });
+
+  const gf = br.grandFinal;
+  if(gf){
+    const wbWinner = winnerOf(br.rounds[br.rounds.length - 1][0]);
+    const lbWinner = winnerOf(br.losers[br.losers.length - 1][0]);
+    if(gf.a !== wbWinner || gf.b !== lbWinner) clearResult(gf);
+    gf.a = wbWinner;
+    gf.b = lbWinner;
+  }
+}
+
+/**
+ * True when a losers-bracket slot can never be filled — its feeder is a
+ * walkover or an empty pairing, so waiting for an opponent is pointless.
+ */
+function losersSlotSettled(r, i, slot){
+  const br = state.bracket;
+  if(r === 0){
+    const src = br.rounds[0][slot === "a" ? 2 * i : 2 * i + 1];
+    return !src || src.bye || (!src.a && !src.b);
+  }
+  if(r % 2 === 1){
+    if(slot === "b"){
+      const src = br.rounds[dropSourceRound(r)][i];
+      return !src || src.bye || (!src.a && !src.b);
+    }
+    const src = br.losers[r - 1][i];
+    return !src || (!src.a && !src.b);
+  }
+  const src = br.losers[r - 1][slot === "a" ? 2 * i : 2 * i + 1];
+  return !src || (!src.a && !src.b);
 }
 
 function roundTitle(r, total){
@@ -1177,11 +1718,26 @@ function roundTitle(r, total){
   return (r + 1) + ". kolo";
 }
 
+/**
+ * Tournament winner, or null while it is still open. Bracket modes wait for
+ * the deciding match; table-only modes wait until every match is played and
+ * then take the top of the standings.
+ */
 function champion(){
   const br = state.bracket;
-  if(!br) return null;
-  const finalMatch = br.rounds[br.rounds.length - 1][0];
-  return finalMatch && finalMatch.done ? winnerOf(finalMatch) : null;
+
+  if(br){
+    const decider = br.double ? br.grandFinal : br.rounds[br.rounds.length - 1][0];
+    return decider && decider.done ? winnerOf(decider) : null;
+  }
+
+  if(!state.drawn) return null;
+  const pending = state.groupMatches.filter(m => !m.done && !m.bye).length;
+  if(pending > 0) return null;
+  if(mode() === "swiss" && !swissComplete()) return null;
+
+  const table = standings(mode() === "swiss" ? null : groupLetters()[0]);
+  return table.length ? table[0].id : null;
 }
 
 /**
@@ -1191,20 +1747,48 @@ function champion(){
  * tie inside the same band. Pure read-only — nothing is written to state.
  */
 function finalRanking(){
-  const br = state.bracket;
   const champ = champion();
-  if(!br || !champ) return [];
+  if(!champ) return [];
 
   const stats = {};
   overallStats().forEach(r => { stats[r.id] = r; });
 
-  // Every team except the champion loses exactly one bracket match.
+  const br = state.bracket;
+
+  // Modes without a bracket are ranked straight off the standings table.
+  if(!br){
+    const table = standings(mode() === "swiss" ? null : groupLetters()[0]);
+    return table.map((r, i) => ({
+      id: r.id, name: r.name, group: teamById(r.id) ? teamById(r.id).group : null,
+      exit: 0, rank: i + 1,
+      exitLabel: i === 0 ? "Víťaz" : "Tabuľka",
+      s: stats[r.id]
+    }));
+  }
+
+  // How far each team got. In double elimination a team is only out once it
+  // loses in the losers bracket, so those rounds continue the scale above
+  // the winners bracket they dropped out of.
   const exit = {};
   br.rounds.forEach((rnd, r) => rnd.forEach(m => {
     const l = loserOf(m);
     if(l) exit[l] = r;
   }));
-  exit[champ] = br.rounds.length;
+
+  if(br.double){
+    const wbTop = br.rounds.length;
+    br.losers.forEach((rnd, r) => rnd.forEach(m => {
+      const l = loserOf(m);
+      if(l) exit[l] = wbTop + r;                 // survived deeper than any WB exit
+    }));
+    if(br.grandFinal && br.grandFinal.done){
+      const runnerUp = loserOf(br.grandFinal);
+      if(runnerUp) exit[runnerUp] = wbTop + br.losers.length;
+    }
+    exit[champ] = wbTop + br.losers.length + 1;
+  }else{
+    exit[champ] = br.rounds.length;
+  }
 
   const third = br.third;
   const thirdWinner = third && third.done ? winnerOf(third) : null;
@@ -1232,26 +1816,150 @@ function finalRanking(){
 
   rows.forEach((r, i) => {
     r.rank = i + 1;
-    r.exitLabel = r.exit === br.rounds.length
-      ? "Víťaz"
-      : (r.exit < 0 ? "—" : roundTitle(r.exit, br.rounds.length));
+    r.exitLabel = exitLabel(r, br, champ);
   });
   return rows;
 }
 
+/** Where a team's run ended, phrased for the final table. */
+function exitLabel(row, br, champ){
+  if(row.id === champ) return "Víťaz";
+  if(row.exit < 0) return "—";
+  if(br.double){
+    const wbTop = br.rounds.length;
+    if(row.exit === wbTop + br.losers.length) return "Veľké finále";
+    if(row.exit >= wbTop) return "Spodný pavúk · " + (row.exit - wbTop + 1) + ". kolo";
+    return roundTitle(row.exit, wbTop);
+  }
+  return roundTitle(row.exit, br.rounds.length);
+}
+
 /** Human label used in the log and CSV export. */
 function matchLabel(m){
-  if(m.stage === "group") return "Skupina " + m.group + " · " + (m.round + 1) + ". kolo";
+  if(m.stage === "swiss") return (m.round + 1) + ". kolo";
+  if(m.stage === "group"){
+    const prefix = mode() === "single-group" ? "" : "Skupina " + m.group + " · ";
+    return prefix + (m.round + 1) + ". kolo";
+  }
+  if(m.stage === "grand") return "Veľké finále";
+  if(m.stage === "losers") return "Spodný pavúk · " + (m.round + 1) + ". kolo";
   if(m.round === "third") return "O 3. miesto";
   return roundTitle(m.round, state.bracket.rounds.length);
 }
 
-/** Which of the two tables the match is played on. */
+/**
+ * Which table a match is played on. Everything that can run at the same
+ * time — one group round, one bracket round — is dealt across the available
+ * tables in turn, so no table sits idle while another has a queue.
+ */
 function matchTable(m){
-  if(m.stage === "group") return m.group === "A" ? 1 : 2;
-  if(m.round === "third") return 2;
-  if(state.bracket.rounds[m.round].length === 1) return 1;
-  return (m.idx % 2) + 1;
+  const tables = Math.max(1, Math.min(8, cfg().tables));
+  if(tables === 1) return 1;
+
+  if(m.stage === "swiss" || m.stage === "group"){
+    // index of this match within everything playable in the same round
+    const sameRound = state.groupMatches.filter(x => x.round === m.round);
+    return (Math.max(0, sameRound.indexOf(m)) % tables) + 1;
+  }
+  if(m.stage === "grand") return 1;
+  if(m.round === "third") return Math.min(2, tables);
+  return ((m.idx || 0) % tables) + 1;
+}
+
+/* =========================================================================
+   ODHAD TRVANIA
+   ========================================================================= */
+
+/** Matches per round of a round-robin over `n` teams, as [count, count, ...]. */
+function roundRobinShape(n){
+  if(n < 2) return [];
+  const rounds = n % 2 === 0 ? n - 1 : n;
+  const perRound = Math.floor(n / 2);
+  return Array.from({ length: rounds }, () => perRound);
+}
+
+/** Real (non-walkover) matches per round of a knockout over `n` teams. */
+function bracketShape(n){
+  if(n < 2) return [];
+  let size = 2;
+  while(size < n) size *= 2;
+  const shape = [];
+  let alive = n;                    // teams still in
+  let slots = size;
+  while(slots > 1){
+    const real = Math.max(0, alive - slots / 2);   // byes carry the rest through
+    shape.push(real);
+    alive = alive - real;
+    slots = slots / 2;
+  }
+  return shape.filter(c => c > 0);
+}
+
+/**
+ * Estimate how long a tournament will take.
+ *
+ * Matches that can be played at the same time are spread over the tables, so
+ * a round of 5 matches on 2 tables costs 3 slots. Total time is the number of
+ * slots times the match length, plus one break between consecutive rounds.
+ */
+function estimateTournament(config, teamCount){
+  const c = Object.assign({}, DEFAULT_CONFIG, config);
+  const n = teamCount;
+  const tables = Math.max(1, Math.min(8, c.tables));
+  const info = MODES[c.mode] || MODES["groups-bracket"];
+  const shape = [];
+
+  if(n >= 2){
+    if(c.mode === "single-group"){
+      shape.push(...roundRobinShape(n));
+    }else if(c.mode === "swiss"){
+      const rounds = Math.max(1, Math.min(Math.max(1, n - 1), c.swissRounds));
+      for(let i = 0; i < rounds; i++) shape.push(Math.floor(n / 2));
+    }else if(c.mode === "groups-bracket"){
+      const g = Math.max(1, Math.min(4, c.groupCount));
+      const sizes = Array.from({ length: g }, (_, i) =>
+        Math.floor(n / g) + (i < n % g ? 1 : 0));
+      const shapes = sizes.map(roundRobinShape);
+      const longest = Math.max(0, ...shapes.map(s => s.length));
+      for(let r = 0; r < longest; r++){
+        shape.push(shapes.reduce((sum, s) => sum + (s[r] || 0), 0));
+      }
+      shape.push(...bracketShape(n));
+      if(n >= 4) shape.push(1);                    // third-place match
+    }else if(c.mode === "bracket-only"){
+      shape.push(...bracketShape(n));
+      if(n >= 4) shape.push(1);
+    }else if(c.mode === "double-elim"){
+      shape.push(...bracketShape(n));
+      // the losers bracket adds roughly one more match per team, spread over
+      // twice as many (smaller) rounds
+      const lbMatches = Math.max(0, n - 2);
+      let remaining = lbMatches;
+      const lbRounds = Math.max(1, 2 * (bracketShape(n).length - 1));
+      for(let r = 0; r < lbRounds && remaining > 0; r++){
+        const take = Math.max(1, Math.ceil(remaining / (lbRounds - r)));
+        shape.push(take);
+        remaining -= take;
+      }
+      shape.push(1);                               // grand final
+    }
+  }
+
+  const matches = shape.reduce((a, b) => a + b, 0);
+  const slots = shape.reduce((sum, c2) => sum + Math.ceil(c2 / tables), 0);
+  const rounds = shape.length;
+  const minutes = slots * c.matchMinutes + Math.max(0, rounds - 1) * c.breakMinutes;
+
+  return { matches, rounds, slots, minutes, mode: info.name };
+}
+
+/** "2 h 35 min" / "45 min" */
+function formatDuration(min){
+  const m = Math.max(0, Math.round(min));
+  if(m < 60) return m + " min";
+  const h = Math.floor(m / 60);
+  const rest = m % 60;
+  return rest === 0 ? h + " h" : h + " h " + rest + " min";
 }
 
 /* =========================================================================
@@ -1260,31 +1968,227 @@ function matchTable(m){
 
 function render(){
   renderTabs();
+  renderSetup();
   renderTeams();
   renderGroups();
   renderBracket();
   renderResults();
 }
 
+/** Tab labels follow the mode — "Skupiny" makes no sense in a Swiss event. */
+function tabLabel(tab){
+  if(tab === "groups"){
+    if(mode() === "swiss") return "Kolá";
+    if(mode() === "single-group") return "Tabuľka";
+    return "Skupiny";
+  }
+  if(tab === "bracket") return mode() === "double-elim" ? "Pavúky" : "Pavúk";
+  return null;
+}
+
 function renderTabs(){
-  const prog = groupProgress();
+  const info = modeInfo();
   document.querySelectorAll("nav.tabs button").forEach(btn => {
     const tab = btn.dataset.tab;
     btn.setAttribute("aria-selected", tab === activeTab ? "true" : "false");
-    if(tab === "groups") btn.disabled = !state.drawn;
+
+    const label = tabLabel(tab);
+    if(label) btn.textContent = label;
+
+    if(tab === "groups") btn.disabled = !state.drawn || (!info.groups && !info.swiss);
     if(tab === "bracket") btn.disabled = !state.bracket;
     if(tab === "results") btn.disabled = !state.drawn;
   });
+
+  // never leave the user staring at a tab that just got disabled
+  const active = document.querySelector(`nav.tabs button[data-tab="${activeTab}"]`);
+  if(active && active.disabled) activeTab = state.drawn ? "teams" : "setup";
+
   document.querySelectorAll(".view").forEach(v => {
     v.classList.toggle("on", v.id === "view-" + activeTab);
   });
-  void prog;
 }
 
 function setTab(tab){
   activeTab = tab;
   renderTabs();
   window.scrollTo({ top:0, behavior:"smooth" });
+}
+
+/* ---------- Nastavenie (landing) ---------- */
+
+/** Config can only be changed before the draw; afterwards it is locked in. */
+function setupLocked(){ return !!state.drawn; }
+
+function renderSetup(){
+  renderModeCards();
+  renderOptions();
+  renderEstimator();
+}
+
+function renderModeCards(){
+  const grid = document.getElementById("mode-grid");
+  const locked = setupLocked();
+
+  grid.innerHTML = Object.keys(MODES).map(key => {
+    const m = MODES[key];
+    const on = key === mode();
+    return `
+      <button class="mode-card" data-mode="${key}" aria-pressed="${on}" ${locked ? "disabled" : ""}>
+        <span class="mc-tag">${esc(m.tagline)}</span>
+        <span class="mc-name">${esc(m.name)}</span>
+        <span class="mc-how">${esc(m.how)}</span>
+        <span class="mc-best">Sedí na: ${esc(m.best)}</span>
+      </button>
+    `;
+  }).join("");
+
+  if(!locked){
+    grid.querySelectorAll("[data-mode]").forEach(btn => {
+      btn.onclick = () => {
+        cfg().mode = btn.dataset.mode;
+        save();
+        renderSetup();
+        renderTabs();
+      };
+    });
+  }
+}
+
+/** A row of number buttons, e.g. table count. */
+function segment(name, values, current, labelFn){
+  return `<div class="seg">${values.map(v => `
+    <button data-seg="${name}" data-val="${v}" aria-pressed="${v === current}">
+      ${labelFn ? labelFn(v) : v}
+    </button>`).join("")}</div>`;
+}
+
+function renderOptions(){
+  const box = document.getElementById("opt-grid");
+  const c = cfg();
+  const locked = setupLocked();
+  const info = modeInfo();
+  const cards = [];
+
+  cards.push(`
+    <div class="opt">
+      <label>Počet stolov</label>
+      ${segment("tables", [1,2,3,4,5,6,7,8], c.tables)}
+      <p class="opt-hint">Zápasy, ktoré sa dajú hrať naraz, appka rozhodí na voľné stoly sama.</p>
+    </div>
+  `);
+
+  if(info.groups && mode() !== "single-group"){
+    cards.push(`
+      <div class="opt">
+        <label>Počet skupín</label>
+        ${segment("groupCount", [2,3,4], c.groupCount)}
+        <p class="opt-hint">Tímy sa rozdelia rovnomerne. So skupinami nesúvisí počet stolov.</p>
+      </div>
+    `);
+  }
+
+  if(info.swiss){
+    cards.push(`
+      <div class="opt">
+        <label>Počet kôl</label>
+        ${segment("swissRounds", [3,4,5,6,7], c.swissRounds)}
+        <p class="opt-hint">Každý tím odohrá presne toľko zápasov. Odporúčaných je 5.</p>
+      </div>
+    `);
+  }
+
+  box.innerHTML = cards.join("");
+
+  if(locked){
+    box.querySelectorAll("[data-seg]").forEach(b => { b.disabled = true; });
+    return;
+  }
+  box.querySelectorAll("[data-seg]").forEach(btn => {
+    btn.onclick = () => {
+      cfg()[btn.dataset.seg] = Number(btn.dataset.val);
+      save();
+      renderSetup();
+    };
+  });
+}
+
+function renderEstimator(){
+  const box = document.getElementById("estimator");
+  const c = cfg();
+  const n = state.teams.length;
+  const est = estimateTournament(c, n);
+
+  box.innerHTML = `
+    <div class="est-inputs">
+      <div>
+        <label for="est-match">Jeden zápas (min)</label>
+        <div class="stepper">
+          <button type="button" data-est="matchMinutes" data-step="-1">&minus;</button>
+          <input type="number" id="est-match" min="1" max="90" inputmode="numeric" value="${c.matchMinutes}">
+          <button type="button" data-est="matchMinutes" data-step="1">+</button>
+        </div>
+      </div>
+      <div>
+        <label for="est-break">Prestávka medzi kolami (min)</label>
+        <div class="stepper">
+          <button type="button" data-est="breakMinutes" data-step="-1">&minus;</button>
+          <input type="number" id="est-break" min="0" max="60" inputmode="numeric" value="${c.breakMinutes}">
+          <button type="button" data-est="breakMinutes" data-step="1">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="est-out">
+      <div class="est-cell total">
+        <span class="k">Odhad celkom</span>
+        <span class="v">${n < 2 ? "—" : formatDuration(est.minutes)}</span>
+      </div>
+      <div class="est-cell">
+        <span class="k">Zápasov</span>
+        <span class="v">${n < 2 ? "—" : est.matches}</span>
+      </div>
+      <div class="est-cell">
+        <span class="k">Kôl</span>
+        <span class="v">${n < 2 ? "—" : est.rounds}</span>
+      </div>
+      <div class="est-cell">
+        <span class="k">Na stole po sebe</span>
+        <span class="v">${n < 2 ? "—" : est.slots}</span>
+      </div>
+    </div>
+
+    <p class="est-note">
+      ${n < 2
+        ? "Pridaj aspoň dva tímy a odhad sa dopočíta."
+        : `Počítané pre <strong>${plural(n, "tím", "tímy", "tímov")}</strong> na
+           <strong>${plural(c.tables, "stole", "stoloch", "stoloch")}</strong> vo formáte
+           <strong>${esc(est.mode)}</strong>. „Na stole po sebe“ je počet zápasov, ktoré musí
+           jeden stôl odohrať za sebou — to je to, čo turnaj naozaj naťahuje.
+           Odhad neráta rozohrávky ani zdržania.`}
+    </p>
+  `;
+
+  box.querySelectorAll("[data-est]").forEach(btn => {
+    btn.onclick = () => {
+      const key = btn.dataset.est;
+      const min = key === "breakMinutes" ? 0 : 1;
+      cfg()[key] = Math.max(min, (Number(cfg()[key]) || 0) + Number(btn.dataset.step));
+      save();
+      renderEstimator();
+    };
+  });
+  ["est-match", "est-break"].forEach((id, i) => {
+    const input = document.getElementById(id);
+    input.onchange = () => {
+      const key = i === 0 ? "matchMinutes" : "breakMinutes";
+      const min = i === 0 ? 1 : 0;
+      const v = Number(input.value);
+      cfg()[key] = Number.isFinite(v) ? Math.max(min, Math.floor(v)) : DEFAULT_CONFIG[key];
+      save();
+      renderEstimator();
+    };
+  });
 }
 
 /* ---------- Tímy ---------- */
@@ -1308,16 +2212,32 @@ function renderTeams(){
   }
 
   const n = state.teams.length;
-  drawBtn.disabled = n < 4;
-  drawBtn.textContent = state.drawn ? "Rozlosovať znova" : "Rozlosovať do skupín";
+  const info = modeInfo();
+  const minTeams = info.groups && mode() !== "single-group"
+    ? 2 * groupLetters().length
+    : 3;
 
-  if(n < 4){
-    hint.textContent = `Pridaj aspoň 4 tímy — po dva do každej skupiny. Zatiaľ ich máš ${n}.`;
-  }else{
-    const half = Math.ceil(n / 2);
-    hint.textContent = `${plural(n, "tím", "tímy", "tímov")} → skupina A (stôl 1): ${half}, skupina B (stôl 2): ${n - half}. `
-      + (state.drawn ? "Nové losovanie vymaže všetky výsledky." : "Losovanie je náhodné.");
+  drawBtn.disabled = n < minTeams;
+  drawBtn.textContent = state.drawn ? "Rozlosovať znova" : "Rozlosovať a spustiť turnaj";
+
+  if(n < minTeams){
+    hint.textContent = `Pre formát „${info.name}“ treba aspoň ${minTeams} tímov. Zatiaľ ich máš ${n}.`;
+    return;
   }
+
+  const est = estimateTournament(cfg(), n);
+  const parts = [`${plural(n, "tím", "tímy", "tímov")} · ${info.name} · ${plural(cfg().tables, "stôl", "stoly", "stolov")}`];
+
+  if(info.groups && mode() !== "single-group"){
+    const letters = groupLetters();
+    const sizes = letters.map((_, i) => Math.floor(n / letters.length) + (i < n % letters.length ? 1 : 0));
+    parts.push("skupiny " + letters.map((g, i) => g + ": " + sizes[i]).join(", "));
+  }
+  if(info.swiss) parts.push(swissRoundCount() + " kôl");
+
+  parts.push("odhad " + formatDuration(est.minutes));
+  hint.textContent = parts.join(" · ") + ". "
+    + (state.drawn ? "Nové losovanie vymaže všetky výsledky." : "Losovanie je náhodné.");
 }
 
 /* ---------- Skupiny ---------- */
@@ -1330,75 +2250,134 @@ function renderGroups(){
   }
 
   const prog = groupProgress();
+  const info = modeInfo();
+  const letters = groupLetters();
   const html = [];
+
+  // --- toolbar: progress plus whatever action comes next in this mode ---
+  let action = "";
+  if(info.bracket){
+    action = `<button class="btn ${prog.complete ? "solid" : ""}" id="btn-bracket">
+      ${state.bracket ? "Pregenerovať pavúk" : "Vygenerovať pavúk"}
+    </button>`;
+  }else if(info.swiss){
+    const played = swissRoundsPlayed();
+    const total = swissRoundCount();
+    action = played >= total
+      ? `<span class="progress">Odohrané všetky kolá</span>`
+      : `<button class="btn ${swissRoundFinished() ? "solid" : ""}" id="btn-swiss"
+                 ${swissRoundFinished() ? "" : "disabled"}>
+           Vylosovať ${played + 1}. kolo
+         </button>`;
+  }
 
   html.push(`
     <div class="toolbar">
-      <span class="progress">Odohrané ${prog.done} / ${plural(prog.total, "zápas", "zápasy", "zápasov")}</span>
+      <span class="progress">
+        Odohrané ${prog.done} / ${plural(prog.total, "zápas", "zápasy", "zápasov")}
+        ${info.swiss ? ` · kolo ${swissRoundsPlayed()} / ${swissRoundCount()}` : ""}
+      </span>
       <span style="flex:1"></span>
-      <button class="btn ${prog.complete ? "solid" : ""}" id="btn-bracket">
-        ${state.bracket ? "Pregenerovať pavúk" : "Vygenerovať pavúk"}
-      </button>
-    </div>
-    <div class="grid2">
-      ${groupPane("A", 1)}
-      ${groupPane("B", 2)}
-    </div>
-    <hr class="rule">
-    <div class="grid2">
-      ${groupSchedule("A", 1)}
-      ${groupSchedule("B", 2)}
+      ${action}
     </div>
   `);
+
+  if(info.swiss){
+    html.push(`<div class="pane">${swissStandingsMarkup()}</div>`);
+    html.push(`<hr class="rule">`);
+    html.push(swissScheduleMarkup());
+  }else if(mode() === "single-group"){
+    html.push(`<div class="pane">${groupTableMarkup(standings(letters[0]), "Tabuľka")}</div>`);
+    html.push(`<hr class="rule">`);
+    html.push(groupSchedule(letters[0], null, "Rozpis"));
+  }else{
+    html.push(`<div class="${letters.length > 1 ? "grid2" : ""}">
+      ${letters.map(g => groupPane(g)).join("")}
+    </div>`);
+    html.push(`<hr class="rule">`);
+    html.push(`<div class="${letters.length > 1 ? "grid2" : ""}">
+      ${letters.map(g => groupSchedule(g)).join("")}
+    </div>`);
+  }
 
   box.innerHTML = html.join("");
 
   const bBtn = document.getElementById("btn-bracket");
   if(bBtn) bBtn.onclick = onBuildBracket;
+  const sBtn = document.getElementById("btn-swiss");
+  if(sBtn) sBtn.onclick = onAdvanceSwiss;
   wireMatchButtons(box);
 }
 
-function groupPane(g, table){
-  const rows = standings(g);
+/** Standings table markup shared by groups, single group and Swiss. */
+function groupTableMarkup(rows, title, tag){
   if(rows.length === 0){
-    return `<div class="pane"><div class="empty">Skupina ${g} je prázdna.</div></div>`;
+    return `<div class="empty">Žiadne tímy.</div>`;
   }
+  const anyByes = rows.some(r => r.byes);
   return `
-    <div class="pane">
-      <div class="pane-head">
-        <h3>Skupina ${g}</h3>
-        <span class="table-tag">Stôl ${table}</span>
-      </div>
-      <div class="scroller">
-        <table class="data">
-          <thead>
+    <div class="pane-head">
+      <h3>${esc(title)}</h3>
+      ${tag ? `<span class="table-tag">${esc(tag)}</span>` : ""}
+    </div>
+    <div class="scroller">
+      <table class="data">
+        <thead>
+          <tr>
+            <th>Tím</th><th>Z</th><th>V</th><th>R</th><th>P</th>
+            ${anyByes ? "<th>Voľno</th>" : ""}
+            <th>Poháre</th><th>+/&minus;</th><th>Vyfuk.</th><th>B</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows.map((r, i) => `
             <tr>
-              <th>Tím</th><th>Z</th><th>V</th><th>R</th><th>P</th>
-              <th>Poháre</th><th>+/&minus;</th><th>Vyfuk.</th><th>B</th>
+              <td><span class="rank">${i + 1}</span>${esc(r.name)}</td>
+              <td>${r.played}</td>
+              <td>${r.wins}</td>
+              <td>${r.draws}</td>
+              <td>${r.losses}</td>
+              ${anyByes ? `<td>${r.byes || 0}</td>` : ""}
+              <td>${r.cupsFor}:${r.cupsAgainst}</td>
+              <td>${r.diff > 0 ? "+" : ""}${r.diff}</td>
+              <td>${r.blowsFor}</td>
+              <td class="pts">${r.points}</td>
             </tr>
-          </thead>
-          <tbody>
-            ${rows.map((r, i) => `
-              <tr>
-                <td><span class="rank">${i + 1}</span>${esc(r.name)}</td>
-                <td>${r.played}</td>
-                <td>${r.wins}</td>
-                <td>${r.draws}</td>
-                <td>${r.losses}</td>
-                <td>${r.cupsFor}:${r.cupsAgainst}</td>
-                <td>${r.diff > 0 ? "+" : ""}${r.diff}</td>
-                <td>${r.blowsFor}</td>
-                <td class="pts">${r.points}</td>
-              </tr>
-            `).join("")}
-          </tbody>
-        </table>
-      </div>
+          `).join("")}
+        </tbody>
+      </table>
     </div>
   `;
 }
 
-function groupSchedule(g, table){
+function swissStandingsMarkup(){
+  return groupTableMarkup(standings(null), "Priebežná tabuľka",
+    swissRoundsPlayed() + " / " + swissRoundCount() + " kôl");
+}
+
+function swissScheduleMarkup(){
+  const rounds = {};
+  state.groupMatches.forEach(m => { (rounds[m.round] = rounds[m.round] || []).push(m); });
+  const keys = Object.keys(rounds).sort((x, y) => Number(x) - Number(y));
+
+  return `<div class="pane">
+    <div class="pane-head"><h3>Rozpis kôl</h3></div>
+    ${keys.map(r => `
+      <p class="round-label">${Number(r) + 1}. kolo</p>
+      ${rounds[r].map(matchRow).join("")}
+    `).join("")}
+  </div>`;
+}
+
+function groupPane(g){
+  const rows = standings(g);
+  if(rows.length === 0){
+    return `<div class="pane"><div class="empty">Skupina ${g} je prázdna.</div></div>`;
+  }
+  return `<div class="pane">${groupTableMarkup(rows, "Skupina " + g)}</div>`;
+}
+
+function groupSchedule(g, _unused, title){
   const matches = state.groupMatches.filter(m => m.group === g);
   if(matches.length === 0) return "<div></div>";
 
@@ -1415,8 +2394,7 @@ function groupSchedule(g, table){
   return `
     <div class="pane">
       <div class="pane-head">
-        <h3>Rozpis ${g}</h3>
-        <span class="table-tag">Stôl ${table}</span>
+        <h3>${esc(title || ("Rozpis " + g))}</h3>
       </div>
       ${body}
     </div>
@@ -1445,15 +2423,21 @@ function matchRow(m){
     ? `<span class="score ${draw ? "draw" : ""}">${m.cupsA} : ${m.cupsB}</span>`
       + (draw ? '<span class="draw-tag">Remíza</span>' : "")
     : bye
-      ? '<span class="score pending">voľný žreb</span>'
-      : '<span class="score pending">zapísať</span>';
+      ? '<span class="score pending">voľno</span>'
+      : `<span class="score pending">zapísať</span>`
+        + (cfg().tables > 1 ? `<span class="draw-tag">stôl ${matchTable(m)}</span>` : "");
   const score = `<span class="score-cell">${inner}</span>`;
+
+  // a Swiss walkover has nobody on the other side
+  const right = bye && !nameB
+    ? '<span class="side right"><span class="tname tbd">— voľný žreb —</span></span>'
+    : `<span class="side right">${label(m.b, nameB)}${meta(m.blowsB)}</span>`;
 
   return `
     <button class="match ${m.done ? "done" : ""} ${bye ? "bye" : ""}" data-match="${m.id}" ${bye ? "disabled" : ""}>
       <span class="side">${label(m.a, nameA)}${meta(m.blowsA)}</span>
       ${score}
-      <span class="side right">${label(m.b, nameB)}${meta(m.blowsB)}</span>
+      ${right}
     </button>
   `;
 }
@@ -1473,9 +2457,16 @@ function renderBracket(){
   const cols = br.rounds.map((rnd, r) => `
     <div class="round-col">
       <div class="round-title">${roundTitle(r, total)}</div>
-      ${rnd.map(m => bracketNode(m, r === total - 1)).join("")}
+      ${rnd.map(m => bracketNode(m, !br.double && r === total - 1)).join("")}
     </div>
   `).join("");
+
+  const losersCols = br.losers ? br.losers.map((rnd, r) => `
+    <div class="round-col">
+      <div class="round-title">${r + 1}. kolo</div>
+      ${rnd.map(m => bracketNode(m, false)).join("")}
+    </div>
+  `).join("") : "";
 
   const champ = champion();
 
@@ -1483,7 +2474,23 @@ function renderBracket(){
     <div class="toolbar">
       <span class="progress">${br.size}-tímový pavúk · ${plural(state.teams.length, "tím", "tímy", "tímov")} · ${plural(br.size - state.teams.length, "voľný žreb", "voľné žreby", "voľných žrebov")}</span>
     </div>
+    ${br.double ? '<h2 class="section" style="font-size:17px">Horný pavúk</h2>' : ""}
     <div class="bracket">${cols}</div>
+
+    ${br.losers ? `
+      <hr class="rule">
+      <h2 class="section" style="font-size:17px">Spodný pavúk</h2>
+      <p class="note" style="margin:-10px 0 18px">Kto prehrá hore, padá sem. Druhá prehra znamená koniec.</p>
+      <div class="bracket">${losersCols}</div>
+    ` : ""}
+
+    ${br.grandFinal ? `
+      <hr class="rule">
+      <h2 class="section" style="font-size:17px">Veľké finále</h2>
+      <p class="note" style="margin:-10px 0 18px">Víťaz horného pavúka proti víťazovi spodného.</p>
+      <div style="max-width:340px">${bracketNode(br.grandFinal, true)}</div>
+    ` : ""}
+
     ${br.third ? `
       <hr class="rule">
       <h2 class="section" style="font-size:17px">Zápas o 3. miesto</h2>
@@ -1811,9 +2818,9 @@ function openModal(id){
   document.getElementById("m-blows-b").value = m.blowsB || 0;
   const msg = document.getElementById("m-msg");
   msg.classList.add("hint");
-  msg.textContent = m.stage === "group"
-    ? "Remíza je povolená — stačí zadať rovnaký počet pohárov (1 bod pre oboch)."
-    : "V pavúku musí byť víťaz — jeden tím musí mať viac pohárov.";
+  msg.textContent = isKnockout(m)
+    ? "V pavúku musí byť víťaz — jeden tím musí mať viac pohárov."
+    : "Remíza je povolená — stačí zadať rovnaký počet pohárov (1 bod pre oboch).";
   document.getElementById("m-clear").style.display = m.done ? "" : "none";
 
   document.getElementById("overlay").classList.add("on");
@@ -1846,7 +2853,7 @@ function saveModal(){
     return;
   }
   // A knockout match has to produce someone to advance, so no draws there.
-  if(cupsA === cupsB && m.stage === "bracket"){
+  if(cupsA === cupsB && isKnockout(m)){
     msg.classList.remove("hint");
     msg.textContent = "V pavúku remíza nie je možná — musí byť jasné, kto postupuje.";
     return;
@@ -1858,17 +2865,28 @@ function saveModal(){
   m.blowsB = readNum("m-blows-b") || 0;
   m.done = true;
 
-  if(m.stage === "bracket") propagate();
+  afterResultChange(m);
   save();
   closeModal();
   render();
+}
+
+/** Knockout stages cannot end level — someone has to move on. */
+function isKnockout(m){
+  return m.stage === "bracket" || m.stage === "losers" || m.stage === "grand";
+}
+
+/** Push a recorded result through whatever the mode needs next. */
+function afterResultChange(m){
+  if(isKnockout(m)) propagate();
+  if(m.stage === "swiss") advanceSwiss();
 }
 
 function clearModal(){
   const m = findMatch(openMatchId);
   if(!m) return closeModal();
   clearResult(m);
-  if(m.stage === "bracket") propagate();
+  afterResultChange(m);
   save();
   closeModal();
   render();
@@ -1954,29 +2972,42 @@ function buildPlainText(){
   rule("=");
   L.push("");
 
+  L.push("FORMÁT: " + modeInfo().name + " · " + plural(cfg().tables, "stôl", "stoly", "stolov"));
+  if(state.teams.length >= 2){
+    const est = estimateTournament(cfg(), state.teams.length);
+    L.push("ODHAD: " + formatDuration(est.minutes) + " (" + est.matches + " zápasov, " + est.rounds + " kôl)");
+  }
+  L.push("");
+
   L.push("TÍMY (" + state.teams.length + ")");
-  if(!state.drawn){
+  const letters = groupLetters();
+  if(!state.drawn || letters.length === 0){
     state.teams.forEach((t, i) => L.push("  " + (i + 1) + ". " + t.name));
   }else{
-    ["A", "B"].forEach(g => {
+    letters.forEach(g => {
       const list = state.teams.filter(t => t.group === g);
-      L.push("  Skupina " + g + " — stôl " + (g === "A" ? 1 : 2) + " (" + list.length + ")");
+      L.push("  Skupina " + g + " (" + list.length + ")");
       list.forEach(t => L.push("    · " + t.name));
     });
   }
   L.push("");
 
   if(state.drawn){
-    ["A", "B"].forEach(g => {
+    const schedGroups = letters.length ? letters : [null];
+    schedGroups.forEach(g => {
       const matches = state.groupMatches.filter(m => m.group === g);
       if(matches.length === 0) return;
       rule("-");
-      L.push("ROZPIS — SKUPINA " + g + " (stôl " + (g === "A" ? 1 : 2) + ")");
+      L.push(g === null ? "ROZPIS KÔL" : "ROZPIS — SKUPINA " + g);
       const rounds = {};
       matches.forEach(m => { (rounds[m.round] = rounds[m.round] || []).push(m); });
       Object.keys(rounds).sort((x, y) => x - y).forEach(r => {
         L.push("  " + (Number(r) + 1) + ". kolo");
         rounds[r].forEach(m => {
+          if(m.bye){
+            L.push("    " + pad(teamName(m.a) || teamName(m.b), 18) + " voľno v tomto kole");
+            return;
+          }
           const line = "    " + pad(teamName(m.a), 18) + " vs " + pad(teamName(m.b), 18);
           L.push(m.done
             ? line + " " + m.cupsA + ":" + m.cupsB + (isDraw(m) ? " REMÍZA" : "")
@@ -1987,7 +3018,8 @@ function buildPlainText(){
       L.push("");
 
       const rows = standings(g);
-      L.push("TABUĽKA — SKUPINA " + g + "   (výhra 3 b., remíza 1 b.)");
+      L.push((g === null ? "PRIEBEŽNÁ TABUĽKA" : "TABUĽKA — SKUPINA " + g)
+        + "   (výhra 3 b., remíza 1 b.)");
       L.push("    " + pad("Tím", 18) + pad("Z", 3) + pad("V", 3) + pad("R", 3) + pad("P", 3)
         + pad("Poháre", 10) + pad("+/-", 6) + pad("Vyfuk.", 8) + "B");
       rows.forEach((r, i) => {
@@ -2001,47 +3033,67 @@ function buildPlainText(){
   }
 
   if(state.bracket){
+    const br = state.bracket;
+    const total = br.rounds.length;
+
+    const line1 = m => {
+      const a = teamName(m.a) || "—";
+      const b = teamName(m.b) || "—";
+      if(m.bye) return "    " + pad(a === "—" ? b : a, 18) + " voľný žreb → postup";
+      const line = "    " + pad(a, 18) + " vs " + pad(b, 18);
+      return m.done
+        ? line + " " + m.cupsA + ":" + m.cupsB + "  (vyfuk. " + m.blowsA + ":" + m.blowsB + ")"
+        : line + " ____";
+    };
+
     rule("-");
-    L.push("PAVÚK — postupujú všetky tímy");
-    const total = state.bracket.rounds.length;
-    state.bracket.rounds.forEach((rnd, r) => {
+    L.push(br.double ? "HORNÝ PAVÚK" : "PAVÚK — postupujú všetky tímy");
+    br.rounds.forEach((rnd, r) => {
       L.push("  " + roundTitle(r, total).toUpperCase());
-      rnd.forEach(m => {
-        const a = teamName(m.a) || "—";
-        const b = teamName(m.b) || "—";
-        if(m.bye){ L.push("    " + pad(a, 18) + " voľný žreb → postup"); return; }
-        const line = "    " + pad(a, 18) + " vs " + pad(b, 18);
-        L.push(m.done
-          ? line + " " + m.cupsA + ":" + m.cupsB + "  (vyfuk. " + m.blowsA + ":" + m.blowsB + ")"
-          : line + " ____");
-      });
+      rnd.forEach(m => L.push(line1(m)));
     });
-    if(state.bracket.third){
-      const t = state.bracket.third;
+
+    if(br.losers){
+      L.push("");
+      L.push("SPODNÝ PAVÚK — kto prehrá hore, padá sem");
+      br.losers.forEach((rnd, r) => {
+        L.push("  " + (r + 1) + ". KOLO");
+        rnd.forEach(m => L.push(line1(m)));
+      });
+    }
+
+    if(br.grandFinal){
+      L.push("");
+      L.push("  VEĽKÉ FINÁLE");
+      L.push(line1(br.grandFinal));
+    }
+
+    if(br.third){
       L.push("  O 3. MIESTO");
-      L.push("    " + pad(teamName(t.a) || "—", 18) + " vs " + pad(teamName(t.b) || "—", 18)
-        + (t.done ? " " + t.cupsA + ":" + t.cupsB : " ____"));
+      L.push(line1(br.third));
     }
     L.push("");
-    const champ = champion();
-    if(champ){
-      rule("=");
-      L.push("VÍŤAZ TURNAJA: " + teamName(champ).toUpperCase());
-      rule("=");
-      L.push("");
+  }
 
-      const ranking = finalRanking();
-      L.push("FINÁLNA TABUĽKA");
-      L.push("    " + pad("Tím", 18) + pad("Skončil", 14) + pad("Z", 3) + pad("V", 3)
-        + pad("R", 3) + pad("P", 3) + pad("Poháre", 10) + pad("+/-", 6) + "B");
-      ranking.forEach(r => {
-        L.push(pad("  " + r.rank + ".", 5) + pad(r.name, 18) + pad(r.exitLabel, 14)
-          + pad(r.s.played, 3) + pad(r.s.wins, 3) + pad(r.s.draws, 3) + pad(r.s.losses, 3)
-          + pad(r.s.cupsFor + ":" + r.s.cupsAgainst, 10)
-          + pad((r.s.diff > 0 ? "+" : "") + r.s.diff, 6) + r.s.points);
-      });
-      L.push("");
-    }
+  // Winner and final table apply to every mode, not just the bracket ones.
+  const champ = champion();
+  if(champ){
+    rule("=");
+    L.push("VÍŤAZ TURNAJA: " + teamName(champ).toUpperCase());
+    rule("=");
+    L.push("");
+
+    const ranking = finalRanking();
+    L.push("FINÁLNA TABUĽKA");
+    L.push("    " + pad("Tím", 18) + pad("Skončil", 14) + pad("Z", 3) + pad("V", 3)
+      + pad("R", 3) + pad("P", 3) + pad("Poháre", 10) + pad("+/-", 6) + "B");
+    ranking.forEach(r => {
+      L.push(pad("  " + r.rank + ".", 5) + pad(r.name, 18) + pad(r.exitLabel, 14)
+        + pad(r.s.played, 3) + pad(r.s.wins, 3) + pad(r.s.draws, 3) + pad(r.s.losses, 3)
+        + pad(r.s.cupsFor + ":" + r.s.cupsAgainst, 10)
+        + pad((r.s.diff > 0 ? "+" : "") + r.s.diff, 6) + r.s.points);
+    });
+    L.push("");
   }
 
   return L.join("\r\n");
@@ -2129,14 +3181,22 @@ function onDraw(){
   drawGroups();
   save();
   render();
-  setTab("groups");
+  setTab(modeInfo().groups || modeInfo().swiss ? "groups" : "bracket");
+}
+
+function onAdvanceSwiss(){
+  if(!advanceSwiss()) return;
+  save();
+  render();
 }
 
 function onReset(){
   if(!confirm("Zmazať celý turnaj a začať odznova?")) return;
+  const keep = Object.assign({}, cfg());     // keep the format the user set up
   state = emptyState();
+  state.config = keep;
   save();
-  activeTab = "teams";
+  activeTab = "setup";
   render();
 }
 
@@ -2147,6 +3207,8 @@ function onReset(){
 document.querySelectorAll("nav.tabs button").forEach(btn => {
   btn.onclick = () => { if(!btn.disabled) setTab(btn.dataset.tab); };
 });
+
+document.getElementById("btn-setup-next").onclick = () => setTab("teams");
 
 document.getElementById("team-form").addEventListener("submit", e => {
   e.preventDefault();
