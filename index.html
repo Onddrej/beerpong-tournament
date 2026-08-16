@@ -856,6 +856,243 @@ table.data tr.top1 td{background:var(--wash);font-weight:700}
 
 hr.rule{border:0;border-top:var(--stroke) solid var(--ink);margin:44px 0 28px}
 
+/* ---------- Board (second screen) ---------- */
+body.board-mode{background:var(--ink);color:var(--paper);overflow:hidden}
+#board-root{
+  position:fixed;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  padding:clamp(14px,2vw,28px);
+  background:var(--ink);
+  color:var(--paper);
+  container-type:inline-size;
+}
+.bd-top{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:20px;
+  padding-bottom:clamp(10px,1.4vw,18px);
+  border-bottom:2px solid var(--paper);
+  flex-wrap:wrap;
+}
+.bd-logo{
+  font-size:clamp(20px,2.6vw,40px);
+  font-weight:800;
+  letter-spacing:-.03em;
+  text-transform:uppercase;
+}
+.bd-meta{
+  font-family:var(--mono);
+  font-size:clamp(9px,.85vw,14px);
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  opacity:.55;
+  margin-left:14px;
+}
+.bd-prog{
+  font-family:var(--mono);
+  font-size:clamp(11px,1.1vw,18px);
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  opacity:.7;
+}
+.bd-champ{text-align:right}
+.bd-champ-lbl{
+  display:block;
+  font-family:var(--mono);
+  font-size:clamp(9px,.8vw,12px);
+  letter-spacing:.26em;
+  text-transform:uppercase;
+  opacity:.55;
+}
+.bd-champ-name{
+  display:block;
+  font-size:clamp(18px,2.2vw,34px);
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:-.02em;
+}
+
+.bd-grid{
+  flex:1;
+  min-height:0;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:0;
+  overflow:hidden;
+}
+.bd-panel{
+  border-right:1px solid rgba(255,255,255,.22);
+  border-bottom:1px solid rgba(255,255,255,.22);
+  padding:clamp(12px,1.4vw,22px);
+  min-width:0;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+.bd-panel.bd-wide{grid-column:span 2}
+@container (max-width: 900px){ .bd-panel.bd-wide{grid-column:span 1} }
+.bd-h{
+  margin:0 0 clamp(8px,1vw,16px);
+  font-family:var(--mono);
+  font-size:clamp(9px,.85vw,13px);
+  letter-spacing:.26em;
+  text-transform:uppercase;
+  opacity:.55;
+  font-weight:600;
+}
+.bd-sub{
+  margin:0 0 8px;
+  font-family:var(--mono);
+  font-size:clamp(9px,.8vw,12px);
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  opacity:.45;
+}
+.bd-empty{margin:0;opacity:.4;font-size:clamp(12px,1.1vw,17px)}
+
+.bd-match{padding:clamp(6px,.7vw,12px) 0;border-bottom:1px solid rgba(255,255,255,.14)}
+.bd-match:last-child{border-bottom:0}
+.bd-table{
+  display:inline-block;
+  font-family:var(--mono);
+  font-size:clamp(9px,.8vw,12px);
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  border:1px solid var(--paper);
+  padding:2px 8px;
+  margin-bottom:6px;
+}
+.bd-when{
+  display:block;
+  font-family:var(--mono);
+  font-size:clamp(8px,.72vw,11px);
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  opacity:.45;
+  margin-top:4px;
+}
+.bd-teams{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.bd-team{
+  font-size:clamp(15px,1.7vw,30px);
+  font-weight:700;
+  letter-spacing:-.01em;
+  line-height:1.15;
+  min-width:0;
+  word-break:break-word;
+}
+.bd-team.win{text-decoration:underline;text-underline-offset:4px}
+.bd-vs{
+  font-family:var(--mono);
+  font-size:clamp(10px,1vw,16px);
+  opacity:.5;
+  flex:0 0 auto;
+}
+
+.bd-tables{display:flex;gap:clamp(12px,2vw,32px);min-height:0;overflow:hidden;flex-wrap:wrap}
+.bd-table-block{flex:1;min-width:150px}
+.bd-data{width:100%;border-collapse:collapse}
+.bd-data td{
+  padding:clamp(3px,.45vw,8px) 0;
+  font-size:clamp(12px,1.2vw,21px);
+  border-bottom:1px solid rgba(255,255,255,.12);
+}
+.bd-data td.p{font-family:var(--mono);opacity:.45;width:2.2em}
+.bd-data td.n{font-weight:600;word-break:break-word}
+.bd-data td.s{font-family:var(--mono);opacity:.55;text-align:right;white-space:nowrap;padding-left:10px}
+.bd-data td.b{font-family:var(--mono);font-weight:700;text-align:right;width:2.6em}
+.bd-data tr.lead td{background:rgba(255,255,255,.1)}
+
+.bd-leaders{list-style:none;margin:0;padding:0}
+.bd-leaders li{
+  display:flex;
+  align-items:baseline;
+  gap:10px;
+  padding:clamp(5px,.7vw,11px) 0;
+  border-bottom:1px solid rgba(255,255,255,.14);
+}
+.bd-leaders li:last-child{border-bottom:0}
+.bd-leaders .p{font-family:var(--mono);opacity:.45;width:1.4em}
+.bd-leaders .n{font-weight:700;font-size:clamp(13px,1.3vw,23px);flex:1;word-break:break-word}
+.bd-leaders .t{font-family:var(--mono);font-size:clamp(9px,.8vw,12px);opacity:.45;text-transform:uppercase}
+.bd-leaders .v{font-family:var(--mono);font-weight:700;font-size:clamp(14px,1.4vw,24px)}
+
+.bd-clock{display:flex;flex-direction:column;gap:10px}
+.bd-clock-main{
+  font-family:var(--mono);
+  font-size:clamp(34px,5vw,86px);
+  font-weight:700;
+  line-height:1;
+  letter-spacing:-.02em;
+}
+.bd-clock-rows{display:flex;flex-direction:column;gap:5px;font-size:clamp(11px,1vw,16px);opacity:.65}
+.bd-clock-rows b{font-family:var(--mono);opacity:1}
+.bd-delta{
+  font-family:var(--mono);
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  font-size:clamp(9px,.85vw,13px);
+  border:1px solid var(--paper);
+  padding:3px 8px;
+  align-self:flex-start;
+  opacity:1;
+}
+
+.bd-foot{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding-top:clamp(8px,1vw,14px);
+  font-family:var(--mono);
+  font-size:clamp(8px,.75vw,12px);
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  opacity:.4;
+}
+.bd-live{display:flex;align-items:center;gap:6px}
+
+.bd-idle{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+.bd-idle-lbl{
+  font-family:var(--mono);
+  font-size:14px;
+  letter-spacing:.35em;
+  text-transform:uppercase;
+  opacity:.5;
+  margin:0 0 16px;
+}
+.bd-idle-title{margin:0;font-size:clamp(28px,5vw,60px);font-weight:800;text-transform:uppercase;letter-spacing:-.03em}
+.bd-idle-sub{margin:16px 0 0;opacity:.5}
+
+/* preview of the board inside the operator app */
+.bd-preview-frame{
+  border:var(--stroke) solid var(--ink);
+  background:var(--ink);
+  overflow:hidden;
+  position:relative;
+  aspect-ratio:16/9;
+}
+.bd-preview{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  padding:14px;
+  background:var(--ink);
+  color:var(--paper);
+  container-type:inline-size;
+  font-size:12px;
+}
+.bd-preview .bd-grid{overflow:hidden}
+
 /* ---------- Ceremony ---------- */
 .ceremony{
   position:fixed;
@@ -1066,6 +1303,7 @@ hr.rule{border:0;border-top:var(--stroke) solid var(--ink);margin:44px 0 28px}
     <button role="tab" data-tab="groups" aria-selected="false">Skupiny</button>
     <button role="tab" data-tab="bracket" aria-selected="false">Pavúk</button>
     <button role="tab" data-tab="results" aria-selected="false">Výsledky</button>
+    <button role="tab" data-tab="board" aria-selected="false">Tabuľa</button>
   </nav>
 
   <!-- ============ NASTAVENIE (landing) ============ -->
@@ -1143,7 +1381,35 @@ hr.rule{border:0;border-top:var(--stroke) solid var(--ink);margin:44px 0 28px}
     <div id="results-body"></div>
   </section>
 
+  <!-- ============ TABUĽA ============ -->
+  <section class="view" id="view-board">
+    <p class="eyebrow">Druhá obrazovka</p>
+    <h2 class="section">Informačná tabuľa</h2>
+    <p class="note" style="margin-top:0;max-width:64ch">
+      Otvorí sa v samostatnom okne, ktoré presunieš na druhý monitor alebo televízor
+      a klávesou <strong>F11</strong> roztiahneš na celú obrazovku. Keď zapíšeš výsledok,
+      tabuľa sa prekreslí sama — čakať na obnovenie netreba.
+    </p>
+
+    <div class="toolbar" style="margin-top:22px">
+      <button class="btn solid" id="btn-open-board">Otvoriť tabuľu v novom okne</button>
+      <span class="progress" id="board-status"></span>
+    </div>
+
+    <h3 class="setup-h">Čo má byť na tabuli</h3>
+    <div class="toggle-grid" id="board-panels"></div>
+
+    <h3 class="setup-h">Obnovovanie</h3>
+    <div class="opt-grid" id="board-refresh"></div>
+
+    <h3 class="setup-h">Náhľad</h3>
+    <div class="bd-preview-frame"><div class="bd-preview" id="board-preview"></div></div>
+  </section>
+
 </div>
+
+<!-- ============ TABUĽA — samostatné okno ============ -->
+<div id="board-root" hidden></div>
 
 <!-- ============ MODAL: zápis výsledku ============ -->
 <div class="overlay" id="overlay">
@@ -1297,6 +1563,28 @@ const DEFAULT_CONFIG = {
   trackBlowKing: false   // who blew them out (needs players + trackBlows)
 };
 
+/** Panels the second-screen board can show, in the order they are laid out. */
+const BOARD_PANELS = [
+  { key:"now",       name:"Práve sa hrá",       hint:"Aktuálny zápas na každom stole." },
+  { key:"next",      name:"Nasledujúce zápasy", hint:"Kto ide na rad, aby sa tímy stihli pripraviť." },
+  { key:"standings", name:"Priebežná tabuľka",  hint:"Poradie v skupinách alebo celková tabuľka." },
+  { key:"bracket",   name:"Pavúk",              hint:"Posledné odohrané kolo vyraďovačky." },
+  { key:"scorer",    name:"Najlepší strelci",   hint:"Top 3 strelci. Len ak ich zapisuješ." },
+  { key:"blower",    name:"Blowjob King",       hint:"Top 3 vo vyfuknutiach. Len ak ich zapisuješ." },
+  { key:"timer",     name:"Časomiera",          hint:"Koľko turnaj beží a ako je na tom oproti odhadu." }
+];
+
+const DEFAULT_BOARD = {
+  panels: { now:true, next:true, standings:true, bracket:false, scorer:true, blower:false, timer:true },
+  refreshSec: 15
+};
+
+function boardCfg(){
+  if(!state.board) state.board = JSON.parse(JSON.stringify(DEFAULT_BOARD));
+  if(!state.board.panels) state.board.panels = Object.assign({}, DEFAULT_BOARD.panels);
+  return state.board;
+}
+
 /** Two players per team unlocks the individual tables. */
 function usesPlayers(){ return cfg().roster === "players"; }
 function tracksScorers(){ return usesPlayers() && !!cfg().trackScorers; }
@@ -1307,7 +1595,7 @@ const PLAYERS_PER_TEAM = 2;
 
 const restoredState = loadState();
 let state = restoredState || emptyState();
-const TABS = ["setup", "teams", "groups", "bracket", "results"];
+const TABS = ["setup", "teams", "groups", "bracket", "results", "board"];
 
 /**
  * Reopen on the tab the user left off on. A brand new tournament starts on
@@ -1353,6 +1641,7 @@ let saveFlagTimer = null;
  * Reopening the file restores teams, schedule and results automatically.
  */
 function save(){
+  if(isBoardWindow()) return;      // the board only ever reads
   const flag = document.getElementById("save-flag");
   try{
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -1591,6 +1880,7 @@ function drawGroups(){
   }
 
   state.drawn = true;
+  state.startedAt = Date.now();     // reference point for the board clock
 
   // modes without a group phase start straight away
   if(mode() === "swiss") buildSwissRound(0, order);
@@ -2290,6 +2580,8 @@ function render(){
   renderGroups();
   renderBracket();
   renderResults();
+  renderBoardTab();
+  pushToBoard();          // keep the second screen in step with every change
 }
 
 /** Tab labels follow the mode — "Skupiny" makes no sense in a Swiss event. */
@@ -2624,6 +2916,67 @@ function renderEstimator(){
       renderEstimator();
     };
   });
+}
+
+/* ---------- Tabuľa ---------- */
+
+function renderBoardTab(){
+  const panelBox = document.getElementById("board-panels");
+  const b = boardCfg();
+
+  panelBox.innerHTML = BOARD_PANELS.map(p => {
+    const unavailable =
+      p.key === "scorer" && !tracksScorers() ? "Zapni zapisovanie strelcov." :
+      p.key === "blower" && !tracksBlowKing() ? "Zapni zapisovanie Blowjob Kinga." :
+      p.key === "bracket" && !modeInfo().bracket ? "Tento formát pavúk nemá." : null;
+    const on = !!b.panels[p.key];
+    return `
+      <button class="toggle ${on ? "on" : ""}" data-panel="${p.key}"
+              aria-pressed="${on}" ${unavailable ? "disabled" : ""}>
+        <span class="tg-box" aria-hidden="true">${on ? "✕" : ""}</span>
+        <span class="tg-text">
+          <span class="tg-title">${esc(p.name)}</span>
+          <span class="tg-body">${esc(p.hint)}</span>
+          ${unavailable ? `<span class="tg-locked">${esc(unavailable)}</span>` : ""}
+        </span>
+      </button>
+    `;
+  }).join("");
+
+  panelBox.querySelectorAll("[data-panel]").forEach(btn => {
+    if(btn.disabled) return;
+    btn.onclick = () => {
+      const key = btn.dataset.panel;
+      boardCfg().panels[key] = !boardCfg().panels[key];
+      save();
+      renderBoardTab();
+      pushToBoard();
+    };
+  });
+
+  document.getElementById("board-refresh").innerHTML = `
+    <div class="opt">
+      <label>Ako často sa tabuľa sama obnoví</label>
+      ${segment("boardRefresh", [5, 10, 15, 30, 60], Number(b.refreshSec), v => v + " s")}
+      <p class="opt-hint">
+        Je to len poistka. Zápis výsledku sa na tabuľu prenesie okamžite, bez čakania na obnovenie.
+      </p>
+    </div>
+  `;
+  document.getElementById("board-refresh").querySelectorAll("[data-seg]").forEach(btn => {
+    btn.onclick = () => {
+      boardCfg().refreshSec = Number(btn.dataset.val);
+      save();
+      renderBoardTab();
+    };
+  });
+
+  const open = boardWindow && !boardWindow.closed;
+  document.getElementById("board-status").textContent = open
+    ? "Tabuľa je otvorená — aktualizuje sa sama"
+    : "Tabuľa nie je otvorená";
+
+  document.getElementById("board-preview").innerHTML = boardMarkup();
 }
 
 /* ---------- Tímy ---------- */
@@ -3144,6 +3497,48 @@ function unassigned(m, side){
   const named = slotValues(m, side === "a" ? "scorersA" : "scorersB")
     .reduce((s, v) => s + v, 0);
   return (total || 0) - named;
+}
+
+/** Sort key that puts matches in the order they will actually be played. */
+function queueRank(m){
+  if(m.stage === "group" || m.stage === "swiss") return m.round;
+  if(m.stage === "bracket") return m.round === "third" ? 9000 : 1000 + m.round * 2;
+  if(m.stage === "losers") return 1001 + m.round * 2;
+  if(m.stage === "grand") return 9500;
+  return 5000;
+}
+
+/** Matches ready to be played, soonest first. */
+function matchQueue(){
+  return allMatches()
+    .filter(m => !m.done && !m.bye && m.a && m.b)
+    .sort((x, y) => queueRank(x) - queueRank(y) || matchTable(x) - matchTable(y));
+}
+
+/**
+ * What is on each table right now: the soonest matches that can genuinely run
+ * side by side. A team already playing is skipped rather than shown twice, and
+ * matches are dealt to whichever table is free so none of them sits idle.
+ */
+function nowPlaying(){
+  const tables = Math.max(1, Math.min(8, cfg().tables));
+  const busy = new Set();
+  const taken = [];
+
+  matchQueue().forEach(m => {
+    if(taken.length >= tables) return;
+    if(busy.has(m.a) || busy.has(m.b)) return;   // that team is already at a table
+    busy.add(m.a);
+    busy.add(m.b);
+    taken.push({ table: taken.length + 1, match: m });
+  });
+
+  return taken;
+}
+
+function upcoming(count){
+  const live = new Set(nowPlaying().map(x => x.match.id));
+  return matchQueue().filter(m => !live.has(m.id)).slice(0, count);
 }
 
 function playedMatches(){
@@ -3681,6 +4076,263 @@ function clearModal(){
   save();
   closeModal();
   render();
+}
+
+/* =========================================================================
+   INFORMAČNÁ TABUĽA (druhá obrazovka)
+   ========================================================================= */
+
+function boardPanelEnabled(key){
+  const p = boardCfg().panels;
+  if(key === "scorer" && !tracksScorers()) return false;
+  if(key === "blower" && !tracksBlowKing()) return false;
+  if(key === "bracket" && !state.bracket) return false;
+  return !!p[key];
+}
+
+function boardMatchLine(m, table){
+  const label = matchLabel(m);
+  return `
+    <div class="bd-match">
+      ${table ? `<span class="bd-table">Stôl ${table}</span>` : `<span class="bd-when">${esc(label)}</span>`}
+      <div class="bd-teams">
+        <span class="bd-team">${esc(teamName(m.a) || "—")}</span>
+        <span class="bd-vs">vs</span>
+        <span class="bd-team">${esc(teamName(m.b) || "—")}</span>
+      </div>
+      ${table ? `<span class="bd-when">${esc(label)}</span>` : ""}
+    </div>
+  `;
+}
+
+function boardPanel(key){
+  if(!boardPanelEnabled(key)) return "";
+  const wrap = (title, inner, cls) =>
+    `<section class="bd-panel ${cls || ""}">
+       <h2 class="bd-h">${title}</h2>
+       ${inner}
+     </section>`;
+
+  if(key === "now"){
+    const live = nowPlaying();
+    return wrap("Práve sa hrá", live.length
+      ? live.map(x => boardMatchLine(x.match, x.table)).join("")
+      : `<p class="bd-empty">${champion() ? "Turnaj je dohraný." : "Žiadny zápas nie je pripravený."}</p>`,
+      "bd-wide");
+  }
+
+  if(key === "next"){
+    const tables = Math.max(1, Math.min(8, cfg().tables));
+    const list = upcoming(Math.max(2, tables * 2));
+    return wrap("Nasledujú", list.length
+      ? list.map(m => boardMatchLine(m, null)).join("")
+      : `<p class="bd-empty">Nič ďalšie v rade.</p>`);
+  }
+
+  if(key === "standings"){
+    const letters = groupLetters();
+    const tables = letters.length
+      ? letters.map(g => ({ title: "Skupina " + g, rows: standings(g) }))
+      : [{ title: "Priebežná tabuľka", rows: standings(null) }];
+    return wrap("Tabuľka", `
+      <div class="bd-tables">
+        ${tables.map(t => `
+          <div class="bd-table-block">
+            ${tables.length > 1 ? `<h3 class="bd-sub">${esc(t.title)}</h3>` : ""}
+            <table class="bd-data">
+              <tbody>
+                ${t.rows.map((r, i) => `
+                  <tr class="${i === 0 ? "lead" : ""}">
+                    <td class="p">${i + 1}</td>
+                    <td class="n">${esc(r.name)}</td>
+                    <td class="s">${r.cupsFor}:${r.cupsAgainst}</td>
+                    <td class="b">${r.points}</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+        `).join("")}
+      </div>`, "bd-wide");
+  }
+
+  if(key === "bracket"){
+    const br = state.bracket;
+    const rounds = br.rounds.filter(rnd => rnd.some(m => m.a || m.b));
+    const last = rounds[rounds.length - 1] || [];
+    return wrap(roundTitle(br.rounds.length - 1, br.rounds.length),
+      last.map(m => `
+        <div class="bd-match">
+          <div class="bd-teams">
+            <span class="bd-team ${m.done && winnerOf(m) === m.a ? "win" : ""}">${esc(teamName(m.a) || "—")}</span>
+            <span class="bd-vs">${m.done ? m.cupsA + ":" + m.cupsB : "vs"}</span>
+            <span class="bd-team ${m.done && winnerOf(m) === m.b ? "win" : ""}">${esc(teamName(m.b) || "—")}</span>
+          </div>
+        </div>`).join(""));
+  }
+
+  if(key === "scorer" || key === "blower"){
+    const scoring = key === "scorer";
+    const rows = (scoring ? topScorers() : topBlowers())
+      .filter(r => (scoring ? r.cups : r.blows) > 0).slice(0, 3);
+    return wrap(scoring ? "Najlepší strelci" : "Blowjob King", rows.length
+      ? `<ol class="bd-leaders">
+          ${rows.map((r, i) => `
+            <li><span class="p">${i + 1}</span>
+                <span class="n">${esc(r.name)}</span>
+                <span class="t">${esc(r.teamName)}</span>
+                <span class="v">${scoring ? r.cups : r.blows}</span></li>`).join("")}
+         </ol>`
+      : `<p class="bd-empty">Zatiaľ bez zápisu.</p>`);
+  }
+
+  if(key === "timer"){
+    const est = state.teams.length >= 2 ? estimateTournament(cfg(), state.teams.length) : null;
+    const started = state.startedAt;
+    const elapsed = started ? Math.round((Date.now() - started) / 60000) : null;
+    let delta = "";
+    if(est && elapsed !== null){
+      const prog = groupProgress();
+      const doneAll = allMatches().filter(m => m.done).length;
+      const share = est.matches ? doneAll / est.matches : 0;
+      const expected = Math.round(est.minutes * share);
+      const diff = elapsed - expected;
+      delta = Math.abs(diff) < 6
+        ? "podľa plánu"
+        : (diff > 0 ? "meškanie " + formatDuration(diff) : "náskok " + formatDuration(-diff));
+      void prog;
+    }
+    const d = new Date();
+    const p = n => String(n).padStart(2, "0");
+    return wrap("Časomiera", `
+      <div class="bd-clock">
+        <div class="bd-clock-main">${p(d.getHours())}:${p(d.getMinutes())}</div>
+        <div class="bd-clock-rows">
+          <span><b>${elapsed === null ? "—" : formatDuration(elapsed)}</b> od začiatku</span>
+          ${est ? `<span><b>${formatDuration(est.minutes)}</b> odhad celkom</span>` : ""}
+          ${delta ? `<span class="bd-delta">${esc(delta)}</span>` : ""}
+        </div>
+      </div>`);
+  }
+
+  return "";
+}
+
+function boardMarkup(){
+  if(!state.drawn){
+    return `<div class="bd-idle">
+      <p class="bd-idle-lbl">Beerpong</p>
+      <h1 class="bd-idle-title">Turnaj sa ešte nezačal</h1>
+      <p class="bd-idle-sub">Tabuľa sa naplní, len čo rozlosuješ.</p>
+    </div>`;
+  }
+
+  const champ = champion();
+  const panels = BOARD_PANELS.map(p => boardPanel(p.key)).join("");
+  const d = new Date();
+  const p2 = n => String(n).padStart(2, "0");
+
+  return `
+    <header class="bd-top">
+      <div class="bd-brand">
+        <span class="bd-logo">Beerpong</span>
+        <span class="bd-meta">${esc(modeInfo().name)} · ${plural(state.teams.length, "tím", "tímy", "tímov")}
+          · ${plural(cfg().tables, "stôl", "stoly", "stolov")}</span>
+      </div>
+      ${champ
+        ? `<div class="bd-champ"><span class="bd-champ-lbl">Víťaz</span>
+             <span class="bd-champ-name">${esc(teamName(champ))}</span></div>`
+        : `<div class="bd-prog">${playedMatches().length} / ${allMatches().filter(m => !m.bye).length} zápasov</div>`}
+    </header>
+    <div class="bd-grid">${panels}</div>
+    <footer class="bd-foot">
+      <span>Aktualizované ${p2(d.getHours())}:${p2(d.getMinutes())}:${p2(d.getSeconds())}</span>
+      <span class="bd-live">● naživo</span>
+    </footer>
+  `;
+}
+
+/* ---------- board window plumbing ---------- */
+
+let boardWindow = null;
+let boardTimer = null;
+
+function isBoardWindow(){
+  return location.hash === "#board";
+}
+
+/** Open (or re-focus) the board in its own window, ready for a second screen. */
+function openBoard(){
+  const url = location.href.split("#")[0] + "#board";
+  if(boardWindow && !boardWindow.closed){
+    boardWindow.focus();
+    pushToBoard();
+    return;
+  }
+  boardWindow = window.open(url, "beerpong-board",
+    "width=1280,height=800,menubar=no,toolbar=no,location=no,status=no");
+  if(!boardWindow){
+    alert("Prehliadač zablokoval otvorenie okna. Povoľ vyskakovacie okná pre túto stránku a skús znova.");
+    return;
+  }
+  // give it a moment to boot, then hand over the current state
+  setTimeout(pushToBoard, 400);
+  setTimeout(pushToBoard, 1200);
+}
+
+/**
+ * Hand the board the current tournament directly. This is what makes the
+ * second screen update the moment a result is saved, rather than waiting
+ * for its own refresh — and it works even when the two windows do not
+ * share storage, as happens with some file:// setups.
+ */
+function pushToBoard(){
+  if(!boardWindow || boardWindow.closed) return;
+  try{
+    boardWindow.postMessage({ type:"beerpong-state", state: JSON.parse(JSON.stringify(state)) }, "*");
+  }catch(e){ /* the board will fall back to its own refresh */ }
+}
+
+/** Board-side: adopt a tournament handed over by the main window. */
+function adoptState(incoming){
+  if(!incoming || !Array.isArray(incoming.teams)) return;
+  incoming.config = Object.assign({}, DEFAULT_CONFIG, incoming.config || {});
+  state = incoming;
+  renderBoard();
+}
+
+function renderBoard(){
+  document.getElementById("board-root").innerHTML = boardMarkup();
+}
+
+/** Board-side bootstrap: render, then keep itself current. */
+function startBoardWindow(){
+  document.body.classList.add("board-mode");
+  document.getElementById("board-root").hidden = false;
+  renderBoard();
+
+  // 1) instant: the main window hands over state on every save
+  window.addEventListener("message", e => {
+    if(e.data && e.data.type === "beerpong-state") adoptState(e.data.state);
+  });
+
+  // 2) instant: another tab of the same origin wrote to storage
+  window.addEventListener("storage", e => {
+    if(e.key === STORAGE_KEY) reloadBoardFromStorage();
+  });
+
+  // 3) safety net: re-read on a timer, so the board can never go stale
+  const every = Math.max(3, Number(boardCfg().refreshSec) || 15) * 1000;
+  boardTimer = setInterval(() => {
+    reloadBoardFromStorage();
+    renderBoard();                 // keeps the clock ticking even with no changes
+  }, every);
+}
+
+function reloadBoardFromStorage(){
+  const fresh = loadState();
+  if(fresh) state = fresh;
+  renderBoard();
 }
 
 /* =========================================================================
@@ -4269,6 +4921,7 @@ document.querySelectorAll("nav.tabs button").forEach(btn => {
 });
 
 document.getElementById("btn-setup-next").onclick = () => setTab("teams");
+document.getElementById("btn-open-board").onclick = () => { openBoard(); renderBoardTab(); };
 
 document.getElementById("team-form").addEventListener("submit", e => {
   e.preventDefault();
@@ -4371,8 +5024,18 @@ document.getElementById("import-file").addEventListener("change", e => {
   e.target.value = "";
 });
 
-render();
-showRestoredFlag(!!restoredState && restoredState.teams.length > 0);
+// The same file serves two roles: the operator's app, and — behind #board —
+// the read-only display for the second screen.
+if(isBoardWindow()){
+  document.querySelector(".wrap").hidden = true;
+  startBoardWindow();
+}else{
+  render();
+  showRestoredFlag(!!restoredState && restoredState.teams.length > 0);
+  window.addEventListener("beforeunload", () => {
+    if(boardWindow && !boardWindow.closed) boardWindow.close();
+  });
+}
 </script>
 </body>
 </html>

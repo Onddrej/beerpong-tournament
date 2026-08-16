@@ -76,6 +76,30 @@ Body sa prideľujú **3 za výhru, 1 za remízu, 0 za prehru**. Pri rovnosti roz
 
 **Finálna tabuľka** sa pri formátoch s pavúkom radí podľa toho, ako ďaleko sa tím dostal — nie podľa bodov. Semifinalistov oddelí zápas o 3. miesto; pri dvojitej eliminácii rozhoduje, ako hlboko tím prežil v spodnom pavúku. Pri formátoch bez pavúka je finálne poradie priamo tabuľka.
 
+## Informačná tabuľa (druhá obrazovka)
+
+Karta *Tabuľa* otvorí samostatné okno určené pre druhý monitor alebo televízor otočený k ľuďom. Okno presunieš na druhú obrazovku a **F11** ho roztiahne na celú plochu. Obsah je biely na čiernom a písmo sa škáluje podľa veľkosti okna, takže sa dá čítať cez miestnosť.
+
+Vybrať sa dá, čo tam má byť:
+
+| Panel | Obsah |
+|-------|-------|
+| **Práve sa hrá** | Aktuálny zápas na každom stole. |
+| **Nasledujúce zápasy** | Kto ide na rad, aby sa tímy stihli pripraviť. |
+| **Priebežná tabuľka** | Poradie v skupinách alebo celková tabuľka. |
+| **Pavúk** | Posledné kolo vyraďovačky. |
+| **Najlepší strelci** | Top 3. Len ak ich zapisuješ. |
+| **Blowjob King** | Top 3 vo vyfuknutiach. Len ak ich zapisuješ. |
+| **Časomiera** | Aktuálny čas, ako dlho turnaj beží a či meškáte oproti odhadu. |
+
+Na karte *Tabuľa* je aj náhľad, takže vidíš, čo sa na druhej obrazovke objaví, ešte než ju otvoríš.
+
+### Ako sa aktualizuje
+
+Zápis výsledku sa na tabuľu prenesie **okamžite** — hlavné okno jej stav odovzdá priamo. Nezávisle od toho sa tabuľa v nastavenom intervale (predvolene 15 s) sama načíta z úložiska, čo je poistka pre prípad, že by priame spojenie vypadlo. Manuálne obnovovať teda netreba.
+
+Tabuľa iba číta — nikdy nič nezapisuje, takže ju nemôžeš omylom rozbiť.
+
 ## Vyhlásenie výsledkov
 
 Keď je turnaj dohraný, na karte *Výsledky* pribudne tlačidlo **Spustiť vyhlásenie výsledkov**. Otvorí celoobrazovkovú vyhlasovaciu obrazovku, ktorou sa prechádza šípkami:
