@@ -70,6 +70,18 @@ Body sa prideľujú **3 za výhru, 1 za remízu, 0 za prehru**. Pri rovnosti roz
 
 **Finálna tabuľka** sa pri formátoch s pavúkom radí podľa toho, ako ďaleko sa tím dostal — nie podľa bodov. Semifinalistov oddelí zápas o 3. miesto; pri dvojitej eliminácii rozhoduje, ako hlboko tím prežil v spodnom pavúku. Pri formátoch bez pavúka je finálne poradie priamo tabuľka.
 
+## Vyhlásenie výsledkov
+
+Keď je turnaj dohraný, na karte *Výsledky* pribudne tlačidlo **Spustiť vyhlásenie výsledkov**. Otvorí celoobrazovkovú vyhlasovaciu obrazovku, ktorou sa prechádza šípkami:
+
+- šípka **doprava**, medzerník alebo Enter — ďalej
+- šípka **doľava** — späť
+- **Esc** — zavrieť
+
+Pri každej kategórii sa najprv ukáže prázdny stupienok a potom sa postupne odhalí tretie, druhé a prvé miesto. Pri víťazovi zaznejú fanfáry a spustia sa konfety. Zvuk sa dá vypnúť priamo na obrazovke.
+
+Kategórie idú po sebe: celkové poradie, najlepší strelci a Blowjob King. Tie dve individuálne sa zobrazia len vtedy, ak si ich zapisoval a aspoň traja hráči majú nenulový zápis — inak sa kategória ticho preskočí.
+
 ## Ukladanie
 
 Turnaj sa **ukladá sám po každej zmene** do `localStorage` prehliadača. V hlavičke vidíš čas posledného uloženia. Po zavretí okna aj po reštarte počítača tam všetko zostane.
