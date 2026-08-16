@@ -1274,9 +1274,12 @@ body.board-mode{background:var(--ink);color:var(--paper);overflow:hidden}
 @media print{
   @page{margin:14mm}
   body{font-size:11pt}
-  nav.tabs,.masthead-actions,.toolbar,.export-row,.btn,.overlay{display:none !important}
+  /* No print button any more, but Ctrl+P still lays the whole tournament out. */
+  nav.tabs,.masthead-actions,.toolbar,.export-row,.btn,.overlay,
+  .ceremony,#board-root,.bd-preview-frame{display:none !important}
   .view{display:block !important;padding-top:0;page-break-before:always}
   .view:first-of-type{page-break-before:auto}
+  #view-board{display:none !important}
   .match,.bnode,.pane{break-inside:avoid}
   .bracket{overflow:visible}
   .wrap{padding:0;max-width:none}
@@ -1292,7 +1295,6 @@ body.board-mode{background:var(--ink);color:var(--paper);overflow:hidden}
     </div>
     <div class="masthead-actions">
       <span class="saveflag" id="save-flag"></span>
-      <button class="btn ghost sm" id="btn-print">Tlač / PDF</button>
       <button class="btn ghost sm" id="btn-reset">Nový turnaj</button>
     </div>
   </header>
@@ -4972,7 +4974,6 @@ document.getElementById("team-list").addEventListener("click", e => {
 
 document.getElementById("btn-draw").onclick = onDraw;
 document.getElementById("btn-reset").onclick = onReset;
-document.getElementById("btn-print").onclick = () => window.print();
 
 document.getElementById("m-save").onclick = saveModal;
 document.getElementById("m-cancel").onclick = closeModal;
