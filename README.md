@@ -10,6 +10,12 @@ Stiahni `index.html` a otvor ho dvojklikom. To je všetko.
 
 Funguje aj offline a aj na mobile, takže sa dá obsluhovať priamo pri stole.
 
+## Jazyk
+
+Appka je celá po **slovensky aj anglicky**. Prepína sa pripnutým tlačidlom **SK / EN** v pravom dolnom rohu; voľba sa pamätá aj po zavretí okna a platí všade — vrátane informačnej tabule, vyhlásenia výsledkov a exportov (TXT, CSV aj názvy stiahnutých súborov).
+
+Preklad je vedený významovo, nie doslovne. Napríklad *rozlosovať* je v angličtine *draw* rovnako ako *remíza*, preto sa remíza prekladá ako **tie** — aby sa tie dva pojmy v appke nikdy nepomiešali. Slovenčina používa tri tvary množného čísla (1 tím / 3 tímy / 5 tímov), angličtina dva; každý jazyk má vlastné tvary.
+
 ## Ako to funguje
 
 Turnaj má päť krokov, ktoré zodpovedajú kartám v hornej lište:

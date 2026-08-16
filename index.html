@@ -164,6 +164,35 @@ h2.section{
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0}
 @media(max-width:820px){.grid2{grid-template-columns:1fr}}
 
+/* ---------- Language switch (pinned) ---------- */
+#lang-switch{
+  position:fixed;
+  right:16px;
+  bottom:16px;
+  z-index:300;
+  display:flex;
+  background:var(--paper);
+  border:var(--stroke) solid var(--ink);
+  box-shadow:3px 3px 0 var(--ink);
+}
+#lang-switch button{
+  appearance:none;
+  background:none;
+  border:0;
+  padding:9px 14px;
+  font-family:var(--mono);
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.12em;
+  cursor:pointer;
+  color:var(--muted);
+}
+#lang-switch button + button{border-left:1px solid var(--ink)}
+#lang-switch button:hover{color:var(--ink)}
+#lang-switch button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+body.board-mode #lang-switch{display:none}
+@media print{ #lang-switch{display:none !important} }
+
 /* ---------- Setup / landing ---------- */
 .hero{
   border-bottom:var(--stroke) solid var(--ink);
@@ -1287,6 +1316,11 @@ body.board-mode{background:var(--ink);color:var(--paper);overflow:hidden}
 </style>
 </head>
 <body>
+<div id="lang-switch" role="group" aria-label="Language">
+  <button data-lang="sk" aria-pressed="true">SK</button>
+  <button data-lang="en" aria-pressed="false">EN</button>
+</div>
+
 <div class="wrap">
 
   <header class="masthead">
@@ -1295,7 +1329,7 @@ body.board-mode{background:var(--ink);color:var(--paper);overflow:hidden}
     </div>
     <div class="masthead-actions">
       <span class="saveflag" id="save-flag"></span>
-      <button class="btn ghost sm" id="btn-reset">Nový turnaj</button>
+      <button class="btn ghost sm" id="btn-reset" data-i18n="hdr.newTournament">Nový turnaj</button>
     </div>
   </header>
 
@@ -1311,52 +1345,48 @@ body.board-mode{background:var(--ink);color:var(--paper);overflow:hidden}
   <!-- ============ NASTAVENIE (landing) ============ -->
   <section class="view on" id="view-setup">
     <div class="hero">
-      <p class="eyebrow">Nový turnaj</p>
-      <h2 class="hero-title">Nastav si turnaj</h2>
-      <p class="hero-lead">Vyber formát, počet stolov a odhadni si, dokedy to potrvá. Meniť sa to dá, kým nerozlosuješ.</p>
+      <p class="eyebrow" data-i18n="setup.eyebrow">Nový turnaj</p>
+      <h2 class="hero-title" data-i18n="setup.title">Nastav si turnaj</h2>
+      <p class="hero-lead" data-i18n="setup.lead">Vyber formát, počet stolov a odhadni si, dokedy to potrvá.</p>
     </div>
 
-    <h3 class="setup-h">Formát turnaja</h3>
+    <h3 class="setup-h" data-i18n="setup.formatHead">Formát turnaja</h3>
     <div class="mode-grid" id="mode-grid"></div>
 
-    <h3 class="setup-h">Nastavenia</h3>
+    <h3 class="setup-h" data-i18n="setup.optionsHead">Nastavenia</h3>
     <div class="opt-grid" id="opt-grid"></div>
 
-    <h3 class="setup-h">Čo zapisovať pri zápase</h3>
+    <h3 class="setup-h" data-i18n="setup.recordHead">Čo zapisovať pri zápase</h3>
     <div class="toggle-grid" id="toggle-grid"></div>
 
-    <h3 class="setup-h">Ako dlho to potrvá</h3>
+    <h3 class="setup-h" data-i18n="setup.timeHead">Ako dlho to potrvá</h3>
     <div class="estimator" id="estimator"></div>
 
     <div class="toolbar" style="margin-top:30px">
-      <button class="btn solid" id="btn-setup-next">Pokračovať na tímy</button>
+      <button class="btn solid" id="btn-setup-next" data-i18n="setup.next">Pokračovať na tímy</button>
     </div>
   </section>
 
   <!-- ============ TÍMY ============ -->
   <section class="view" id="view-teams">
-    <p class="eyebrow">Krok 1</p>
-    <h2 class="section">Prihlásené tímy</h2>
+    <p class="eyebrow" data-i18n="teams.eyebrow">Krok 1</p>
+    <h2 class="section" data-i18n="teams.title">Prihlásené tímy</h2>
 
     <form id="team-form" autocomplete="off">
       <div class="team-form">
-        <input id="team-name" placeholder="Názov tímu" maxlength="40" required>
-        <button class="btn solid" type="submit">Pridať</button>
+        <input id="team-name" data-i18n-ph="teams.namePlaceholder" maxlength="40" required>
+        <button class="btn solid" type="submit" data-i18n="teams.add">Pridať</button>
       </div>
       <div class="team-form players-row" id="new-players" hidden>
-        <input id="player-1" placeholder="1. hráč" maxlength="30">
-        <input id="player-2" placeholder="2. hráč" maxlength="30">
+        <input id="player-1" data-i18n-ph="teams.player1" maxlength="30">
+        <input id="player-2" data-i18n-ph="teams.player2" maxlength="30">
       </div>
     </form>
-    <p class="locked-note" id="roster-locked" hidden>
-      Turnaj je rozlosovaný — nové tímy sa už pridať nedajú a názvy tímov sa nedajú meniť,
-      rozhodilo by to rozpis aj odohrané výsledky. Mená hráčov opraviť môžeš.
-      Ak treba súpisku naozaj zmeniť, rozlosuj turnaj nanovo.
-    </p>
-    <p class="note" id="teams-hint">Pridaj aspoň 4 tímy — po dva do každej skupiny.</p>
+    <p class="locked-note" id="roster-locked" data-i18n="teams.locked" hidden></p>
+    <p class="note" id="teams-hint"></p>
 
     <div class="toolbar" style="margin-top:26px">
-      <button class="btn" id="btn-draw">Rozlosovať do skupín</button>
+      <button class="btn" id="btn-draw"></button>
     </div>
 
     <ul class="team-list" id="team-list"></ul>
@@ -1364,47 +1394,43 @@ body.board-mode{background:var(--ink);color:var(--paper);overflow:hidden}
 
   <!-- ============ SKUPINY ============ -->
   <section class="view" id="view-groups">
-    <p class="eyebrow">Krok 2 &middot; každý s každým</p>
-    <h2 class="section">Skupinová fáza</h2>
+    <p class="eyebrow" data-i18n="groups.eyebrow">Krok 2</p>
+    <h2 class="section" data-i18n="groups.title">Skupinová fáza</h2>
     <div id="groups-body"></div>
   </section>
 
   <!-- ============ PAVÚK ============ -->
   <section class="view" id="view-bracket">
-    <p class="eyebrow">Krok 3 &middot; vyraďovačka</p>
-    <h2 class="section">Pavúk</h2>
+    <p class="eyebrow" data-i18n="bracket.eyebrow">Krok 3</p>
+    <h2 class="section" data-i18n="bracket.title">Pavúk</h2>
     <div id="bracket-body"></div>
   </section>
 
   <!-- ============ VÝSLEDKY ============ -->
   <section class="view" id="view-results">
-    <p class="eyebrow">Krok 4</p>
-    <h2 class="section">Výsledky a export</h2>
+    <p class="eyebrow" data-i18n="results.eyebrow">Krok 4</p>
+    <h2 class="section" data-i18n="results.title">Výsledky a export</h2>
     <div id="results-body"></div>
   </section>
 
   <!-- ============ TABUĽA ============ -->
   <section class="view" id="view-board">
-    <p class="eyebrow">Druhá obrazovka</p>
-    <h2 class="section">Informačná tabuľa</h2>
-    <p class="note" style="margin-top:0;max-width:64ch">
-      Otvorí sa v samostatnom okne, ktoré presunieš na druhý monitor alebo televízor
-      a klávesou <strong>F11</strong> roztiahneš na celú obrazovku. Keď zapíšeš výsledok,
-      tabuľa sa prekreslí sama — čakať na obnovenie netreba.
-    </p>
+    <p class="eyebrow" data-i18n="board.eyebrow">Druhá obrazovka</p>
+    <h2 class="section" data-i18n="board.title">Informačná tabuľa</h2>
+    <p class="note" style="margin-top:0;max-width:64ch" data-i18n="board.intro"></p>
 
     <div class="toolbar" style="margin-top:22px">
-      <button class="btn solid" id="btn-open-board">Otvoriť tabuľu v novom okne</button>
+      <button class="btn solid" id="btn-open-board" data-i18n="board.open"></button>
       <span class="progress" id="board-status"></span>
     </div>
 
-    <h3 class="setup-h">Čo má byť na tabuli</h3>
+    <h3 class="setup-h" data-i18n="board.panelsHead">Čo má byť na tabuli</h3>
     <div class="toggle-grid" id="board-panels"></div>
 
-    <h3 class="setup-h">Obnovovanie</h3>
+    <h3 class="setup-h" data-i18n="board.refreshHead">Obnovovanie</h3>
     <div class="opt-grid" id="board-refresh"></div>
 
-    <h3 class="setup-h">Náhľad</h3>
+    <h3 class="setup-h" data-i18n="board.previewHead">Náhľad</h3>
     <div class="bd-preview-frame"><div class="bd-preview" id="board-preview"></div></div>
   </section>
 
@@ -1417,13 +1443,13 @@ body.board-mode{background:var(--ink);color:var(--paper);overflow:hidden}
 <div class="overlay" id="overlay">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="m-title">
     <p class="ctx" id="m-ctx"></p>
-    <h3 id="m-title">Zápis výsledku</h3>
+    <h3 id="m-title" data-i18n="modal.title">Zápis výsledku</h3>
 
     <div class="sides">
       <div class="col">
         <h4 id="m-name-a"></h4>
         <div class="field">
-          <label for="m-cups-a">Trafené poháre</label>
+          <label for="m-cups-a" data-i18n="modal.cups">Trafené poháre</label>
           <div class="stepper">
             <button type="button" data-step="-1" data-target="m-cups-a">&minus;</button>
             <input type="number" id="m-cups-a" min="0" max="99" inputmode="numeric">
@@ -1432,7 +1458,7 @@ body.board-mode{background:var(--ink);color:var(--paper);overflow:hidden}
         </div>
         <div class="field breakdown" id="m-scorers-a" hidden></div>
         <div class="field" id="m-blows-field-a">
-          <label for="m-blows-a">Vyfuknutia</label>
+          <label for="m-blows-a" data-i18n="modal.blows">Vyfuknutia</label>
           <div class="stepper">
             <button type="button" data-step="-1" data-target="m-blows-a">&minus;</button>
             <input type="number" id="m-blows-a" min="0" max="99" inputmode="numeric">
@@ -1445,7 +1471,7 @@ body.board-mode{background:var(--ink);color:var(--paper);overflow:hidden}
       <div class="col">
         <h4 id="m-name-b"></h4>
         <div class="field">
-          <label for="m-cups-b">Trafené poháre</label>
+          <label for="m-cups-b" data-i18n="modal.cups">Trafené poháre</label>
           <div class="stepper">
             <button type="button" data-step="-1" data-target="m-cups-b">&minus;</button>
             <input type="number" id="m-cups-b" min="0" max="99" inputmode="numeric">
@@ -1454,7 +1480,7 @@ body.board-mode{background:var(--ink);color:var(--paper);overflow:hidden}
         </div>
         <div class="field breakdown" id="m-scorers-b" hidden></div>
         <div class="field" id="m-blows-field-b">
-          <label for="m-blows-b">Vyfuknutia</label>
+          <label for="m-blows-b" data-i18n="modal.blows">Vyfuknutia</label>
           <div class="stepper">
             <button type="button" data-step="-1" data-target="m-blows-b">&minus;</button>
             <input type="number" id="m-blows-b" min="0" max="99" inputmode="numeric">
@@ -1468,10 +1494,10 @@ body.board-mode{background:var(--ink);color:var(--paper);overflow:hidden}
     <p class="modal-msg" id="m-msg"></p>
 
     <div class="modal-actions">
-      <button class="btn solid" id="m-save">Uložiť</button>
-      <button class="btn" id="m-cancel">Zrušiť</button>
+      <button class="btn solid" id="m-save" data-i18n="modal.save">Uložiť</button>
+      <button class="btn" id="m-cancel" data-i18n="modal.cancel">Zrušiť</button>
       <span class="spacer"></span>
-      <button class="btn ghost" id="m-clear">Zmazať výsledok</button>
+      <button class="btn ghost" id="m-clear" data-i18n="modal.clear">Zmazať výsledok</button>
     </div>
   </div>
 </div>
@@ -1482,16 +1508,16 @@ body.board-mode{background:var(--ink);color:var(--paper);overflow:hidden}
     <span class="cer-progress" id="cer-progress"></span>
     <div class="cer-top-actions">
       <button class="cer-btn" id="cer-sound">Zvuk</button>
-      <button class="cer-btn" id="cer-close">Zavrieť</button>
+      <button class="cer-btn" id="cer-close" data-i18n="cer.close">Zavrieť</button>
     </div>
   </div>
 
   <div class="cer-body" id="cer-body"></div>
 
   <div class="cer-nav">
-    <button class="cer-btn" id="cer-prev">&larr; Späť</button>
-    <span class="cer-hint">Šípkami alebo medzerníkom ďalej &middot; Esc zavrie</span>
-    <button class="cer-btn solid" id="cer-next">Ďalej &rarr;</button>
+    <button class="cer-btn" id="cer-prev" data-i18n="cer.prev"></button>
+    <span class="cer-hint" data-i18n="cer.hint"></span>
+    <button class="cer-btn solid" id="cer-next" data-i18n="cer.next"></button>
   </div>
 </div>
 
@@ -1511,45 +1537,672 @@ body.board-mode{background:var(--ink);color:var(--paper);overflow:hidden}
    ========================================================================= */
 
 const STORAGE_KEY = "beerpong-turnaj-v1";
+const LANG_KEY = "beerpong-lang";
 
-/** Tournament formats. `groups` / `bracket` say which phases the mode uses. */
-const MODES = {
-  "single-group": {
-    name: "Jedna skupina",
-    tagline: "Každý s každým",
-    how: "Všetci hrajú proti všetkým. Vyhráva ten, kto má na konci najviac bodov — žiadna vyraďovačka.",
-    best: "Do 8 tímov, keď chcete, aby si každý zahral čo najviac.",
-    groups: true, bracket: false, swiss: false
+/* =========================================================================
+   JAZYKY / LANGUAGES
+   Translations are written for meaning, not word by word: "Rozlosovať" is a
+   draw of lots, while a level match is a "tie", so the two never collide in
+   English. Slovak keeps three plural forms, English two.
+   ========================================================================= */
+
+const I18N = {
+  sk: {
+    pl: {
+      team:    ["tím", "tímy", "tímov"],
+      table:   ["stôl", "stoly", "stolov"],
+      tableLoc:["stole", "stoloch", "stoloch"],
+      match:   ["zápas", "zápasy", "zápasov"],
+      round:   ["kolo", "kolá", "kôl"],
+      bye:     ["voľný žreb", "voľné žreby", "voľných žrebov"],
+      cup:     ["pohár", "poháre", "pohárov"],
+      blow:    ["vyfuknutie", "vyfuknutia", "vyfuknutí"],
+      teamCase:["tíme", "tímoch", "tímoch"]
+    },
+
+    "app.title": "Beerpong",
+    "mode.single-group.name": "Jedna skupina",
+    "mode.single-group.tagline": "Každý s každým",
+    "mode.single-group.how": "Všetci hrajú proti všetkým. Vyhráva ten, kto má na konci najviac bodov — žiadna vyraďovačka.",
+    "mode.single-group.best": "Do 8 tímov, keď chcete, aby si každý zahral čo najviac.",
+    "mode.groups-bracket.name": "Skupiny + pavúk",
+    "mode.groups-bracket.tagline": "Skupiny, potom vyraďovačka",
+    "mode.groups-bracket.how": "Tímy sa rozdelia do skupín a hrajú každý s každým. Potom postupujú do pavúka, kde sa hrá na vyradenie až do finále.",
+    "mode.groups-bracket.best": "8–16 tímov. Klasika, ktorá spája istotu skupín s napätím pavúka.",
+    "mode.bracket-only.name": "Rovno pavúk",
+    "mode.bracket-only.tagline": "Kto prehrá, končí",
+    "mode.bracket-only.how": "Žiadne skupiny. Hneď sa losuje vyraďovačka — jedna prehra a ideš domov.",
+    "mode.bracket-only.best": "Keď máte málo času. Najrýchlejší formát, ale slabší tím odpadne hneď.",
+    "mode.double-elim.name": "Dvojitá eliminácia",
+    "mode.double-elim.tagline": "Druhá šanca v spodnom pavúku",
+    "mode.double-elim.how": "Dva pavúky. Kto prehrá v hornom, padá do spodného a hrá ďalej. Vo finále sa stretnú víťazi oboch — a tam už platí, že kto prehrá, končí.",
+    "mode.double-elim.best": "6–12 tímov. Jeden zlý zápas ťa z turnaja nevyradí, ale finále je za všetko.",
+    "mode.swiss.name": "Švajčiarsky systém",
+    "mode.swiss.tagline": "Pevný počet kôl, nikto nevypadáva",
+    "mode.swiss.how": "Odohrá sa dopredu daný počet kôl. V každom ďalšom kole ťa appka nasadí proti tímu s podobnou bilanciou. Nikto nevypadáva, na konci rozhodne tabuľka.",
+    "mode.swiss.best": "12+ tímov, keď by každý s každým trval večnosť.",
+    "tab.setup": "Nastavenie", "tab.teams": "Tímy", "tab.groups": "Skupiny",
+    "tab.rounds": "Kolá", "tab.table": "Tabuľka", "tab.bracket": "Pavúk",
+    "tab.brackets": "Pavúky", "tab.results": "Výsledky", "tab.board": "Tabuľa",
+    "hdr.newTournament": "Nový turnaj",
+    "save.saved": "Uložené {time}", "save.failed": "Ukladanie zlyhalo — exportuj JSON",
+    "save.restored": "Načítaný uložený turnaj", "save.autoOn": "Automatické ukladanie zapnuté",
+
+    "setup.eyebrow": "Nový turnaj",
+    "setup.title": "Nastav si turnaj",
+    "setup.lead": "Vyber formát, počet stolov a odhadni si, dokedy to potrvá. Meniť sa to dá, kým nerozlosuješ.",
+    "setup.formatHead": "Formát turnaja",
+    "setup.optionsHead": "Nastavenia",
+    "setup.recordHead": "Čo zapisovať pri zápase",
+    "setup.timeHead": "Ako dlho to potrvá",
+    "setup.next": "Pokračovať na tímy",
+    "setup.fits": "Sedí na: {what}",
+
+    "opt.tables": "Počet stolov",
+    "opt.tablesHint": "Zápasy, ktoré sa dajú hrať naraz, appka rozhodí na voľné stoly sama.",
+    "opt.groups": "Počet skupín",
+    "opt.groupsHint": "Tímy sa rozdelia rovnomerne. So skupinami nesúvisí počet stolov.",
+    "opt.rounds": "Počet kôl",
+    "opt.roundsHint": "Každý tím odohrá presne toľko zápasov. Odporúčaných je 5.",
+    "opt.roster": "Čo zapisujeme o tímoch",
+    "opt.rosterTeams": "Iba tímy", "opt.rosterPlayers": "Tímy + mená",
+    "opt.rosterHintPlayers": "Pri každom tíme vyplníš mená dvoch hráčov. Odomkne to individuálne tabuľky.",
+    "opt.rosterHintTeams": "Stačí názov tímu. Individuálne štatistiky sa v tomto režime nedajú viesť.",
+
+    "tg.blows": "Zapisovať vyfuknutia",
+    "tg.blowsBody": "Keď sa loptička roztočí v poháriku a ešte sa nedotkla piva, súper ju smie vyfúknuť — pohár sa potom neráta. Appka počíta, koľkokrát sa to komu podarilo.",
+    "tg.scorers": "Zapisovať strelcov",
+    "tg.scorersBody": "Pri každom zápase zapíšeš, koľko pohárov trafil ktorý hráč. Pribudne tabuľka najlepších strelcov a ich stupienok.",
+    "tg.king": "Zapisovať Blowjob Kinga",
+    "tg.kingBody": "K vyfuknutiam sa zapíše aj to, kto ich urobil. Kto ich nazbiera najviac, stáva sa Blowjob Kingom.",
+    "tg.needPlayers": "Najprv prepni na „Tímy + mená“.",
+    "tg.needBlows": "Najprv zapni vyfuknutia.",
+
+    "est.teams": "Počet tímov (len pre odhad)",
+    "est.haveTeams": "Máš pridaných {n}.",
+    "est.useReal": "Použiť skutočný počet",
+    "est.match": "Jeden zápas (min)",
+    "est.break": "Prestávka medzi kolami (min)",
+    "est.total": "Odhad celkom", "est.matches": "Zápasov", "est.rounds": "Kôl",
+    "est.slots": "Na stole po sebe",
+    "est.empty": "Naklikaj aspoň dva tímy a odhad sa dopočíta.",
+    "est.note": "Počítané pre <strong>{teams}</strong> na <strong>{tables}</strong> vo formáte <strong>{mode}</strong>. „Na stole po sebe“ je počet zápasov, ktoré musí jeden stôl odohrať za sebou — to je to, čo turnaj naozaj naťahuje. Odhad neráta rozohrávky ani zdržania.",
+
+    "teams.eyebrow": "Krok 1", "teams.title": "Prihlásené tímy",
+    "teams.namePlaceholder": "Názov tímu", "teams.add": "Pridať",
+    "teams.player1": "1. hráč", "teams.player2": "2. hráč",
+    "teams.playerAria": "Hráč {n} tímu {team}",
+    "teams.nameAria": "Názov tímu",
+    "teams.empty": "Zatiaľ žiadne tímy. Napíš názov a stlač Pridať.",
+    "teams.delete": "Zmazať",
+    "teams.group": "Skupina {g}",
+    "teams.locked": "Turnaj je rozlosovaný — nové tímy sa už pridať nedajú a názvy tímov sa nedajú meniť, rozhodilo by to rozpis aj odohrané výsledky. Mená hráčov opraviť môžeš. Ak treba súpisku naozaj zmeniť, rozlosuj turnaj nanovo.",
+    "teams.draw": "Rozlosovať a spustiť turnaj", "teams.redraw": "Rozlosovať znova",
+    "teams.needMore": "Pre formát „{mode}“ treba aspoň {n} tímov. Zatiaľ ich máš {have}.",
+    "teams.needNames": "Doplň mená hráčov — chýbajú pri {what}.",
+    "teams.needNamesOne": "tíme {name}",
+    "teams.summaryGroups": "skupiny {list}",
+    "teams.summaryRounds": "{n} kôl",
+    "teams.summaryEst": "odhad {time}",
+    "teams.redrawWarn": "Nové losovanie vymaže všetky výsledky.",
+    "teams.drawRandom": "Losovanie je náhodné.",
+    "teams.dupName": "Tím s týmto názvom už existuje.",
+    "teams.dupRename": "Tím s názvom „{name}“ už existuje.",
+    "teams.deleteConfirm": "Zmazať tím „{name}“? Losovanie aj všetky výsledky sa zrušia.",
+
+    "groups.eyebrow": "Krok 2 · každý s každým",
+    "groups.title": "Skupinová fáza",
+    "groups.notDrawn": "Najprv pridaj tímy a rozlosuj skupiny na karte Tímy.",
+    "groups.progress": "Odohrané {done} / {total}",
+    "groups.roundOf": "kolo {a} / {b}",
+    "groups.buildBracket": "Vygenerovať pavúk", "groups.rebuildBracket": "Pregenerovať pavúk",
+    "groups.allRoundsPlayed": "Odohrané všetky kolá",
+    "groups.drawRound": "Vylosovať {n}. kolo",
+    "groups.standings": "Priebežná tabuľka",
+    "groups.schedule": "Rozpis kôl",
+    "groups.table": "Tabuľka", "groups.list": "Rozpis",
+    "groups.group": "Skupina {g}", "groups.scheduleOf": "Rozpis {g}",
+    "groups.emptyGroup": "Skupina {g} je prázdna.",
+    "groups.noTeams": "Žiadne tímy.",
+    "groups.roundsOf": "{a} / {b} kôl",
+
+    "col.team": "Tím", "col.played": "Z", "col.wins": "V", "col.draws": "R",
+    "col.losses": "P", "col.free": "Voľno", "col.cups": "Poháre", "col.diff": "+/−",
+    "col.blows": "Vyfuk.", "col.points": "B", "col.group": "Sk.",
+    "col.rank": "#", "col.ended": "Skončil", "col.blowsFor": "Vyfuk. dané",
+    "col.blowsAgainst": "Vyfuk. prijaté", "col.player": "Hráč",
+    "col.matches": "Zápasov", "col.perMatch": "Na zápas",
+    "col.phase": "Fáza", "col.table": "Stôl", "col.teamA": "Tím A", "col.teamB": "Tím B",
+    "col.winner": "Víťaz",
+
+    "match.round": "{n}. kolo",
+    "match.waiting": "— čaká sa —",
+    "match.byeSlot": "— voľný žreb —",
+    "match.blowsShort": "{n} vyfuk.",
+    "match.free": "voľno", "match.record": "zapísať", "match.tie": "Remíza",
+    "match.tableShort": "stôl {n}",
+
+    "bracket.eyebrow": "Krok 3 · vyraďovačka", "bracket.title": "Pavúk",
+    "bracket.none": "Pavúk sa vygeneruje na karte Skupiny, keď dohráte skupinovú fázu.<br>Postupujú všetky tímy — skupiny určujú len nasadenie.",
+    "bracket.info": "{size}-tímový pavúk · {teams} · {byes}",
+    "bracket.upper": "Horný pavúk", "bracket.lower": "Spodný pavúk",
+    "bracket.lowerNote": "Kto prehrá hore, padá sem. Druhá prehra znamená koniec.",
+    "bracket.grand": "Veľké finále",
+    "bracket.grandNote": "Víťaz horného pavúka proti víťazovi spodného.",
+    "bracket.third": "Zápas o 3. miesto",
+    "bracket.byeAdvance": "voľný žreb → postup",
+    "bracket.waitingPrev": "čaká na predošlé kolo",
+    "bracket.recordAt": "stôl {n} · zapísať výsledok",
+    "bracket.blowsPair": "{a} : {b} vyfuknutí",
+    "bracket.champion": "Víťaz turnaja",
+    "bracket.toResults": "Stupienok a finálna tabuľka",
+    "round.final": "Finále", "round.semi": "Semifinále", "round.quarter": "Štvrťfinále",
+    "round.last16": "Osemfinále", "round.nth": "{n}. kolo",
+    "round.lowerNth": "Spodný pavúk · {n}. kolo",
+
+    "results.eyebrow": "Krok 4", "results.title": "Výsledky a export",
+    "results.ceremony": "▶ Spustiť vyhlásenie výsledkov",
+    "results.ceremonyNote": "Celoobrazovkové vyhlásenie — šípkami postupne odhalíš tretie, druhé a prvé miesto.",
+    "results.txt": "Stiahnuť rozpis + výsledky (TXT)", "results.copy": "Kopírovať ako text",
+    "results.copied": "Skopírované ✓",
+    "results.csvMatches": "Zápasy (CSV)", "results.csvStats": "Štatistiky (CSV)",
+    "results.csvPlayers": "Hráči (CSV)",
+    "results.json": "Zálohovať JSON", "results.import": "Načítať zálohu JSON",
+    "results.exportNote": "<strong>TXT</strong> je čitateľný na prvý pohľad — tímy, rozpis, tabuľky aj pavúk pod sebou; hodí sa na vytlačenie alebo poslanie do chatu. <strong>CSV</strong> sa otvorí priamo v Exceli (oddelené bodkočiarkou). <strong>JSON</strong> je plná záloha turnaja — dá sa načítať späť tu alebo na inom zariadení. Turnaj sa navyše ukladá sám po každej zmene, takže po zavretí okna nič nestratíš.",
+    "results.previewHead": "Náhľad textového výpisu",
+    "results.nothingYet": "Zatiaľ nie je čo exportovať. Pridaj tímy, alebo načítaj uložený turnaj z JSON súboru.",
+    "results.teamStats": "Štatistiky tímov",
+    "results.finalTable": "Finálna tabuľka",
+    "results.finalNote": "Poradie určuje, ako ďaleko sa tím dostal v pavúku. Semifinalistov rozdelí zápas o 3. miesto, zvyšné rovnosti body zo skupiny.",
+    "results.played": "Odohrané zápasy ({n})",
+    "results.noneRecorded": "Zatiaľ žiadny zapísaný výsledok.",
+    "results.tie": "remíza",
+    "results.topScorers": "Najlepší strelci", "results.blowKing": "Blowjob King",
+    "results.noPlayerData": "Zatiaľ nikto nič nezapísal.",
+    "results.unattributed": "{n} {verb} ku konkrétnemu hráčovi, takže súčet nesedí s tímovými štatistikami.",
+    "results.unattributedOne": "nebol priradený", "results.unattributedMany": "nebolo priradených",
+
+    "podium.winner": "Víťaz turnaja",
+    "podium.replay": "Prehrať animáciu znova",
+    "podium.topScorer": "Najlepší strelec",
+    "podium.stats": "{w}V {d}R {l}P · {p} b.",
+    "podium.scorerMeta": "{team} · {cups}",
+    "podium.cupsHit": "trafených pohárov", "podium.blowsMade": "vyfuknutí",
+    "exit.winner": "Víťaz", "exit.table": "Tabuľka", "exit.none": "—",
+
+    "modal.title": "Zápis výsledku",
+    "modal.cups": "Trafené poháre", "modal.blows": "Vyfuknutia",
+    "modal.whoScored": "Kto trafil poháre", "modal.whoBlew": "Kto vyfúkol",
+    "modal.save": "Uložiť", "modal.cancel": "Zrušiť", "modal.clear": "Zmazať výsledok",
+    "modal.hintKnockout": "V pavúku musí byť víťaz — jeden tím musí mať viac pohárov.",
+    "modal.hintTie": "Remíza je povolená — stačí zadať rovnaký počet pohárov (1 bod pre oboch).",
+    "modal.needCups": "Vyplň trafené poháre pre oba tímy.",
+    "modal.noTie": "V pavúku remíza nie je možná — musí byť jasné, kto postupuje.",
+    "modal.tooMany": "{team}: hráči majú spolu {named} {noun}, ale tím ich má {total}. Uber {diff}.",
+    "modal.split": "{named} z {total} rozdelených",
+    "modal.splitOver": "{named} z {total} rozdelených — o {over} priveľa",
+    "modal.playerFallback": "Hráč {n}",
+
+    "board.eyebrow": "Druhá obrazovka", "board.title": "Informačná tabuľa",
+    "board.intro": "Otvorí sa v samostatnom okne, ktoré presunieš na druhý monitor alebo televízor a klávesou <strong>F11</strong> roztiahneš na celú obrazovku. Keď zapíšeš výsledok, tabuľa sa prekreslí sama — čakať na obnovenie netreba.",
+    "board.open": "Otvoriť tabuľu v novom okne",
+    "board.isOpen": "Tabuľa je otvorená — aktualizuje sa sama",
+    "board.isClosed": "Tabuľa nie je otvorená",
+    "board.panelsHead": "Čo má byť na tabuli",
+    "board.refreshHead": "Obnovovanie",
+    "board.previewHead": "Náhľad",
+    "board.refreshLabel": "Ako často sa tabuľa sama obnoví",
+    "board.refreshHint": "Je to len poistka. Zápis výsledku sa na tabuľu prenesie okamžite, bez čakania na obnovenie.",
+    "board.popupBlocked": "Prehliadač zablokoval otvorenie okna. Povoľ vyskakovacie okná pre túto stránku a skús znova.",
+    "board.needScorers": "Zapni zapisovanie strelcov.",
+    "board.needKing": "Zapni zapisovanie Blowjob Kinga.",
+    "board.noBracket": "Tento formát pavúk nemá.",
+    "board.p.now": "Práve sa hrá", "board.p.nowHint": "Aktuálny zápas na každom stole.",
+    "board.p.next": "Nasledujúce zápasy", "board.p.nextHint": "Kto ide na rad, aby sa tímy stihli pripraviť.",
+    "board.p.standings": "Priebežná tabuľka", "board.p.standingsHint": "Poradie v skupinách alebo celková tabuľka.",
+    "board.p.bracket": "Pavúk", "board.p.bracketHint": "Posledné odohrané kolo vyraďovačky.",
+    "board.p.scorer": "Najlepší strelci", "board.p.scorerHint": "Top 3 strelci. Len ak ich zapisuješ.",
+    "board.p.blower": "Blowjob King", "board.p.blowerHint": "Top 3 vo vyfuknutiach. Len ak ich zapisuješ.",
+    "board.p.timer": "Časomiera", "board.p.timerHint": "Koľko turnaj beží a ako je na tom oproti odhadu.",
+    "board.next": "Nasledujú",
+    "board.nothingQueued": "Nič ďalšie v rade.",
+    "board.finished": "Turnaj je dohraný.",
+    "board.nothingReady": "Žiadny zápas nie je pripravený.",
+    "board.noRecord": "Zatiaľ bez zápisu.",
+    "board.tableHead": "Tabuľka",
+    "board.sinceStart": "od začiatku", "board.estTotal": "odhad celkom",
+    "board.onSchedule": "podľa plánu", "board.behind": "meškanie {t}", "board.ahead": "náskok {t}",
+    "board.progress": "{done} / {total} zápasov",
+    "board.updated": "Aktualizované {time}", "board.live": "● naživo",
+    "board.idleLbl": "Beerpong", "board.idleTitle": "Turnaj sa ešte nezačal",
+    "board.idleSub": "Tabuľa sa naplní, len čo rozlosuješ.",
+    "board.champ": "Víťaz",
+
+    "cer.progress": "{a} / {b}",
+    "cer.sound": "Zvuk: zap", "cer.soundOff": "Zvuk: vyp",
+    "cer.close": "Zavrieť", "cer.prev": "← Späť", "cer.next": "Ďalej →", "cer.end": "Koniec",
+    "cer.hint": "Šípkami alebo medzerníkom ďalej · Esc zavrie",
+    "cer.introTitle": "Vyhlásenie<br>výsledkov",
+    "cer.introLead": "Šípkou doprava sa postupne odhalí tretie, druhé a prvé miesto.",
+    "cer.outroEyebrow": "Koniec", "cer.outroTitle": "Gratulujeme",
+    "cer.catTeams": "Celkové poradie", "cer.titleTeams": "Víťaz turnaja",
+    "cer.catScorers": "Najlepší strelci", "cer.titleScorers": "Kráľ strelcov",
+    "cer.catBlowers": "Vyfuknutia", "cer.titleBlowers": "Blowjob King",
+
+    "act.bracketIncomplete": "V skupinách ostáva {n} nedohraných zápasov. Vygenerovať pavúk aj tak? Nasadenie bude podľa priebežnej tabuľky.",
+    "act.bracketExists": "Pavúk už existuje. Pregenerovanie zmaže všetky jeho výsledky. Pokračovať?",
+    "act.redrawConfirm": "Nové losovanie zmaže všetky zápasy aj výsledky. Pokračovať?",
+    "act.resetConfirm": "Zmazať celý turnaj a začať odznova?",
+    "act.importConfirm": "Načítať turnaj zo súboru? Aktuálny turnaj sa prepíše.",
+    "act.importFailed": "Súbor sa nepodarilo načítať — nevyzerá ako záloha tohto turnaja.",
+    "act.copyFailed": "Kopírovanie sa nepodarilo — použi Stiahnuť TXT.",
+
+    "file.matches": "beerpong-zapasy", "file.stats": "beerpong-statistiky",
+    "file.players": "beerpong-hraci", "file.text": "beerpong-rozpis",
+    "file.json": "beerpong-turnaj",
+    "csv.order": "Poradie", "csv.teamName": "Tím", "csv.group": "Skupina",
+    "csv.matches": "Zápasy", "csv.wins": "Výhry", "csv.draws": "Remízy", "csv.losses": "Prehry",
+    "csv.cupsFor": "Poháre dané", "csv.cupsAgainst": "Poháre prijaté", "csv.diff": "Rozdiel",
+    "csv.blowsFor": "Vyfuknutia dané", "csv.blowsAgainst": "Vyfuknutia prijaté",
+    "csv.points": "Body", "csv.player": "Hráč", "csv.cupsHit": "Trafené poháre",
+    "csv.avg": "Priemer na zápas", "csv.blows": "Vyfuknutia",
+    "csv.phase": "Fáza", "csv.table": "Stôl", "csv.cupsA": "Poháre A", "csv.blowsA": "Vyfuknutia A",
+    "csv.cupsB": "Poháre B", "csv.blowsB": "Vyfuknutia B", "csv.winner": "Víťaz",
+    "csv.playedQ": "Odohrané", "csv.yes": "áno", "csv.no": "nie",
+
+    "txt.title": "BEERPONG TURNAJ", "txt.format": "FORMÁT: {mode} · {tables}",
+    "txt.estimate": "ODHAD: {time} ({matches} zápasov, {rounds} kôl)",
+    "txt.teams": "TÍMY ({n})", "txt.group": "  Skupina {g} ({n})",
+    "txt.scheduleRounds": "ROZPIS KÔL", "txt.scheduleGroup": "ROZPIS — SKUPINA {g}",
+    "txt.roundN": "  {n}. kolo", "txt.freeRound": "voľno v tomto kole",
+    "txt.tie": "REMÍZA", "txt.blows": "(vyfuk. {a}:{b})",
+    "txt.standings": "PRIEBEŽNÁ TABUĽKA", "txt.standingsGroup": "TABUĽKA — SKUPINA {g}",
+    "txt.pointsNote": "(výhra 3 b., remíza 1 b.)",
+    "txt.bracket": "PAVÚK — postupujú všetky tímy", "txt.bracketUpper": "HORNÝ PAVÚK",
+    "txt.bracketLower": "SPODNÝ PAVÚK — kto prehrá hore, padá sem",
+    "txt.grand": "  VEĽKÉ FINÁLE", "txt.third": "  O 3. MIESTO",
+    "txt.byeAdvance": "voľný žreb → postup",
+    "txt.champion": "VÍŤAZ TURNAJA: {name}",
+    "txt.finalTable": "FINÁLNA TABUĽKA",
+    "txt.topScorers": "NAJLEPŠÍ STRELCI", "txt.blowKing": "BLOWJOB KING",
+    "txt.hTeam": "Tím", "txt.hEnded": "Skončil", "txt.hCups": "Poháre",
+    "txt.hPlayer": "Hráč", "txt.hBlows": "Vyfuk."
   },
-  "groups-bracket": {
-    name: "Skupiny + pavúk",
-    tagline: "Skupiny, potom vyraďovačka",
-    how: "Tímy sa rozdelia do skupín a hrajú každý s každým. Potom postupujú do pavúka, kde sa hrá na vyradenie až do finále.",
-    best: "8–16 tímov. Klasika, ktorá spája istotu skupín s napätím pavúka.",
-    groups: true, bracket: true, swiss: false
-  },
-  "bracket-only": {
-    name: "Rovno pavúk",
-    tagline: "Kto prehrá, končí",
-    how: "Žiadne skupiny. Hneď sa losuje vyraďovačka — jedna prehra a ideš domov.",
-    best: "Keď máte málo času. Najrýchlejší formát, ale slabší tím odpadne hneď.",
-    groups: false, bracket: true, swiss: false
-  },
-  "double-elim": {
-    name: "Dvojitá eliminácia",
-    tagline: "Druhá šanca v spodnom pavúku",
-    how: "Dva pavúky. Kto prehrá v hornom, padá do spodného a hrá ďalej. Vo finále sa stretnú víťazi oboch — a tam už platí, že kto prehrá, končí.",
-    best: "6–12 tímov. Jeden zlý zápas ťa z turnaja nevyradí, ale finále je za všetko.",
-    groups: false, bracket: true, swiss: false
-  },
-  "swiss": {
-    name: "Švajčiarsky systém",
-    tagline: "Pevný počet kôl, nikto nevypadáva",
-    how: "Odohrá sa dopredu daný počet kôl. V každom ďalšom kole ťa appka nasadí proti tímu s podobnou bilanciou. Nikto nevypadáva, na konci rozhodne tabuľka.",
-    best: "12+ tímov, keď by každý s každým trval večnosť.",
-    groups: false, bracket: false, swiss: true
+
+  en: {
+    pl: {
+      team:    ["team", "teams"],
+      table:   ["table", "tables"],
+      tableLoc:["table", "tables"],
+      match:   ["match", "matches"],
+      round:   ["round", "rounds"],
+      bye:     ["bye", "byes"],
+      cup:     ["cup", "cups"],
+      blow:    ["blow-out", "blow-outs"],
+      teamCase:["team", "teams"]
+    },
+
+    "app.title": "Beerpong",
+    "mode.single-group.name": "Single group",
+    "mode.single-group.tagline": "Everyone plays everyone",
+    "mode.single-group.how": "Every team plays every other team. Whoever tops the table at the end wins — there is no knockout.",
+    "mode.single-group.best": "Up to 8 teams, when you want everyone to get plenty of games.",
+    "mode.groups-bracket.name": "Groups + bracket",
+    "mode.groups-bracket.tagline": "Group stage, then knockout",
+    "mode.groups-bracket.how": "Teams are split into groups and play a round robin. Everyone then moves into a knockout bracket that runs to the final.",
+    "mode.groups-bracket.best": "8–16 teams. The classic — the safety of groups with the tension of a bracket.",
+    "mode.bracket-only.name": "Straight knockout",
+    "mode.bracket-only.tagline": "Lose once and you are out",
+    "mode.bracket-only.how": "No groups at all. Straight into the bracket — one defeat and you are done.",
+    "mode.bracket-only.best": "When time is short. The quickest format, but a weaker team is gone after one game.",
+    "mode.double-elim.name": "Double elimination",
+    "mode.double-elim.tagline": "A second life in the losers bracket",
+    "mode.double-elim.how": "Two brackets. Lose in the upper one and you drop into the lower one and keep playing. The winners of both meet in the final — and there, losing ends it.",
+    "mode.double-elim.best": "6–12 teams. One bad game will not knock you out, but the final decides everything.",
+    "mode.swiss.name": "Swiss system",
+    "mode.swiss.tagline": "A fixed number of rounds, nobody drops out",
+    "mode.swiss.how": "A set number of rounds is played. Each round pairs you with a team on a similar record. Nobody is eliminated; the table settles it at the end.",
+    "mode.swiss.best": "12+ teams, when a full round robin would take all night.",
+    "tab.setup": "Setup", "tab.teams": "Teams", "tab.groups": "Groups",
+    "tab.rounds": "Rounds", "tab.table": "Standings", "tab.bracket": "Bracket",
+    "tab.brackets": "Brackets", "tab.results": "Results", "tab.board": "Display",
+    "hdr.newTournament": "New tournament",
+    "save.saved": "Saved {time}", "save.failed": "Saving failed — export a JSON backup",
+    "save.restored": "Saved tournament loaded", "save.autoOn": "Autosave is on",
+
+    "setup.eyebrow": "New tournament",
+    "setup.title": "Set up your tournament",
+    "setup.lead": "Pick a format, the number of tables, and see how long it will run. You can change all of it until you draw.",
+    "setup.formatHead": "Tournament format",
+    "setup.optionsHead": "Settings",
+    "setup.recordHead": "What to record per match",
+    "setup.timeHead": "How long it will take",
+    "setup.next": "Continue to teams",
+    "setup.fits": "Best for: {what}",
+
+    "opt.tables": "Number of tables",
+    "opt.tablesHint": "Matches that can run at the same time are dealt across free tables automatically.",
+    "opt.groups": "Number of groups",
+    "opt.groupsHint": "Teams are split evenly. The group count is independent of the table count.",
+    "opt.rounds": "Number of rounds",
+    "opt.roundsHint": "Every team plays exactly this many matches. Five is a good default.",
+    "opt.roster": "What you record about teams",
+    "opt.rosterTeams": "Teams only", "opt.rosterPlayers": "Teams + names",
+    "opt.rosterHintPlayers": "Each team gets two named players. This unlocks the individual leaderboards.",
+    "opt.rosterHintTeams": "A team name is enough. Individual stats cannot be kept in this mode.",
+
+    "tg.blows": "Record blow-outs",
+    "tg.blowsBody": "When the ball starts spinning inside a cup and has not touched the beer yet, the other side may blow it out — that cup does not count. The app keeps track of who managed it.",
+    "tg.scorers": "Record scorers",
+    "tg.scorersBody": "For every match you note how many cups each player sank. Adds a top-scorer table and its own podium.",
+    "tg.king": "Record the Blowjob King",
+    "tg.kingBody": "Blow-outs get credited to the player who made them. Whoever collects the most is crowned Blowjob King.",
+    "tg.needPlayers": "Switch to “Teams + names” first.",
+    "tg.needBlows": "Turn blow-outs on first.",
+
+    "est.teams": "Number of teams (estimate only)",
+    "est.haveTeams": "You have {n} entered.",
+    "est.useReal": "Use the real count",
+    "est.match": "One match (min)",
+    "est.break": "Break between rounds (min)",
+    "est.total": "Estimated total", "est.matches": "Matches", "est.rounds": "Rounds",
+    "est.slots": "Back to back per table",
+    "est.empty": "Dial in at least two teams and the estimate appears.",
+    "est.note": "Based on <strong>{teams}</strong> across <strong>{tables}</strong> in the <strong>{mode}</strong> format. “Back to back per table” is how many matches a single table has to get through in sequence — that is what really stretches the night out. Warm-ups and delays are not counted.",
+
+    "teams.eyebrow": "Step 1", "teams.title": "Entered teams",
+    "teams.namePlaceholder": "Team name", "teams.add": "Add",
+    "teams.player1": "Player 1", "teams.player2": "Player 2",
+    "teams.playerAria": "Player {n} of team {team}",
+    "teams.nameAria": "Team name",
+    "teams.empty": "No teams yet. Type a name and hit Add.",
+    "teams.delete": "Delete",
+    "teams.group": "Group {g}",
+    "teams.locked": "The draw is done — teams can no longer be added and team names are locked, as they would stop matching the schedule and the results already recorded. Player names can still be fixed. If the line-up really has to change, draw the tournament again.",
+    "teams.draw": "Draw and start", "teams.redraw": "Draw again",
+    "teams.needMore": "The “{mode}” format needs at least {n} teams. You have {have}.",
+    "teams.needNames": "Fill in the player names — missing for {what}.",
+    "teams.needNamesOne": "team {name}",
+    "teams.summaryGroups": "groups {list}",
+    "teams.summaryRounds": "{n} rounds",
+    "teams.summaryEst": "about {time}",
+    "teams.redrawWarn": "Drawing again wipes every result.",
+    "teams.drawRandom": "The draw is random.",
+    "teams.dupName": "A team with that name already exists.",
+    "teams.dupRename": "A team called “{name}” already exists.",
+    "teams.deleteConfirm": "Delete team “{name}”? The draw and all results will be discarded.",
+
+    "groups.eyebrow": "Step 2 · round robin",
+    "groups.title": "Group stage",
+    "groups.notDrawn": "Add teams and draw the groups on the Teams tab first.",
+    "groups.progress": "Played {done} / {total}",
+    "groups.roundOf": "round {a} / {b}",
+    "groups.buildBracket": "Generate the bracket", "groups.rebuildBracket": "Rebuild the bracket",
+    "groups.allRoundsPlayed": "All rounds played",
+    "groups.drawRound": "Draw round {n}",
+    "groups.standings": "Standings",
+    "groups.schedule": "Round schedule",
+    "groups.table": "Standings", "groups.list": "Schedule",
+    "groups.group": "Group {g}", "groups.scheduleOf": "Group {g} schedule",
+    "groups.emptyGroup": "Group {g} is empty.",
+    "groups.noTeams": "No teams.",
+    "groups.roundsOf": "{a} / {b} rounds",
+
+    "col.team": "Team", "col.played": "P", "col.wins": "W", "col.draws": "T",
+    "col.losses": "L", "col.free": "Bye", "col.cups": "Cups", "col.diff": "+/−",
+    "col.blows": "Blows", "col.points": "Pts", "col.group": "Grp",
+    "col.rank": "#", "col.ended": "Exit", "col.blowsFor": "Blows made",
+    "col.blowsAgainst": "Blows against", "col.player": "Player",
+    "col.matches": "Matches", "col.perMatch": "Per match",
+    "col.phase": "Stage", "col.table": "Table", "col.teamA": "Team A", "col.teamB": "Team B",
+    "col.winner": "Winner",
+
+    "match.round": "Round {n}",
+    "match.waiting": "— to be decided —",
+    "match.byeSlot": "— bye —",
+    "match.blowsShort": "{n} blows",
+    "match.free": "bye", "match.record": "record", "match.tie": "Tie",
+    "match.tableShort": "table {n}",
+
+    "bracket.eyebrow": "Step 3 · knockout", "bracket.title": "Bracket",
+    "bracket.none": "The bracket is generated on the Groups tab once the group stage is done.<br>Every team goes through — the groups only decide the seeding.",
+    "bracket.info": "{size}-team bracket · {teams} · {byes}",
+    "bracket.upper": "Winners bracket", "bracket.lower": "Losers bracket",
+    "bracket.lowerNote": "Lose upstairs and you drop down here. A second loss ends your run.",
+    "bracket.grand": "Grand final",
+    "bracket.grandNote": "Winner of the upper bracket against the winner of the lower one.",
+    "bracket.third": "Third-place match",
+    "bracket.byeAdvance": "bye → through",
+    "bracket.waitingPrev": "waiting on the previous round",
+    "bracket.recordAt": "table {n} · record the result",
+    "bracket.blowsPair": "{a} : {b} blow-outs",
+    "bracket.champion": "Tournament winner",
+    "bracket.toResults": "Podium and final table",
+    "round.final": "Final", "round.semi": "Semi-final", "round.quarter": "Quarter-final",
+    "round.last16": "Round of 16", "round.nth": "Round {n}",
+    "round.lowerNth": "Losers bracket · round {n}",
+
+    "results.eyebrow": "Step 4", "results.title": "Results and export",
+    "results.ceremony": "▶ Start the awards ceremony",
+    "results.ceremonyNote": "A fullscreen ceremony — the arrow keys reveal third, second and first place in turn.",
+    "results.txt": "Download schedule + results (TXT)", "results.copy": "Copy as text",
+    "results.copied": "Copied ✓",
+    "results.csvMatches": "Matches (CSV)", "results.csvStats": "Statistics (CSV)",
+    "results.csvPlayers": "Players (CSV)",
+    "results.json": "Back up as JSON", "results.import": "Load a JSON backup",
+    "results.exportNote": "<strong>TXT</strong> reads at a glance — teams, schedule, tables and bracket one under another; good for printing or pasting into a chat. <strong>CSV</strong> opens straight in Excel (semicolon separated). <strong>JSON</strong> is a full backup — load it back here or on another device. On top of that the tournament saves itself after every change, so closing the window loses nothing.",
+    "results.previewHead": "Text output preview",
+    "results.nothingYet": "Nothing to export yet. Add teams, or load a saved tournament from a JSON file.",
+    "results.teamStats": "Team statistics",
+    "results.finalTable": "Final table",
+    "results.finalNote": "The order follows how far each team got in the bracket. The third-place match separates the semi-finalists; any remaining ties are settled on group points.",
+    "results.played": "Matches played ({n})",
+    "results.noneRecorded": "No result recorded yet.",
+    "results.tie": "tie",
+    "results.topScorers": "Top scorers", "results.blowKing": "Blowjob King",
+    "results.noPlayerData": "Nobody has recorded anything yet.",
+    "results.unattributed": "{n} {verb} to a specific player, so the totals do not match the team statistics.",
+    "results.unattributedOne": "was not credited", "results.unattributedMany": "were not credited",
+
+    "podium.winner": "Tournament winner",
+    "podium.replay": "Play the animation again",
+    "podium.topScorer": "Top scorer",
+    "podium.stats": "{w}W {d}T {l}L · {p} pts",
+    "podium.scorerMeta": "{team} · {cups}",
+    "podium.cupsHit": "cups sunk", "podium.blowsMade": "blow-outs",
+    "exit.winner": "Winner", "exit.table": "Standings", "exit.none": "—",
+
+    "modal.title": "Record the result",
+    "modal.cups": "Cups sunk", "modal.blows": "Blow-outs",
+    "modal.whoScored": "Who sank them", "modal.whoBlew": "Who blew them out",
+    "modal.save": "Save", "modal.cancel": "Cancel", "modal.clear": "Clear the result",
+    "modal.hintKnockout": "A knockout match needs a winner — one team must have more cups.",
+    "modal.hintTie": "A tie is allowed here — just enter the same number of cups (1 point each).",
+    "modal.needCups": "Enter the cups sunk for both teams.",
+    "modal.noTie": "No ties in the bracket — it has to be clear who goes through.",
+    "modal.tooMany": "{team}: the players add up to {named} {noun}, but the team only has {total}. Take {diff} off.",
+    "modal.split": "{named} of {total} assigned",
+    "modal.splitOver": "{named} of {total} assigned — {over} too many",
+    "modal.playerFallback": "Player {n}",
+
+    "board.eyebrow": "Second screen", "board.title": "Info display",
+    "board.intro": "Opens in its own window that you drag onto a second monitor or a TV and blow up fullscreen with <strong>F11</strong>. When you record a result the display redraws itself — no refreshing needed.",
+    "board.open": "Open the display in a new window",
+    "board.isOpen": "Display is open — updating itself",
+    "board.isClosed": "Display is not open",
+    "board.panelsHead": "What goes on the display",
+    "board.refreshHead": "Refreshing",
+    "board.previewHead": "Preview",
+    "board.refreshLabel": "How often the display refreshes itself",
+    "board.refreshHint": "This is only a safety net. A recorded result reaches the display instantly, without waiting for a refresh.",
+    "board.popupBlocked": "The browser blocked the new window. Allow pop-ups for this page and try again.",
+    "board.needScorers": "Turn on scorer recording.",
+    "board.needKing": "Turn on Blowjob King recording.",
+    "board.noBracket": "This format has no bracket.",
+    "board.p.now": "Now playing", "board.p.nowHint": "The current match on every table.",
+    "board.p.next": "Upcoming matches", "board.p.nextHint": "Who is up next, so teams can get ready.",
+    "board.p.standings": "Standings", "board.p.standingsHint": "Group tables or the overall standings.",
+    "board.p.bracket": "Bracket", "board.p.bracketHint": "The latest knockout round.",
+    "board.p.scorer": "Top scorers", "board.p.scorerHint": "Top 3 scorers. Only if you record them.",
+    "board.p.blower": "Blowjob King", "board.p.blowerHint": "Top 3 by blow-outs. Only if you record them.",
+    "board.p.timer": "Clock", "board.p.timerHint": "How long the tournament has run and how it compares to the estimate.",
+    "board.next": "Up next",
+    "board.nothingQueued": "Nothing else queued.",
+    "board.finished": "The tournament is over.",
+    "board.nothingReady": "No match is ready to play.",
+    "board.noRecord": "Nothing recorded yet.",
+    "board.tableHead": "Standings",
+    "board.sinceStart": "since the start", "board.estTotal": "estimated total",
+    "board.onSchedule": "on schedule", "board.behind": "{t} behind", "board.ahead": "{t} ahead",
+    "board.progress": "{done} / {total} matches",
+    "board.updated": "Updated {time}", "board.live": "● live",
+    "board.idleLbl": "Beerpong", "board.idleTitle": "The tournament has not started",
+    "board.idleSub": "The display fills up as soon as you draw.",
+    "board.champ": "Winner",
+
+    "cer.progress": "{a} / {b}",
+    "cer.sound": "Sound: on", "cer.soundOff": "Sound: off",
+    "cer.close": "Close", "cer.prev": "← Back", "cer.next": "Next →", "cer.end": "End",
+    "cer.hint": "Arrow keys or space to advance · Esc closes",
+    "cer.introTitle": "Awards<br>ceremony",
+    "cer.introLead": "The right arrow reveals third, second and first place in turn.",
+    "cer.outroEyebrow": "The end", "cer.outroTitle": "Congratulations",
+    "cer.catTeams": "Final standings", "cer.titleTeams": "Tournament winner",
+    "cer.catScorers": "Top scorers", "cer.titleScorers": "Top scorer",
+    "cer.catBlowers": "Blow-outs", "cer.titleBlowers": "Blowjob King",
+
+    "act.bracketIncomplete": "{n} group matches are still unplayed. Generate the bracket anyway? Seeding will follow the current standings.",
+    "act.bracketExists": "A bracket already exists. Rebuilding it wipes every result in it. Continue?",
+    "act.redrawConfirm": "Drawing again wipes every match and result. Continue?",
+    "act.resetConfirm": "Delete the whole tournament and start over?",
+    "act.importConfirm": "Load the tournament from this file? The current one will be overwritten.",
+    "act.importFailed": "The file could not be read — it does not look like a backup of this app.",
+    "act.copyFailed": "Copying failed — use Download TXT instead.",
+
+    "file.matches": "beerpong-matches", "file.stats": "beerpong-statistics",
+    "file.players": "beerpong-players", "file.text": "beerpong-schedule",
+    "file.json": "beerpong-tournament",
+    "csv.order": "Rank", "csv.teamName": "Team", "csv.group": "Group",
+    "csv.matches": "Matches", "csv.wins": "Wins", "csv.draws": "Ties", "csv.losses": "Losses",
+    "csv.cupsFor": "Cups sunk", "csv.cupsAgainst": "Cups conceded", "csv.diff": "Difference",
+    "csv.blowsFor": "Blow-outs made", "csv.blowsAgainst": "Blow-outs against",
+    "csv.points": "Points", "csv.player": "Player", "csv.cupsHit": "Cups sunk",
+    "csv.avg": "Average per match", "csv.blows": "Blow-outs",
+    "csv.phase": "Stage", "csv.table": "Table", "csv.cupsA": "Cups A", "csv.blowsA": "Blow-outs A",
+    "csv.cupsB": "Cups B", "csv.blowsB": "Blow-outs B", "csv.winner": "Winner",
+    "csv.playedQ": "Played", "csv.yes": "yes", "csv.no": "no",
+
+    "txt.title": "BEERPONG TOURNAMENT", "txt.format": "FORMAT: {mode} · {tables}",
+    "txt.estimate": "ESTIMATE: {time} ({matches} matches, {rounds} rounds)",
+    "txt.teams": "TEAMS ({n})", "txt.group": "  Group {g} ({n})",
+    "txt.scheduleRounds": "ROUND SCHEDULE", "txt.scheduleGroup": "SCHEDULE — GROUP {g}",
+    "txt.roundN": "  Round {n}", "txt.freeRound": "bye this round",
+    "txt.tie": "TIE", "txt.blows": "(blows {a}:{b})",
+    "txt.standings": "STANDINGS", "txt.standingsGroup": "STANDINGS — GROUP {g}",
+    "txt.pointsNote": "(win 3 pts, tie 1 pt)",
+    "txt.bracket": "BRACKET — every team goes through", "txt.bracketUpper": "WINNERS BRACKET",
+    "txt.bracketLower": "LOSERS BRACKET — lose upstairs and you drop here",
+    "txt.grand": "  GRAND FINAL", "txt.third": "  THIRD PLACE",
+    "txt.byeAdvance": "bye → through",
+    "txt.champion": "TOURNAMENT WINNER: {name}",
+    "txt.finalTable": "FINAL TABLE",
+    "txt.topScorers": "TOP SCORERS", "txt.blowKing": "BLOWJOB KING",
+    "txt.hTeam": "Team", "txt.hEnded": "Exit", "txt.hCups": "Cups",
+    "txt.hPlayer": "Player", "txt.hBlows": "Blows"
   }
 };
+
+let LANG = (function(){
+  try{
+    const saved = localStorage.getItem(LANG_KEY);
+    if(saved === "sk" || saved === "en") return saved;
+  }catch(e){}
+  return (navigator.language || "").toLowerCase().indexOf("sk") === 0 ? "sk" : "sk";
+})();
+
+/** Translate `key`, filling {placeholders} from `vars`. */
+function tr(key, vars){
+  const dict = I18N[LANG] || I18N.sk;
+  let s = dict[key];
+  if(s === undefined) s = I18N.sk[key];
+  if(s === undefined) return key;
+  if(vars){
+    Object.keys(vars).forEach(k => {
+      s = s.split("{" + k + "}").join(String(vars[k]));
+    });
+  }
+  return s;
+}
+
+/**
+ * "3 tímy" / "3 teams". Slovak needs one/few/many, English one/other, so the
+ * forms live in the dictionary rather than in the call site.
+ */
+function plural(n, key){
+  const forms = (I18N[LANG] || I18N.sk).pl[key] || I18N.sk.pl[key] || [key];
+  let word;
+  if(LANG === "sk"){
+    word = n === 1 ? forms[0] : (n >= 2 && n <= 4 ? forms[1] : forms[2]);
+  }else{
+    word = n === 1 ? forms[0] : forms[1];
+  }
+  return n + " " + word;
+}
+
+/** Word only, without the number. */
+function pluralWord(n, key){
+  return plural(n, key).replace(/^\d+\s/, "");
+}
+
+function setLang(next){
+  LANG = next;
+  try{ localStorage.setItem(LANG_KEY, next); }catch(e){}
+  document.documentElement.lang = next;
+  applyStaticText();
+  if(isBoardWindow()){ renderBoard(); }
+  else{
+    render();
+    if(ceremonyOpen()){ cerSteps = buildCeremonySteps(); renderCeremony(); }
+  }
+  pushToBoard();
+  renderLangSwitch();
+}
+
+/** Fill every element that carries a data-i18n key. */
+function applyStaticText(){
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    el.innerHTML = tr(el.dataset.i18n);
+  });
+  document.querySelectorAll("[data-i18n-ph]").forEach(el => {
+    el.placeholder = tr(el.dataset.i18nPh);
+  });
+  document.querySelectorAll("[data-i18n-aria]").forEach(el => {
+    el.setAttribute("aria-label", tr(el.dataset.i18nAria));
+  });
+  document.title = tr("app.title");
+}
+
+function renderLangSwitch(){
+  document.querySelectorAll("#lang-switch button").forEach(b => {
+    b.setAttribute("aria-pressed", b.dataset.lang === LANG ? "true" : "false");
+  });
+}
+
+/**
+ * Tournament formats. Only the structure lives here; every visible word is
+ * looked up per language, so a format reads naturally in both.
+ */
+const MODES = {
+  "single-group":  { groups:true,  bracket:false, swiss:false },
+  "groups-bracket":{ groups:true,  bracket:true,  swiss:false },
+  "bracket-only":  { groups:false, bracket:true,  swiss:false },
+  "double-elim":   { groups:false, bracket:true,  swiss:false },
+  "swiss":         { groups:false, bracket:false, swiss:true  }
+};
+
+/** Localised text of a format: modeText("swiss", "how"). */
+function modeText(key, part){ return tr("mode." + key + "." + part); }
+function modeName(key){ return modeText(key || mode(), "name"); }
 
 const DEFAULT_CONFIG = {
   mode: "groups-bracket",
@@ -1566,15 +2219,7 @@ const DEFAULT_CONFIG = {
 };
 
 /** Panels the second-screen board can show, in the order they are laid out. */
-const BOARD_PANELS = [
-  { key:"now",       name:"Práve sa hrá",       hint:"Aktuálny zápas na každom stole." },
-  { key:"next",      name:"Nasledujúce zápasy", hint:"Kto ide na rad, aby sa tímy stihli pripraviť." },
-  { key:"standings", name:"Priebežná tabuľka",  hint:"Poradie v skupinách alebo celková tabuľka." },
-  { key:"bracket",   name:"Pavúk",              hint:"Posledné odohrané kolo vyraďovačky." },
-  { key:"scorer",    name:"Najlepší strelci",   hint:"Top 3 strelci. Len ak ich zapisuješ." },
-  { key:"blower",    name:"Blowjob King",       hint:"Top 3 vo vyfuknutiach. Len ak ich zapisuješ." },
-  { key:"timer",     name:"Časomiera",          hint:"Koľko turnaj beží a ako je na tom oproti odhadu." }
-];
+const BOARD_PANELS = ["now", "next", "standings", "bracket", "scorer", "blower", "timer"];
 
 const DEFAULT_BOARD = {
   panels: { now:true, next:true, standings:true, bracket:false, scorer:true, blower:false, timer:true },
@@ -1650,14 +2295,14 @@ function save(){
     if(flag){
       const d = new Date();
       const p = n => String(n).padStart(2, "0");
-      flag.textContent = "Uložené " + p(d.getHours()) + ":" + p(d.getMinutes());
+      flag.textContent = tr("save.saved", {time: p(d.getHours()) + ":" + p(d.getMinutes())});
       flag.classList.add("flash");
       clearTimeout(saveFlagTimer);
       saveFlagTimer = setTimeout(() => flag.classList.remove("flash"), 900);
     }
   }catch(e){
     if(flag){
-      flag.textContent = "Ukladanie zlyhalo — exportuj JSON";
+      flag.textContent = tr("save.failed");
       flag.classList.add("flash");
     }
   }
@@ -1667,9 +2312,7 @@ function save(){
 function showRestoredFlag(restored){
   const flag = document.getElementById("save-flag");
   if(!flag) return;
-  flag.textContent = restored
-    ? "Načítaný uložený turnaj"
-    : "Automatické ukladanie zapnuté";
+  flag.textContent = restored ? tr("save.restored") : tr("save.autoOn");
 }
 
 /* =========================================================================
@@ -1713,7 +2356,7 @@ function incompleteTeams(){
 
 function playerName(team, idx){
   const p = teamPlayers(team)[idx];
-  return p && p.name ? p.name : "Hráč " + (idx + 1);
+  return p && p.name ? p.name : tr("modal.playerFallback", {n: idx + 1});
 }
 
 /** Per-slot tallies recorded on a match, defaulting to zeros. */
@@ -1733,15 +2376,6 @@ function teamById(id){
 function teamName(id){
   const t = teamById(id);
   return t ? t.name : null;
-}
-
-/**
- * Slovak plural form: 1 -> one, 2-4 -> few, 0 and 5+ -> many.
- * plural(3, "tím", "tímy", "tímov") -> "3 tímy"
- */
-function plural(n, one, few, many){
-  const word = n === 1 ? one : (n >= 2 && n <= 4 ? few : many);
-  return n + " " + word;
 }
 
 function esc(str){
@@ -2320,11 +2954,11 @@ function losersSlotSettled(r, i, slot){
 
 function roundTitle(r, total){
   const fromEnd = total - 1 - r;
-  if(fromEnd === 0) return "Finále";
-  if(fromEnd === 1) return "Semifinále";
-  if(fromEnd === 2) return "Štvrťfinále";
-  if(fromEnd === 3) return "Osemfinále";
-  return (r + 1) + ". kolo";
+  if(fromEnd === 0) return tr("round.final");
+  if(fromEnd === 1) return tr("round.semi");
+  if(fromEnd === 2) return tr("round.quarter");
+  if(fromEnd === 3) return tr("round.last16");
+  return tr("round.nth", {n: r + 1});
 }
 
 /**
@@ -2370,7 +3004,7 @@ function finalRanking(){
     return table.map((r, i) => ({
       id: r.id, name: r.name, group: teamById(r.id) ? teamById(r.id).group : null,
       exit: 0, rank: i + 1,
-      exitLabel: i === 0 ? "Víťaz" : "Tabuľka",
+      exitLabel: i === 0 ? tr("exit.winner") : tr("exit.table"),
       s: stats[r.id]
     }));
   }
@@ -2432,12 +3066,12 @@ function finalRanking(){
 
 /** Where a team's run ended, phrased for the final table. */
 function exitLabel(row, br, champ){
-  if(row.id === champ) return "Víťaz";
-  if(row.exit < 0) return "—";
+  if(row.id === champ) return tr("exit.winner");
+  if(row.exit < 0) return tr("exit.none");
   if(br.double){
     const wbTop = br.rounds.length;
-    if(row.exit === wbTop + br.losers.length) return "Veľké finále";
-    if(row.exit >= wbTop) return "Spodný pavúk · " + (row.exit - wbTop + 1) + ". kolo";
+    if(row.exit === wbTop + br.losers.length) return tr("bracket.grand");
+    if(row.exit >= wbTop) return tr("round.lowerNth", {n: row.exit - wbTop + 1});
     return roundTitle(row.exit, wbTop);
   }
   return roundTitle(row.exit, br.rounds.length);
@@ -2445,14 +3079,14 @@ function exitLabel(row, br, champ){
 
 /** Human label used in the log and CSV export. */
 function matchLabel(m){
-  if(m.stage === "swiss") return (m.round + 1) + ". kolo";
+  if(m.stage === "swiss") return tr("match.round", {n: m.round + 1});
   if(m.stage === "group"){
-    const prefix = mode() === "single-group" ? "" : "Skupina " + m.group + " · ";
-    return prefix + (m.round + 1) + ". kolo";
+    const prefix = mode() === "single-group" ? "" : tr("groups.group", {g: m.group}) + " · ";
+    return prefix + tr("match.round", {n: m.round + 1});
   }
-  if(m.stage === "grand") return "Veľké finále";
-  if(m.stage === "losers") return "Spodný pavúk · " + (m.round + 1) + ". kolo";
-  if(m.round === "third") return "O 3. miesto";
+  if(m.stage === "grand") return tr("bracket.grand");
+  if(m.stage === "losers") return tr("round.lowerNth", {n: m.round + 1});
+  if(m.round === "third") return tr("bracket.third");
   return roundTitle(m.round, state.bracket.rounds.length);
 }
 
@@ -2515,7 +3149,6 @@ function estimateTournament(config, teamCount){
   const c = Object.assign({}, DEFAULT_CONFIG, config);
   const n = teamCount;
   const tables = Math.max(1, Math.min(8, c.tables));
-  const info = MODES[c.mode] || MODES["groups-bracket"];
   const shape = [];
 
   if(n >= 2){
@@ -2559,7 +3192,7 @@ function estimateTournament(config, teamCount){
   const rounds = shape.length;
   const minutes = slots * c.matchMinutes + Math.max(0, rounds - 1) * c.breakMinutes;
 
-  return { matches, rounds, slots, minutes, mode: info.name };
+  return { matches, rounds, slots, minutes, mode: modeName(c.mode) };
 }
 
 /** "2 h 35 min" / "45 min" */
@@ -2588,12 +3221,16 @@ function render(){
 
 /** Tab labels follow the mode — "Skupiny" makes no sense in a Swiss event. */
 function tabLabel(tab){
+  if(tab === "setup") return tr("tab.setup");
+  if(tab === "teams") return tr("tab.teams");
+  if(tab === "results") return tr("tab.results");
+  if(tab === "board") return tr("tab.board");
   if(tab === "groups"){
-    if(mode() === "swiss") return "Kolá";
-    if(mode() === "single-group") return "Tabuľka";
-    return "Skupiny";
+    if(mode() === "swiss") return tr("tab.rounds");
+    if(mode() === "single-group") return tr("tab.table");
+    return tr("tab.groups");
   }
-  if(tab === "bracket") return mode() === "double-elim" ? "Pavúky" : "Pavúk";
+  if(tab === "bracket") return mode() === "double-elim" ? tr("tab.brackets") : tr("tab.bracket");
   return null;
 }
 
@@ -2653,14 +3290,13 @@ function renderModeCards(){
   const locked = setupLocked();
 
   grid.innerHTML = Object.keys(MODES).map(key => {
-    const m = MODES[key];
     const on = key === mode();
     return `
       <button class="mode-card" data-mode="${key}" aria-pressed="${on}" ${locked ? "disabled" : ""}>
-        <span class="mc-tag">${esc(m.tagline)}</span>
-        <span class="mc-name">${esc(m.name)}</span>
-        <span class="mc-how">${esc(m.how)}</span>
-        <span class="mc-best">Sedí na: ${esc(m.best)}</span>
+        <span class="mc-tag">${esc(modeText(key, "tagline"))}</span>
+        <span class="mc-name">${esc(modeText(key, "name"))}</span>
+        <span class="mc-how">${esc(modeText(key, "how"))}</span>
+        <span class="mc-best">${esc(tr("setup.fits", {what: modeText(key, "best")}))}</span>
       </button>
     `;
   }).join("");
@@ -2694,18 +3330,18 @@ function renderOptions(){
 
   cards.push(`
     <div class="opt">
-      <label>Počet stolov</label>
+      <label>${tr("opt.tables")}</label>
       ${segment("tables", [1,2,3,4,5,6,7,8], c.tables)}
-      <p class="opt-hint">Zápasy, ktoré sa dajú hrať naraz, appka rozhodí na voľné stoly sama.</p>
+      <p class="opt-hint">${tr("opt.tablesHint")}</p>
     </div>
   `);
 
   if(info.groups && mode() !== "single-group"){
     cards.push(`
       <div class="opt">
-        <label>Počet skupín</label>
+        <label>${tr("opt.groups")}</label>
         ${segment("groupCount", [2,3,4], c.groupCount)}
-        <p class="opt-hint">Tímy sa rozdelia rovnomerne. So skupinami nesúvisí počet stolov.</p>
+        <p class="opt-hint">${tr("opt.groupsHint")}</p>
       </div>
     `);
   }
@@ -2713,24 +3349,22 @@ function renderOptions(){
   if(info.swiss){
     cards.push(`
       <div class="opt">
-        <label>Počet kôl</label>
+        <label>${tr("opt.rounds")}</label>
         ${segment("swissRounds", [3,4,5,6,7], c.swissRounds)}
-        <p class="opt-hint">Každý tím odohrá presne toľko zápasov. Odporúčaných je 5.</p>
+        <p class="opt-hint">${tr("opt.roundsHint")}</p>
       </div>
     `);
   }
 
   cards.push(`
     <div class="opt">
-      <label>Čo zapisujeme o tímoch</label>
+      <label>${tr("opt.roster")}</label>
       <div class="seg">
-        <button data-roster="teams" aria-pressed="${c.roster !== "players"}">Iba tímy</button>
-        <button data-roster="players" aria-pressed="${c.roster === "players"}">Tímy + mená</button>
+        <button data-roster="teams" aria-pressed="${c.roster !== "players"}">${tr("opt.rosterTeams")}</button>
+        <button data-roster="players" aria-pressed="${c.roster === "players"}">${tr("opt.rosterPlayers")}</button>
       </div>
       <p class="opt-hint">
-        ${c.roster === "players"
-          ? "Pri každom tíme vyplníš mená dvoch hráčov. Odomkne to individuálne tabuľky."
-          : "Stačí názov tímu. Individuálne štatistiky sa v tomto režime nedajú viesť."}
+        ${c.roster === "players" ? tr("opt.rosterHintPlayers") : tr("opt.rosterHintTeams")}
       </p>
     </div>
   `);
@@ -2778,19 +3412,13 @@ function renderToggles(){
     </button>
   `;
 
-  const needPlayers = usesPlayers() ? null : "Najprv prepni na „Tímy + mená“.";
-  const needBlows = tracksBlows() ? null : "Najprv zapni vyfuknutia.";
+  const needPlayers = usesPlayers() ? null : tr("tg.needPlayers");
+  const needBlows = tracksBlows() ? null : tr("tg.needBlows");
 
   box.innerHTML = [
-    toggle("trackBlows", tracksBlows(), "Zapisovať vyfuknutia",
-      "Keď sa loptička roztočí v poháriku a ešte sa nedotkla piva, súper ju smie vyfúknuť — pohár sa potom neráta. Appka počíta, koľkokrát sa to komu podarilo.",
-      null),
-    toggle("trackScorers", tracksScorers(), "Zapisovať strelcov",
-      "Pri každom zápase zapíšeš, koľko pohárov trafil ktorý hráč. Pribudne tabuľka najlepších strelcov a ich stupienok.",
-      needPlayers),
-    toggle("trackBlowKing", tracksBlowKing(), "Zapisovať Blowjob Kinga",
-      "K vyfuknutiam sa zapíše aj to, kto ich urobil. Kto ich nazbiera najviac, stáva sa Blowjob Kingom.",
-      needPlayers || needBlows)
+    toggle("trackBlows", tracksBlows(), tr("tg.blows"), tr("tg.blowsBody"), null),
+    toggle("trackScorers", tracksScorers(), tr("tg.scorers"), tr("tg.scorersBody"), needPlayers),
+    toggle("trackBlowKing", tracksBlowKing(), tr("tg.king"), tr("tg.kingBody"), needPlayers || needBlows)
   ].join("");
 
   if(locked) return;
@@ -2817,7 +3445,7 @@ function renderEstimator(){
 
   box.innerHTML = `
     <div class="est-teams">
-      <label for="est-teams-input">Počet tímov (len pre odhad)</label>
+      <label for="est-teams-input">${tr("est.teams")}</label>
       <div class="stepper" style="max-width:200px">
         <button type="button" data-est="estimateTeams" data-step="-1">&minus;</button>
         <input type="number" id="est-teams-input" min="0" max="64" inputmode="numeric" value="${n}">
@@ -2828,14 +3456,14 @@ function renderEstimator(){
           `<button data-teams="${v}" aria-pressed="${v === n}">${v}</button>`).join("")}
       </div>
       ${real > 0 && real !== n
-        ? `<p class="opt-hint">Máš pridaných ${plural(real, "tím", "tímy", "tímov")}.
-             <button class="btn ghost sm" id="est-use-real" style="margin-left:6px">Použiť skutočný počet</button></p>`
+        ? `<p class="opt-hint">${tr("est.haveTeams", {n: plural(real, "team")})}
+             <button class="btn ghost sm" id="est-use-real" style="margin-left:6px">${tr("est.useReal")}</button></p>`
         : ""}
     </div>
 
     <div class="est-inputs">
       <div>
-        <label for="est-match">Jeden zápas (min)</label>
+        <label for="est-match">${tr("est.match")}</label>
         <div class="stepper">
           <button type="button" data-est="matchMinutes" data-step="-1">&minus;</button>
           <input type="number" id="est-match" min="1" max="90" inputmode="numeric" value="${c.matchMinutes}">
@@ -2843,7 +3471,7 @@ function renderEstimator(){
         </div>
       </div>
       <div>
-        <label for="est-break">Prestávka medzi kolami (min)</label>
+        <label for="est-break">${tr("est.break")}</label>
         <div class="stepper">
           <button type="button" data-est="breakMinutes" data-step="-1">&minus;</button>
           <input type="number" id="est-break" min="0" max="60" inputmode="numeric" value="${c.breakMinutes}">
@@ -2854,31 +3482,29 @@ function renderEstimator(){
 
     <div class="est-out">
       <div class="est-cell total">
-        <span class="k">Odhad celkom</span>
+        <span class="k">${tr("est.total")}</span>
         <span class="v">${n < 2 ? "—" : formatDuration(est.minutes)}</span>
       </div>
       <div class="est-cell">
-        <span class="k">Zápasov</span>
+        <span class="k">${tr("est.matches")}</span>
         <span class="v">${n < 2 ? "—" : est.matches}</span>
       </div>
       <div class="est-cell">
-        <span class="k">Kôl</span>
+        <span class="k">${tr("est.rounds")}</span>
         <span class="v">${n < 2 ? "—" : est.rounds}</span>
       </div>
       <div class="est-cell">
-        <span class="k">Na stole po sebe</span>
+        <span class="k">${tr("est.slots")}</span>
         <span class="v">${n < 2 ? "—" : est.slots}</span>
       </div>
     </div>
 
     <p class="est-note">
-      ${n < 2
-        ? "Naklikaj aspoň dva tímy a odhad sa dopočíta."
-        : `Počítané pre <strong>${plural(n, "tím", "tímy", "tímov")}</strong> na
-           <strong>${plural(c.tables, "stole", "stoloch", "stoloch")}</strong> vo formáte
-           <strong>${esc(est.mode)}</strong>. „Na stole po sebe“ je počet zápasov, ktoré musí
-           jeden stôl odohrať za sebou — to je to, čo turnaj naozaj naťahuje.
-           Odhad neráta rozohrávky ani zdržania.`}
+      ${n < 2 ? tr("est.empty") : tr("est.note", {
+          teams: plural(n, "team"),
+          tables: plural(c.tables, "tableLoc"),
+          mode: esc(est.mode)
+        })}
     </p>
   `;
 
@@ -2926,19 +3552,19 @@ function renderBoardTab(){
   const panelBox = document.getElementById("board-panels");
   const b = boardCfg();
 
-  panelBox.innerHTML = BOARD_PANELS.map(p => {
+  panelBox.innerHTML = BOARD_PANELS.map(key => {
     const unavailable =
-      p.key === "scorer" && !tracksScorers() ? "Zapni zapisovanie strelcov." :
-      p.key === "blower" && !tracksBlowKing() ? "Zapni zapisovanie Blowjob Kinga." :
-      p.key === "bracket" && !modeInfo().bracket ? "Tento formát pavúk nemá." : null;
-    const on = !!b.panels[p.key];
+      key === "scorer" && !tracksScorers() ? tr("board.needScorers") :
+      key === "blower" && !tracksBlowKing() ? tr("board.needKing") :
+      key === "bracket" && !modeInfo().bracket ? tr("board.noBracket") : null;
+    const on = !!b.panels[key];
     return `
-      <button class="toggle ${on ? "on" : ""}" data-panel="${p.key}"
+      <button class="toggle ${on ? "on" : ""}" data-panel="${key}"
               aria-pressed="${on}" ${unavailable ? "disabled" : ""}>
         <span class="tg-box" aria-hidden="true">${on ? "✕" : ""}</span>
         <span class="tg-text">
-          <span class="tg-title">${esc(p.name)}</span>
-          <span class="tg-body">${esc(p.hint)}</span>
+          <span class="tg-title">${esc(tr("board.p." + key))}</span>
+          <span class="tg-body">${esc(tr("board.p." + key + "Hint"))}</span>
           ${unavailable ? `<span class="tg-locked">${esc(unavailable)}</span>` : ""}
         </span>
       </button>
@@ -2958,11 +3584,9 @@ function renderBoardTab(){
 
   document.getElementById("board-refresh").innerHTML = `
     <div class="opt">
-      <label>Ako často sa tabuľa sama obnoví</label>
+      <label>${tr("board.refreshLabel")}</label>
       ${segment("boardRefresh", [5, 10, 15, 30, 60], Number(b.refreshSec), v => v + " s")}
-      <p class="opt-hint">
-        Je to len poistka. Zápis výsledku sa na tabuľu prenesie okamžite, bez čakania na obnovenie.
-      </p>
+      <p class="opt-hint">${tr("board.refreshHint")}</p>
     </div>
   `;
   document.getElementById("board-refresh").querySelectorAll("[data-seg]").forEach(btn => {
@@ -2975,8 +3599,7 @@ function renderBoardTab(){
 
   const open = boardWindow && !boardWindow.closed;
   document.getElementById("board-status").textContent = open
-    ? "Tabuľa je otvorená — aktualizuje sa sama"
-    : "Tabuľa nie je otvorená";
+    ? tr("board.isOpen") : tr("board.isClosed");
 
   document.getElementById("board-preview").innerHTML = boardMarkup();
 }
@@ -2996,25 +3619,27 @@ function renderTeams(){
   document.getElementById("new-players").hidden = !usesPlayers();
 
   if(state.teams.length === 0){
-    list.innerHTML = '<li style="border:0;padding:0;display:block"><div class="empty">Zatiaľ žiadne tímy. Napíš názov a stlač Pridať.</div></li>';
+    list.innerHTML = '<li style="border:0;padding:0;display:block"><div class="empty">'
+      + esc(tr("teams.empty")) + '</div></li>';
   }else{
-    list.innerHTML = state.teams.map((t, i) => `
-      <li class="${usesPlayers() && !teamComplete(t) ? "needs-players" : ""}">
+    list.innerHTML = state.teams.map((team, i) => `
+      <li class="${usesPlayers() && !teamComplete(team) ? "needs-players" : ""}">
         <span class="num">${String(i + 1).padStart(2, "0")}</span>
         ${locked
-          ? `<span class="name">${esc(t.name)}</span>`
-          : `<input class="name-input" data-rename="${t.id}" value="${esc(t.name)}"
-                    maxlength="40" aria-label="Názov tímu">`}
+          ? `<span class="name">${esc(team.name)}</span>`
+          : `<input class="name-input" data-rename="${team.id}" value="${esc(team.name)}"
+                    maxlength="40" aria-label="${esc(tr("teams.nameAria"))}">`}
         ${usesPlayers() ? `
           <span class="players">
-            ${teamPlayers(t).map((p, pi) => `
-              <input class="player-input" data-team="${t.id}" data-slot="${pi}"
+            ${teamPlayers(team).map((p, pi) => `
+              <input class="player-input" data-team="${team.id}" data-slot="${pi}"
                      value="${esc(p.name || "")}" maxlength="30"
-                     placeholder="${pi + 1}. hráč" aria-label="Hráč ${pi + 1} tímu ${esc(t.name)}">
+                     placeholder="${esc(tr(pi === 0 ? "teams.player1" : "teams.player2"))}"
+                     aria-label="${esc(tr("teams.playerAria", {n: pi + 1, team: team.name}))}">
             `).join("")}
           </span>` : ""}
-        ${t.group ? `<span class="grp">Skupina ${t.group}</span>` : ""}
-        <button class="btn ghost sm" data-remove="${t.id}">Zmazať</button>
+        ${team.group ? `<span class="grp">${esc(tr("teams.group", {g: team.group}))}</span>` : ""}
+        <button class="btn ghost sm" data-remove="${team.id}">${esc(tr("teams.delete"))}</button>
       </li>
     `).join("");
 
@@ -3028,7 +3653,7 @@ function renderTeams(){
           return;
         }
         if(state.teams.some(t => t.id !== team.id && t.name.toLowerCase() === next.toLowerCase())){
-          alert("Tím s názvom „" + next + "“ už existuje.");
+          alert(tr("teams.dupRename", {name: next}));
           input.value = team.name;
           return;
         }
@@ -3068,33 +3693,33 @@ function renderTeams(){
   const missing = incompleteTeams();
 
   drawBtn.disabled = n < minTeams || missing.length > 0;
-  drawBtn.textContent = state.drawn ? "Rozlosovať znova" : "Rozlosovať a spustiť turnaj";
+  drawBtn.textContent = state.drawn ? tr("teams.redraw") : tr("teams.draw");
 
   if(n < minTeams){
-    hint.textContent = `Pre formát „${info.name}“ treba aspoň ${minTeams} tímov. Zatiaľ ich máš ${n}.`;
+    hint.textContent = tr("teams.needMore", {mode: modeName(), n: minTeams, have: n});
     return;
   }
 
   if(missing.length > 0){
-    hint.textContent = `Doplň mená hráčov — chýbajú pri ${missing.length === 1
-      ? "tíme " + missing[0].name
-      : plural(missing.length, "tíme", "tímoch", "tímoch")}.`;
+    hint.textContent = tr("teams.needNames", {what: missing.length === 1
+      ? tr("teams.needNamesOne", {name: missing[0].name})
+      : plural(missing.length, "teamCase")});
     return;
   }
 
   const est = estimateTournament(cfg(), n);
-  const parts = [`${plural(n, "tím", "tímy", "tímov")} · ${info.name} · ${plural(cfg().tables, "stôl", "stoly", "stolov")}`];
+  const parts = [plural(n, "team") + " · " + modeName() + " · " + plural(cfg().tables, "table")];
 
   if(info.groups && mode() !== "single-group"){
     const letters = groupLetters();
     const sizes = letters.map((_, i) => Math.floor(n / letters.length) + (i < n % letters.length ? 1 : 0));
-    parts.push("skupiny " + letters.map((g, i) => g + ": " + sizes[i]).join(", "));
+    parts.push(tr("teams.summaryGroups", {list: letters.map((g, i) => g + ": " + sizes[i]).join(", ")}));
   }
-  if(info.swiss) parts.push(swissRoundCount() + " kôl");
+  if(info.swiss) parts.push(tr("teams.summaryRounds", {n: swissRoundCount()}));
 
-  parts.push("odhad " + formatDuration(est.minutes));
+  parts.push(tr("teams.summaryEst", {time: formatDuration(est.minutes)}));
   hint.textContent = parts.join(" · ") + ". "
-    + (state.drawn ? "Nové losovanie vymaže všetky výsledky." : "Losovanie je náhodné.");
+    + (state.drawn ? tr("teams.redrawWarn") : tr("teams.drawRandom"));
 }
 
 /* ---------- Skupiny ---------- */
@@ -3102,7 +3727,7 @@ function renderTeams(){
 function renderGroups(){
   const box = document.getElementById("groups-body");
   if(!state.drawn){
-    box.innerHTML = '<div class="empty">Najprv pridaj tímy a rozlosuj skupiny na karte Tímy.</div>';
+    box.innerHTML = '<div class="empty">' + esc(tr("groups.notDrawn")) + '</div>';
     return;
   }
 
@@ -3115,24 +3740,24 @@ function renderGroups(){
   let action = "";
   if(info.bracket){
     action = `<button class="btn ${prog.complete ? "solid" : ""}" id="btn-bracket">
-      ${state.bracket ? "Pregenerovať pavúk" : "Vygenerovať pavúk"}
+      ${state.bracket ? tr("groups.rebuildBracket") : tr("groups.buildBracket")}
     </button>`;
   }else if(info.swiss){
     const played = swissRoundsPlayed();
     const total = swissRoundCount();
     action = played >= total
-      ? `<span class="progress">Odohrané všetky kolá</span>`
+      ? `<span class="progress">${tr("groups.allRoundsPlayed")}</span>`
       : `<button class="btn ${swissRoundFinished() ? "solid" : ""}" id="btn-swiss"
                  ${swissRoundFinished() ? "" : "disabled"}>
-           Vylosovať ${played + 1}. kolo
+           ${tr("groups.drawRound", {n: played + 1})}
          </button>`;
   }
 
   html.push(`
     <div class="toolbar">
       <span class="progress">
-        Odohrané ${prog.done} / ${plural(prog.total, "zápas", "zápasy", "zápasov")}
-        ${info.swiss ? ` · kolo ${swissRoundsPlayed()} / ${swissRoundCount()}` : ""}
+        ${tr("groups.progress", {done: prog.done, total: plural(prog.total, "match")})}
+        ${info.swiss ? " · " + tr("groups.roundOf", {a: swissRoundsPlayed(), b: swissRoundCount()}) : ""}
       </span>
       <span style="flex:1"></span>
       ${action}
@@ -3144,9 +3769,9 @@ function renderGroups(){
     html.push(`<hr class="rule">`);
     html.push(swissScheduleMarkup());
   }else if(mode() === "single-group"){
-    html.push(`<div class="pane">${groupTableMarkup(standings(letters[0]), "Tabuľka")}</div>`);
+    html.push(`<div class="pane">${groupTableMarkup(standings(letters[0]), tr("groups.table"))}</div>`);
     html.push(`<hr class="rule">`);
-    html.push(groupSchedule(letters[0], null, "Rozpis"));
+    html.push(groupSchedule(letters[0], null, tr("groups.list")));
   }else{
     html.push(`<div class="${letters.length > 1 ? "grid2" : ""}">
       ${letters.map(g => groupPane(g)).join("")}
@@ -3169,7 +3794,7 @@ function renderGroups(){
 /** Standings table markup shared by groups, single group and Swiss. */
 function groupTableMarkup(rows, title, tag){
   if(rows.length === 0){
-    return `<div class="empty">Žiadne tímy.</div>`;
+    return `<div class="empty">${tr("groups.noTeams")}</div>`;
   }
   const anyByes = rows.some(r => r.byes);
   const blows = tracksBlows();
@@ -3182,9 +3807,11 @@ function groupTableMarkup(rows, title, tag){
       <table class="data">
         <thead>
           <tr>
-            <th>Tím</th><th>Z</th><th>V</th><th>R</th><th>P</th>
-            ${anyByes ? "<th>Voľno</th>" : ""}
-            <th>Poháre</th><th>+/&minus;</th>${blows ? "<th>Vyfuk.</th>" : ""}<th>B</th>
+            <th>${tr("col.team")}</th><th>${tr("col.played")}</th><th>${tr("col.wins")}</th>
+            <th>${tr("col.draws")}</th><th>${tr("col.losses")}</th>
+            ${anyByes ? `<th>${tr("col.free")}</th>` : ""}
+            <th>${tr("col.cups")}</th><th>${tr("col.diff")}</th>
+            ${blows ? `<th>${tr("col.blows")}</th>` : ""}<th>${tr("col.points")}</th>
           </tr>
         </thead>
         <tbody>
@@ -3209,8 +3836,8 @@ function groupTableMarkup(rows, title, tag){
 }
 
 function swissStandingsMarkup(){
-  return groupTableMarkup(standings(null), "Priebežná tabuľka",
-    swissRoundsPlayed() + " / " + swissRoundCount() + " kôl");
+  return groupTableMarkup(standings(null), tr("groups.standings"),
+    tr("groups.roundsOf", {a: swissRoundsPlayed(), b: swissRoundCount()}));
 }
 
 function swissScheduleMarkup(){
@@ -3219,9 +3846,9 @@ function swissScheduleMarkup(){
   const keys = Object.keys(rounds).sort((x, y) => Number(x) - Number(y));
 
   return `<div class="pane">
-    <div class="pane-head"><h3>Rozpis kôl</h3></div>
+    <div class="pane-head"><h3>${tr("groups.schedule")}</h3></div>
     ${keys.map(r => `
-      <p class="round-label">${Number(r) + 1}. kolo</p>
+      <p class="round-label">${tr("match.round", {n: Number(r) + 1})}</p>
       ${rounds[r].map(matchRow).join("")}
     `).join("")}
   </div>`;
@@ -3230,9 +3857,9 @@ function swissScheduleMarkup(){
 function groupPane(g){
   const rows = standings(g);
   if(rows.length === 0){
-    return `<div class="pane"><div class="empty">Skupina ${g} je prázdna.</div></div>`;
+    return `<div class="pane"><div class="empty">${tr("groups.emptyGroup", {g: g})}</div></div>`;
   }
-  return `<div class="pane">${groupTableMarkup(rows, "Skupina " + g)}</div>`;
+  return `<div class="pane">${groupTableMarkup(rows, tr("groups.group", {g: g}))}</div>`;
 }
 
 function groupSchedule(g, _unused, title){
@@ -3245,14 +3872,14 @@ function groupSchedule(g, _unused, title){
   const body = Object.keys(rounds)
     .sort((x, y) => Number(x) - Number(y))
     .map(r => `
-      <p class="round-label">${Number(r) + 1}. kolo</p>
+      <p class="round-label">${tr("match.round", {n: Number(r) + 1})}</p>
       ${rounds[r].map(matchRow).join("")}
     `).join("");
 
   return `
     <div class="pane">
       <div class="pane-head">
-        <h3>${esc(title || ("Rozpis " + g))}</h3>
+        <h3>${esc(title || tr("groups.scheduleOf", {g: g}))}</h3>
       </div>
       ${body}
     </div>
@@ -3268,27 +3895,27 @@ function matchRow(m){
   const draw = isDraw(m);
 
   const label = (id, name) => {
-    if(!name) return '<span class="tname tbd">— čaká sa —</span>';
+    if(!name) return '<span class="tname tbd">' + esc(tr("match.waiting")) + '</span>';
     const cls = m.done && !draw ? (w === id ? "win" : "lose") : "";
     return `<span class="tname ${cls}">${esc(name)}</span>`;
   };
 
   const meta = (blows) => m.done && tracksBlows()
-    ? `<span class="tmeta">${blows} vyfuk.</span>`
+    ? `<span class="tmeta">${tr("match.blowsShort", {n: blows})}</span>`
     : "";
 
   const inner = m.done
     ? `<span class="score ${draw ? "draw" : ""}">${m.cupsA} : ${m.cupsB}</span>`
-      + (draw ? '<span class="draw-tag">Remíza</span>' : "")
+      + (draw ? `<span class="draw-tag">${tr("match.tie")}</span>` : "")
     : bye
-      ? '<span class="score pending">voľno</span>'
-      : `<span class="score pending">zapísať</span>`
-        + (cfg().tables > 1 ? `<span class="draw-tag">stôl ${matchTable(m)}</span>` : "");
+      ? `<span class="score pending">${tr("match.free")}</span>`
+      : `<span class="score pending">${tr("match.record")}</span>`
+        + (cfg().tables > 1 ? `<span class="draw-tag">${tr("match.tableShort", {n: matchTable(m)})}</span>` : "");
   const score = `<span class="score-cell">${inner}</span>`;
 
   // a Swiss walkover has nobody on the other side
   const right = bye && !nameB
-    ? '<span class="side right"><span class="tname tbd">— voľný žreb —</span></span>'
+    ? `<span class="side right"><span class="tname tbd">${tr("match.byeSlot")}</span></span>`
     : `<span class="side right">${label(m.b, nameB)}${meta(m.blowsB)}</span>`;
 
   return `
@@ -3305,7 +3932,7 @@ function matchRow(m){
 function renderBracket(){
   const box = document.getElementById("bracket-body");
   if(!state.bracket){
-    box.innerHTML = '<div class="empty">Pavúk sa vygeneruje na karte Skupiny, keď dohráte skupinovú fázu.<br>Postupujú všetky tímy — skupiny určujú len nasadenie.</div>';
+    box.innerHTML = '<div class="empty">' + tr("bracket.none") + '</div>';
     return;
   }
 
@@ -3321,7 +3948,7 @@ function renderBracket(){
 
   const losersCols = br.losers ? br.losers.map((rnd, r) => `
     <div class="round-col">
-      <div class="round-title">${r + 1}. kolo</div>
+      <div class="round-title">${tr("match.round", {n: r + 1})}</div>
       ${rnd.map(m => bracketNode(m, false)).join("")}
     </div>
   `).join("") : "";
@@ -3330,36 +3957,36 @@ function renderBracket(){
 
   box.innerHTML = `
     <div class="toolbar">
-      <span class="progress">${br.size}-tímový pavúk · ${plural(state.teams.length, "tím", "tímy", "tímov")} · ${plural(br.size - state.teams.length, "voľný žreb", "voľné žreby", "voľných žrebov")}</span>
+      <span class="progress">${tr("bracket.info", {size: br.size, teams: plural(state.teams.length, "team"), byes: plural(br.size - state.teams.length, "bye")})}</span>
     </div>
-    ${br.double ? '<h2 class="section" style="font-size:17px">Horný pavúk</h2>' : ""}
+    ${br.double ? `<h2 class="section" style="font-size:17px">${tr("bracket.upper")}</h2>` : ""}
     <div class="bracket">${cols}</div>
 
     ${br.losers ? `
       <hr class="rule">
-      <h2 class="section" style="font-size:17px">Spodný pavúk</h2>
-      <p class="note" style="margin:-10px 0 18px">Kto prehrá hore, padá sem. Druhá prehra znamená koniec.</p>
+      <h2 class="section" style="font-size:17px">${tr("bracket.lower")}</h2>
+      <p class="note" style="margin:-10px 0 18px">${tr("bracket.lowerNote")}</p>
       <div class="bracket">${losersCols}</div>
     ` : ""}
 
     ${br.grandFinal ? `
       <hr class="rule">
-      <h2 class="section" style="font-size:17px">Veľké finále</h2>
-      <p class="note" style="margin:-10px 0 18px">Víťaz horného pavúka proti víťazovi spodného.</p>
+      <h2 class="section" style="font-size:17px">${tr("bracket.grand")}</h2>
+      <p class="note" style="margin:-10px 0 18px">${tr("bracket.grandNote")}</p>
       <div style="max-width:340px">${bracketNode(br.grandFinal, true)}</div>
     ` : ""}
 
     ${br.third ? `
       <hr class="rule">
-      <h2 class="section" style="font-size:17px">Zápas o 3. miesto</h2>
+      <h2 class="section" style="font-size:17px">${tr("bracket.third")}</h2>
       <div style="max-width:340px">${bracketNode(br.third, false)}</div>
     ` : ""}
     ${champ ? `
       <div class="champion">
-        <div class="lbl">Víťaz turnaja</div>
+        <div class="lbl">${tr("bracket.champion")}</div>
         <div class="who">${esc(teamName(champ))}</div>
         <div style="margin-top:20px">
-          <button class="btn solid" id="btn-to-results">Stupienok a finálna tabuľka</button>
+          <button class="btn solid" id="btn-to-results">${tr("bracket.toResults")}</button>
         </div>
       </div>
     ` : ""}
@@ -3387,10 +4014,10 @@ function bracketNode(m, isFinal){
   };
 
   const cap = m.done
-    ? `${m.blowsA} : ${m.blowsB} vyfuknutí`
-    : bye ? "voľný žreb → postup"
-    : !ready ? "čaká na predošlé kolo"
-    : "stôl " + matchTable(m) + " · zapísať výsledok";
+    ? tr("bracket.blowsPair", {a: m.blowsA, b: m.blowsB})
+    : bye ? tr("bracket.byeAdvance")
+    : !ready ? tr("bracket.waitingPrev")
+    : tr("bracket.recordAt", {n: matchTable(m)});
 
   return `
     <button class="bnode ${isFinal ? "final" : ""} ${ready ? "" : "bye"}"
@@ -3559,7 +4186,7 @@ function podiumMarkup(ranking, animate){
     <div class="place p${spot}" style="--d:${delay}s">
       <div class="plate">
         <span class="pname">${esc(row.name)}</span>
-        <span class="pmeta">${row.s.wins}V ${row.s.draws}R ${row.s.losses}P · ${row.s.points} b.</span>
+        <span class="pmeta">${tr("podium.stats", {w: row.s.wins, d: row.s.draws, l: row.s.losses, p: row.s.points})}</span>
       </div>
       <div class="block"><span class="pnum">${spot}</span></div>
     </div>
@@ -3577,7 +4204,7 @@ function podiumMarkup(ranking, animate){
     <div class="podium-wrap ${animate ? "celebrate" : ""}" id="podium">
       <div class="confetti">${confetti}</div>
       <div class="podium-head">
-        <div class="lbl">Víťaz turnaja</div>
+        <div class="lbl">${tr("podium.winner")}</div>
         <div class="who">${esc(first.name)}</div>
       </div>
       <div class="podium">
@@ -3586,7 +4213,7 @@ function podiumMarkup(ranking, animate){
         ${place(third, 3, 0)}
       </div>
       <div class="podium-actions">
-        <button class="btn ghost sm" id="btn-replay">Prehrať animáciu znova</button>
+        <button class="btn ghost sm" id="btn-replay">${tr("podium.replay")}</button>
       </div>
     </div>
   `;
@@ -3600,17 +4227,17 @@ function playerTableMarkup(kind){
 
   return `
     <h2 class="section" style="font-size:17px">
-      ${scoring ? "Najlepší strelci" : "Blowjob King"}
+      ${scoring ? tr("results.topScorers") : tr("results.blowKing")}
     </h2>
     ${!anyData
-      ? `<div class="empty">Zatiaľ nikto nič nezapísal.</div>`
+      ? `<div class="empty">${tr("results.noPlayerData")}</div>`
       : `<div class="scroller">
           <table class="data">
             <thead>
               <tr>
-                <th>Hráč</th><th>Tím</th><th>Zápasov</th>
-                <th>${scoring ? "Poháre" : "Vyfuknutia"}</th>
-                <th>${scoring ? "Na zápas" : "Poháre"}</th>
+                <th>${tr("col.player")}</th><th>${tr("col.team")}</th><th>${tr("col.matches")}</th>
+                <th>${scoring ? tr("col.cups") : tr("modal.blows")}</th>
+                <th>${scoring ? tr("col.perMatch") : tr("col.cups")}</th>
               </tr>
             </thead>
             <tbody>
@@ -3649,10 +4276,10 @@ function unattributedNote(kind){
     });
   });
   if(missing === 0) return "";
-  return `<p class="note">${plural(missing, scoring ? "pohár" : "vyfuknutie",
-    scoring ? "poháre" : "vyfuknutia", scoring ? "pohárov" : "vyfuknutí")}
-    ${missing === 1 ? "nebol priradený" : "nebolo priradených"} ku konkrétnemu hráčovi,
-    takže súčet nesedí s tímovými štatistikami.</p>`;
+  return `<p class="note">${tr("results.unattributed", {
+    n: plural(missing, scoring ? "cup" : "blow"),
+    verb: missing === 1 ? tr("results.unattributedOne") : tr("results.unattributedMany")
+  })}</p>`;
 }
 
 /** Podium for the individual leaderboards, reusing the team podium styling. */
@@ -3663,15 +4290,13 @@ function playerPodiumMarkup(kind, animate){
   if(rows.length < 3) return "";
 
   const value = r => scoring ? r.cups : r.blows;
-  const unit = r => scoring
-    ? plural(r.cups, "pohár", "poháre", "pohárov")
-    : plural(r.blows, "vyfuknutie", "vyfuknutia", "vyfuknutí");
+  const unit = r => scoring ? plural(r.cups, "cup") : plural(r.blows, "blow");
 
   const place = (row, spot, delay) => `
     <div class="place p${spot}" style="--d:${delay}s">
       <div class="plate">
         <span class="pname">${esc(row.name)}</span>
-        <span class="pmeta">${esc(row.teamName)} · ${unit(row)}</span>
+        <span class="pmeta">${esc(tr("podium.scorerMeta", {team: row.teamName, cups: unit(row)}))}</span>
       </div>
       <div class="block"><span class="pnum">${spot}</span></div>
     </div>
@@ -3680,9 +4305,9 @@ function playerPodiumMarkup(kind, animate){
   return `
     <div class="podium-wrap ${animate ? "celebrate" : ""}" id="podium-${kind}">
       <div class="podium-head">
-        <div class="lbl">${scoring ? "Najlepší strelec" : "Blowjob King"}</div>
+        <div class="lbl">${scoring ? tr("podium.topScorer") : tr("results.blowKing")}</div>
         <div class="who">${esc(rows[0].name)}</div>
-        <p class="note" style="margin:8px 0 0">${value(rows[0])} ${scoring ? "trafených pohárov" : "vyfuknutí"} · ${esc(rows[0].teamName)}</p>
+        <p class="note" style="margin:8px 0 0">${value(rows[0])} ${scoring ? tr("podium.cupsHit") : tr("podium.blowsMade")} · ${esc(rows[0].teamName)}</p>
       </div>
       <div class="podium">
         ${place(rows[1], 2, 0.15)}
@@ -3697,14 +4322,14 @@ function playerPodiumMarkup(kind, animate){
 /** Final standings across the whole tournament, ordered by how far each team got. */
 function finalTableMarkup(ranking){
   return `
-    <h2 class="section" style="font-size:17px">Finálna tabuľka</h2>
+    <h2 class="section" style="font-size:17px">${tr("results.finalTable")}</h2>
     <div class="scroller">
       <table class="data">
         <thead>
           <tr>
-            <th>#</th><th>Tím</th><th>Sk.</th><th>Skončil</th>
-            <th>Z</th><th>V</th><th>R</th><th>P</th>
-            <th>Poháre</th><th>+/&minus;</th><th>Vyfuk.</th><th>B</th>
+            <th>${tr("col.rank")}</th><th>${tr("col.team")}</th><th>${tr("col.group")}</th><th>${tr("col.ended")}</th>
+            <th>${tr("col.played")}</th><th>${tr("col.wins")}</th><th>${tr("col.draws")}</th><th>${tr("col.losses")}</th>
+            <th>${tr("col.cups")}</th><th>${tr("col.diff")}</th><th>${tr("col.blows")}</th><th>${tr("col.points")}</th>
           </tr>
         </thead>
         <tbody>
@@ -3727,7 +4352,7 @@ function finalTableMarkup(ranking){
         </tbody>
       </table>
     </div>
-    <p class="note">Poradie určuje, ako ďaleko sa tím dostal v pavúku. Semifinalistov rozdelí zápas o 3. miesto, zvyšné rovnosti body zo skupiny.</p>
+    <p class="note">${tr("results.finalNote")}</p>
   `;
 }
 
@@ -3737,9 +4362,9 @@ function renderResults(){
   if(state.teams.length === 0){
     box.innerHTML = `
       <div class="export-row">
-        <button class="btn" id="btn-import">Importovať JSON</button>
+        <button class="btn" id="btn-import">${tr("results.import")}</button>
       </div>
-      <div class="empty" style="margin-top:20px">Zatiaľ nie je čo exportovať. Pridaj tímy, alebo načítaj uložený turnaj z JSON súboru.</div>
+      <div class="empty" style="margin-top:20px">${tr("results.nothingYet")}</div>
     `;
     document.getElementById("btn-import").onclick = triggerImport;
     return;
@@ -3757,44 +4382,43 @@ function renderResults(){
     ${champ && tracksBlowKing() ? playerPodiumMarkup("blowers", animate) : ""}
     ${ceremonyAvailable() ? `
       <div class="export-row">
-        <button class="btn solid" id="btn-ceremony">▶ Spustiť vyhlásenie výsledkov</button>
+        <button class="btn solid" id="btn-ceremony">${tr("results.ceremony")}</button>
       </div>
-      <p class="note" style="margin-top:0">Celoobrazovkové vyhlásenie — šípkami postupne odhalíš tretie, druhé a prvé miesto.</p>
+      <p class="note" style="margin-top:0">${tr("results.ceremonyNote")}</p>
       <hr class="rule">
     ` : ""}
 
     <div class="export-row">
-      <button class="btn solid" id="btn-txt">Stiahnuť rozpis + výsledky (TXT)</button>
-      <button class="btn" id="btn-copy">Kopírovať ako text</button>
+      <button class="btn solid" id="btn-txt">${tr("results.txt")}</button>
+      <button class="btn" id="btn-copy">${tr("results.copy")}</button>
     </div>
     <div class="export-row">
-      <button class="btn" id="btn-csv-matches">Zápasy (CSV)</button>
-      <button class="btn" id="btn-csv-stats">Štatistiky (CSV)</button>
-      ${tracksScorers() || tracksBlowKing() ? '<button class="btn" id="btn-csv-players">Hráči (CSV)</button>' : ""}
-      <button class="btn" id="btn-json">Zálohovať JSON</button>
-      <button class="btn ghost" id="btn-import">Načítať zálohu JSON</button>
+      <button class="btn" id="btn-csv-matches">${tr("results.csvMatches")}</button>
+      <button class="btn" id="btn-csv-stats">${tr("results.csvStats")}</button>
+      ${tracksScorers() || tracksBlowKing() ? `<button class="btn" id="btn-csv-players">${tr("results.csvPlayers")}</button>` : ""}
+      <button class="btn" id="btn-json">${tr("results.json")}</button>
+      <button class="btn ghost" id="btn-import">${tr("results.import")}</button>
     </div>
     <p class="note">
-      <strong>TXT</strong> je čitateľný na prvý pohľad — tímy, rozpis, tabuľky aj pavúk pod sebou; hodí sa na vytlačenie alebo poslanie do chatu.
-      <strong>CSV</strong> sa otvorí priamo v Exceli (oddelené bodkočiarkou).
-      <strong>JSON</strong> je plná záloha turnaja — dá sa načítať späť tu alebo na inom zariadení.
-      Turnaj sa navyše ukladá sám po každej zmene, takže po zavretí okna nič nestratíš.
+      ${tr("results.exportNote")}
     </p>
 
     <div class="preview-box">
-      <p class="eyebrow" style="margin-bottom:10px">Náhľad textového výpisu</p>
+      <p class="eyebrow" style="margin-bottom:10px">${tr("results.previewHead")}</p>
       <pre id="txt-preview"></pre>
     </div>
 
     <hr class="rule">
     ${ranking.length > 0 ? finalTableMarkup(ranking) : `
-    <h2 class="section" style="font-size:17px">Štatistiky tímov</h2>
+    <h2 class="section" style="font-size:17px">${tr("results.teamStats")}</h2>
     <div class="scroller">
       <table class="data">
         <thead>
           <tr>
-            <th>Tím</th><th>Sk.</th><th>Z</th><th>V</th><th>R</th><th>P</th>
-            <th>Poháre</th><th>+/&minus;</th><th>Vyfuk. dané</th><th>Vyfuk. prijaté</th><th>B</th>
+            <th>${tr("col.team")}</th><th>${tr("col.group")}</th><th>${tr("col.played")}</th>
+            <th>${tr("col.wins")}</th><th>${tr("col.draws")}</th><th>${tr("col.losses")}</th>
+            <th>${tr("col.cups")}</th><th>${tr("col.diff")}</th><th>${tr("col.blowsFor")}</th>
+            <th>${tr("col.blowsAgainst")}</th><th>${tr("col.points")}</th>
           </tr>
         </thead>
         <tbody>
@@ -3821,15 +4445,16 @@ function renderResults(){
     ${tracksBlowKing() ? `<hr class="rule">${playerTableMarkup("blowers")}` : ""}
 
     <hr class="rule">
-    <h2 class="section" style="font-size:17px">Odohrané zápasy (${played.length})</h2>
+    <h2 class="section" style="font-size:17px">${tr("results.played", {n: played.length})}</h2>
     ${played.length === 0
-      ? '<div class="empty">Zatiaľ žiadny zapísaný výsledok.</div>'
+      ? `<div class="empty">${tr("results.noneRecorded")}</div>`
       : `<div class="scroller">
           <table class="log">
             <thead>
               <tr>
-                <th>Fáza</th><th>Stôl</th><th>Tím A</th><th>Tím B</th>
-                <th>Poháre</th><th>Vyfuknutia</th><th>Víťaz</th>
+                <th>${tr("col.phase")}</th><th>${tr("col.table")}</th><th>${tr("col.teamA")}</th>
+                <th>${tr("col.teamB")}</th><th>${tr("col.cups")}</th>
+                <th>${tr("modal.blows")}</th><th>${tr("col.winner")}</th>
               </tr>
             </thead>
             <tbody>
@@ -3841,7 +4466,7 @@ function renderResults(){
                   <td>${esc(teamName(m.b) || "—")}</td>
                   <td class="n">${m.cupsA} : ${m.cupsB}</td>
                   <td class="n">${m.blowsA} : ${m.blowsB}</td>
-                  <td class="w">${isDraw(m) ? "remíza" : esc(teamName(winnerOf(m)) || "—")}</td>
+                  <td class="w">${isDraw(m) ? tr("results.tie") : esc(teamName(winnerOf(m)) || "—")}</td>
                 </tr>
               `).join("")}
             </tbody>
@@ -3892,7 +4517,7 @@ function openModal(id){
   if(!m || !m.a || !m.b) return;
   openMatchId = id;
 
-  document.getElementById("m-ctx").textContent = matchLabel(m) + " · Stôl " + matchTable(m);
+  document.getElementById("m-ctx").textContent = matchLabel(m) + " · " + tr("col.table") + " " + matchTable(m);
   document.getElementById("m-name-a").textContent = teamName(m.a);
   document.getElementById("m-name-b").textContent = teamName(m.b);
   document.getElementById("m-cups-a").value = m.done ? m.cupsA : "";
@@ -3910,8 +4535,8 @@ function openModal(id){
   const msg = document.getElementById("m-msg");
   msg.classList.add("hint");
   msg.textContent = isKnockout(m)
-    ? "V pavúku musí byť víťaz — jeden tím musí mať viac pohárov."
-    : "Remíza je povolená — stačí zadať rovnaký počet pohárov (1 bod pre oboch).";
+    ? tr("modal.hintKnockout")
+    : tr("modal.hintTie");
   document.getElementById("m-clear").style.display = m.done ? "" : "none";
 
   document.getElementById("overlay").classList.add("on");
@@ -3930,7 +4555,7 @@ function renderBreakdown(m, side, kind){
 
   const team = teamById(side === "a" ? m.a : m.b);
   const stored = slotValues(m, kind + (side === "a" ? "A" : "B"));
-  const label = kind === "scorers" ? "Kto trafil poháre" : "Kto vyfúkol";
+  const label = kind === "scorers" ? tr("modal.whoScored") : tr("modal.whoBlew");
 
   box.innerHTML = `
     <label>${label}</label>
@@ -3969,8 +4594,9 @@ function updateBreakdownSums(){
       const total = readNum("m-" + source + "-" + side) || 0;
       const named = readSlots(kind, side).reduce((s, v) => s + v, 0);
       const over = named > total;
-      el.textContent = named + " z " + total + " rozdelených"
-        + (over ? " — o " + (named - total) + " priveľa" : "");
+      el.textContent = over
+        ? tr("modal.splitOver", {named: named, total: total, over: named - total})
+        : tr("modal.split", {named: named, total: total});
       el.classList.toggle("bad", over);
     });
   });
@@ -4008,13 +4634,13 @@ function saveModal(){
 
   if(cupsA === null || cupsB === null){
     msg.classList.remove("hint");
-    msg.textContent = "Vyplň trafené poháre pre oba tímy.";
+    msg.textContent = tr("modal.needCups");
     return;
   }
   // A knockout match has to produce someone to advance, so no draws there.
   if(cupsA === cupsB && isKnockout(m)){
     msg.classList.remove("hint");
-    msg.textContent = "V pavúku remíza nie je možná — musí byť jasné, kto postupuje.";
+    msg.textContent = tr("modal.noTie");
     return;
   }
 
@@ -4024,17 +4650,19 @@ function saveModal(){
   // Players cannot account for more than the team actually managed.
   const check = [];
   if(tracksScorers()){
-    check.push(["scorers", "a", cupsA, "pohárov"], ["scorers", "b", cupsB, "pohárov"]);
+    check.push(["scorers", "a", cupsA, "cup"], ["scorers", "b", cupsB, "cup"]);
   }
   if(tracksBlowKing()){
-    check.push(["blowers", "a", blowsA, "vyfuknutí"], ["blowers", "b", blowsB, "vyfuknutí"]);
+    check.push(["blowers", "a", blowsA, "blow"], ["blowers", "b", blowsB, "blow"]);
   }
   for(const [kind, side, total, noun] of check){
     const named = readSlots(kind, side).reduce((s, v) => s + v, 0);
     if(named > total){
       msg.classList.remove("hint");
-      msg.textContent = `${teamName(side === "a" ? m.a : m.b)}: hráči majú spolu ${named} ${noun}, `
-        + `ale tím ich má ${total}. Uber ${named - total}.`;
+      msg.textContent = tr("modal.tooMany", {
+        team: teamName(side === "a" ? m.a : m.b), named: named,
+        noun: pluralWord(named, noun), total: total, diff: named - total
+      });
       return;
     }
   }
@@ -4096,7 +4724,7 @@ function boardMatchLine(m, table){
   const label = matchLabel(m);
   return `
     <div class="bd-match">
-      ${table ? `<span class="bd-table">Stôl ${table}</span>` : `<span class="bd-when">${esc(label)}</span>`}
+      ${table ? `<span class="bd-table">${tr("col.table")} ${table}</span>` : `<span class="bd-when">${esc(label)}</span>`}
       <div class="bd-teams">
         <span class="bd-team">${esc(teamName(m.a) || "—")}</span>
         <span class="bd-vs">vs</span>
@@ -4117,26 +4745,26 @@ function boardPanel(key){
 
   if(key === "now"){
     const live = nowPlaying();
-    return wrap("Práve sa hrá", live.length
+    return wrap(tr("board.p.now"), live.length
       ? live.map(x => boardMatchLine(x.match, x.table)).join("")
-      : `<p class="bd-empty">${champion() ? "Turnaj je dohraný." : "Žiadny zápas nie je pripravený."}</p>`,
+      : `<p class="bd-empty">${champion() ? tr("board.finished") : tr("board.nothingReady")}</p>`,
       "bd-wide");
   }
 
   if(key === "next"){
     const tables = Math.max(1, Math.min(8, cfg().tables));
     const list = upcoming(Math.max(2, tables * 2));
-    return wrap("Nasledujú", list.length
+    return wrap(tr("board.next"), list.length
       ? list.map(m => boardMatchLine(m, null)).join("")
-      : `<p class="bd-empty">Nič ďalšie v rade.</p>`);
+      : `<p class="bd-empty">${tr("board.nothingQueued")}</p>`);
   }
 
   if(key === "standings"){
     const letters = groupLetters();
     const tables = letters.length
-      ? letters.map(g => ({ title: "Skupina " + g, rows: standings(g) }))
-      : [{ title: "Priebežná tabuľka", rows: standings(null) }];
-    return wrap("Tabuľka", `
+      ? letters.map(g => ({ title: tr("groups.group", {g: g}), rows: standings(g) }))
+      : [{ title: tr("groups.standings"), rows: standings(null) }];
+    return wrap(tr("board.tableHead"), `
       <div class="bd-tables">
         ${tables.map(t => `
           <div class="bd-table-block">
@@ -4177,7 +4805,7 @@ function boardPanel(key){
     const scoring = key === "scorer";
     const rows = (scoring ? topScorers() : topBlowers())
       .filter(r => (scoring ? r.cups : r.blows) > 0).slice(0, 3);
-    return wrap(scoring ? "Najlepší strelci" : "Blowjob King", rows.length
+    return wrap(scoring ? tr("results.topScorers") : tr("results.blowKing"), rows.length
       ? `<ol class="bd-leaders">
           ${rows.map((r, i) => `
             <li><span class="p">${i + 1}</span>
@@ -4185,7 +4813,7 @@ function boardPanel(key){
                 <span class="t">${esc(r.teamName)}</span>
                 <span class="v">${scoring ? r.cups : r.blows}</span></li>`).join("")}
          </ol>`
-      : `<p class="bd-empty">Zatiaľ bez zápisu.</p>`);
+      : `<p class="bd-empty">${tr("board.noRecord")}</p>`);
   }
 
   if(key === "timer"){
@@ -4200,18 +4828,19 @@ function boardPanel(key){
       const expected = Math.round(est.minutes * share);
       const diff = elapsed - expected;
       delta = Math.abs(diff) < 6
-        ? "podľa plánu"
-        : (diff > 0 ? "meškanie " + formatDuration(diff) : "náskok " + formatDuration(-diff));
+        ? tr("board.onSchedule")
+        : (diff > 0 ? tr("board.behind", {t: formatDuration(diff)})
+                    : tr("board.ahead", {t: formatDuration(-diff)}));
       void prog;
     }
     const d = new Date();
     const p = n => String(n).padStart(2, "0");
-    return wrap("Časomiera", `
+    return wrap(tr("board.p.timer"), `
       <div class="bd-clock">
         <div class="bd-clock-main">${p(d.getHours())}:${p(d.getMinutes())}</div>
         <div class="bd-clock-rows">
-          <span><b>${elapsed === null ? "—" : formatDuration(elapsed)}</b> od začiatku</span>
-          ${est ? `<span><b>${formatDuration(est.minutes)}</b> odhad celkom</span>` : ""}
+          <span><b>${elapsed === null ? "—" : formatDuration(elapsed)}</b> ${tr("board.sinceStart")}</span>
+          ${est ? `<span><b>${formatDuration(est.minutes)}</b> ${tr("board.estTotal")}</span>` : ""}
           ${delta ? `<span class="bd-delta">${esc(delta)}</span>` : ""}
         </div>
       </div>`);
@@ -4223,14 +4852,14 @@ function boardPanel(key){
 function boardMarkup(){
   if(!state.drawn){
     return `<div class="bd-idle">
-      <p class="bd-idle-lbl">Beerpong</p>
-      <h1 class="bd-idle-title">Turnaj sa ešte nezačal</h1>
-      <p class="bd-idle-sub">Tabuľa sa naplní, len čo rozlosuješ.</p>
+      <p class="bd-idle-lbl">${tr("board.idleLbl")}</p>
+      <h1 class="bd-idle-title">${tr("board.idleTitle")}</h1>
+      <p class="bd-idle-sub">${tr("board.idleSub")}</p>
     </div>`;
   }
 
   const champ = champion();
-  const panels = BOARD_PANELS.map(p => boardPanel(p.key)).join("");
+  const panels = BOARD_PANELS.map(k => boardPanel(k)).join("");
   const d = new Date();
   const p2 = n => String(n).padStart(2, "0");
 
@@ -4238,18 +4867,19 @@ function boardMarkup(){
     <header class="bd-top">
       <div class="bd-brand">
         <span class="bd-logo">Beerpong</span>
-        <span class="bd-meta">${esc(modeInfo().name)} · ${plural(state.teams.length, "tím", "tímy", "tímov")}
-          · ${plural(cfg().tables, "stôl", "stoly", "stolov")}</span>
+        <span class="bd-meta">${esc(modeName())} · ${plural(state.teams.length, "team")}
+          · ${plural(cfg().tables, "table")}</span>
       </div>
       ${champ
-        ? `<div class="bd-champ"><span class="bd-champ-lbl">Víťaz</span>
+        ? `<div class="bd-champ"><span class="bd-champ-lbl">${tr("board.champ")}</span>
              <span class="bd-champ-name">${esc(teamName(champ))}</span></div>`
-        : `<div class="bd-prog">${playedMatches().length} / ${allMatches().filter(m => !m.bye).length} zápasov</div>`}
+        : `<div class="bd-prog">${tr("board.progress", {done: playedMatches().length,
+             total: allMatches().filter(m => !m.bye).length})}</div>`}
     </header>
     <div class="bd-grid">${panels}</div>
     <footer class="bd-foot">
-      <span>Aktualizované ${p2(d.getHours())}:${p2(d.getMinutes())}:${p2(d.getSeconds())}</span>
-      <span class="bd-live">● naživo</span>
+      <span>${tr("board.updated", {time: p2(d.getHours()) + ":" + p2(d.getMinutes()) + ":" + p2(d.getSeconds())})}</span>
+      <span class="bd-live">${tr("board.live")}</span>
     </footer>
   `;
 }
@@ -4274,7 +4904,7 @@ function openBoard(){
   boardWindow = window.open(url, "beerpong-board",
     "width=1280,height=800,menubar=no,toolbar=no,location=no,status=no");
   if(!boardWindow){
-    alert("Prehliadač zablokoval otvorenie okna. Povoľ vyskakovacie okná pre túto stránku a skús znova.");
+    alert(tr("board.popupBlocked"));
     return;
   }
   // give it a moment to boot, then hand over the current state
@@ -4356,8 +4986,8 @@ function ceremonyCategories(){
   if(teams.length >= 3){
     cats.push({
       key: "teams",
-      eyebrow: "Celkové poradie",
-      title: "Víťaz turnaja",
+      eyebrow: tr("cer.catTeams"),
+      title: tr("cer.titleTeams"),
       rows: teams.slice(0, 3).map(r => ({
         name: r.name,
         meta: r.s ? `${r.s.wins}V ${r.s.draws}R ${r.s.losses}P · ${r.s.points} b.` : ""
@@ -4371,11 +5001,11 @@ function ceremonyCategories(){
     if(s.length >= 3){
       cats.push({
         key: "scorers",
-        eyebrow: "Najlepší strelci",
-        title: "Kráľ strelcov",
+        eyebrow: tr("cer.catScorers"),
+        title: tr("cer.titleScorers"),
         rows: s.slice(0, 3).map(r => ({
           name: r.name,
-          meta: `${r.teamName} · ${plural(r.cups, "pohár", "poháre", "pohárov")}`
+          meta: `${r.teamName} · ${plural(r.cups, "cup")}`
         })),
         full: s.slice(0, 10).map(r => ({ name: r.name + " (" + r.teamName + ")", value: r.cups }))
       });
@@ -4387,11 +5017,11 @@ function ceremonyCategories(){
     if(b.length >= 3){
       cats.push({
         key: "blowers",
-        eyebrow: "Vyfuknutia",
-        title: "Blowjob King",
+        eyebrow: tr("cer.catBlowers"),
+        title: tr("cer.titleBlowers"),
         rows: b.slice(0, 3).map(r => ({
           name: r.name,
-          meta: `${r.teamName} · ${plural(r.blows, "vyfuknutie", "vyfuknutia", "vyfuknutí")}`
+          meta: `${r.teamName} · ${plural(r.blows, "blow")}`
         })),
         full: b.slice(0, 10).map(r => ({ name: r.name + " (" + r.teamName + ")", value: r.blows }))
       });
@@ -4448,22 +5078,22 @@ function renderCeremony(){
   document.getElementById("cer-prev").disabled = cerIndex === 0;
   const nextBtn = document.getElementById("cer-next");
   nextBtn.disabled = cerIndex === cerSteps.length - 1;
-  nextBtn.innerHTML = cerIndex === cerSteps.length - 1 ? "Koniec" : "Ďalej &rarr;";
-  document.getElementById("cer-sound").textContent = cerSound ? "Zvuk: zap" : "Zvuk: vyp";
+  nextBtn.innerHTML = cerIndex === cerSteps.length - 1 ? tr("cer.end") : tr("cer.next");
+  document.getElementById("cer-sound").textContent = cerSound ? tr("cer.sound") : tr("cer.soundOff");
 
   if(step.kind === "intro"){
     body.innerHTML = `
-      <p class="cer-eyebrow">${esc(modeInfo().name)} · ${plural(state.teams.length, "tím", "tímy", "tímov")}</p>
-      <h2 class="cer-title">Vyhlásenie<br>výsledkov</h2>
-      <p class="cer-lead">Šípkou doprava sa postupne odhalí tretie, druhé a prvé miesto.</p>
+      <p class="cer-eyebrow">${esc(modeName())} · ${plural(state.teams.length, "team")}</p>
+      <h2 class="cer-title">${tr("cer.introTitle")}</h2>
+      <p class="cer-lead">${tr("cer.introLead")}</p>
     `;
     return;
   }
 
   if(step.kind === "outro"){
     body.innerHTML = `
-      <p class="cer-eyebrow">Koniec</p>
-      <h2 class="cer-title">Gratulujeme</h2>
+      <p class="cer-eyebrow">${tr("cer.outroEyebrow")}</p>
+      <h2 class="cer-title">${tr("cer.outroTitle")}</h2>
       <ul class="cer-list">
         ${step.cats.map(c => `
           <li><span class="r">${esc(c.eyebrow)}</span>
@@ -4600,8 +5230,8 @@ function stamp(){
 
 function exportMatchesCsv(){
   const rows = [[
-    "Fáza","Stôl","Tím A","Poháre A","Vyfuknutia A",
-    "Tím B","Poháre B","Vyfuknutia B","Víťaz","Odohrané"
+    tr("csv.phase"), tr("csv.table"), tr("col.teamA"), tr("csv.cupsA"), tr("csv.blowsA"),
+    tr("col.teamB"), tr("csv.cupsB"), tr("csv.blowsB"), tr("csv.winner"), tr("csv.playedQ")
   ]];
   allMatches().forEach(m => {
     if(!m.a && !m.b) return;
@@ -4609,17 +5239,18 @@ function exportMatchesCsv(){
       matchLabel(m), matchTable(m),
       teamName(m.a) || "", m.done ? m.cupsA : "", m.done ? m.blowsA : "",
       teamName(m.b) || "", m.done ? m.cupsB : "", m.done ? m.blowsB : "",
-      isDraw(m) ? "remíza" : (teamName(winnerOf(m)) || ""),
-      m.done ? "áno" : "nie"
+      isDraw(m) ? tr("results.tie") : (teamName(winnerOf(m)) || ""),
+      m.done ? tr("csv.yes") : tr("csv.no")
     ]);
   });
-  download("beerpong-zapasy_" + stamp() + ".csv", csvFrom(rows), "text/csv");
+  download(tr("file.matches") + "_" + stamp() + ".csv", csvFrom(rows), "text/csv");
 }
 
 function exportStatsCsv(){
   const rows = [[
-    "Poradie","Tím","Skupina","Zápasy","Výhry","Remízy","Prehry",
-    "Poháre dané","Poháre prijaté","Rozdiel","Vyfuknutia dané","Vyfuknutia prijaté","Body"
+    tr("csv.order"), tr("csv.teamName"), tr("csv.group"), tr("csv.matches"), tr("csv.wins"),
+    tr("csv.draws"), tr("csv.losses"), tr("csv.cupsFor"), tr("csv.cupsAgainst"), tr("csv.diff"),
+    tr("csv.blowsFor"), tr("csv.blowsAgainst"), tr("csv.points")
   ]];
   overallStats().forEach((r, i) => {
     rows.push([
@@ -4627,7 +5258,7 @@ function exportStatsCsv(){
       r.cupsFor, r.cupsAgainst, r.diff, r.blowsFor, r.blowsAgainst, r.points
     ]);
   });
-  download("beerpong-statistiky_" + stamp() + ".csv", csvFrom(rows), "text/csv");
+  download(tr("file.stats") + "_" + stamp() + ".csv", csvFrom(rows), "text/csv");
 }
 
 /**
@@ -4641,15 +5272,15 @@ function buildPlainText(){
   const d = new Date();
   const p = n => String(n).padStart(2, "0");
 
-  L.push("BEERPONG TURNAJ");
+  L.push(tr("txt.title"));
   L.push(p(d.getDate()) + "." + p(d.getMonth() + 1) + "." + d.getFullYear() + " " + p(d.getHours()) + ":" + p(d.getMinutes()));
   rule("=");
   L.push("");
 
-  L.push("FORMÁT: " + modeInfo().name + " · " + plural(cfg().tables, "stôl", "stoly", "stolov"));
+  L.push(tr("txt.format", {mode: modeName(), tables: plural(cfg().tables, "table")}));
   if(state.teams.length >= 2){
     const est = estimateTournament(cfg(), state.teams.length);
-    L.push("ODHAD: " + formatDuration(est.minutes) + " (" + est.matches + " zápasov, " + est.rounds + " kôl)");
+    L.push(tr("txt.estimate", {time: formatDuration(est.minutes), matches: est.matches, rounds: est.rounds}));
   }
   L.push("");
 
@@ -4657,14 +5288,14 @@ function buildPlainText(){
     ? t.name + " (" + teamPlayers(t).map(p => p.name || "?").join(", ") + ")"
     : t.name;
 
-  L.push("TÍMY (" + state.teams.length + ")");
+  L.push(tr("txt.teams", {n: state.teams.length}));
   const letters = groupLetters();
   if(!state.drawn || letters.length === 0){
     state.teams.forEach((t, i) => L.push("  " + (i + 1) + ". " + roster(t)));
   }else{
     letters.forEach(g => {
       const list = state.teams.filter(t => t.group === g);
-      L.push("  Skupina " + g + " (" + list.length + ")");
+      L.push(tr("txt.group", {g: g, n: list.length}));
       list.forEach(t => L.push("    · " + roster(t)));
     });
   }
@@ -4676,30 +5307,31 @@ function buildPlainText(){
       const matches = state.groupMatches.filter(m => m.group === g);
       if(matches.length === 0) return;
       rule("-");
-      L.push(g === null ? "ROZPIS KÔL" : "ROZPIS — SKUPINA " + g);
+      L.push(g === null ? tr("txt.scheduleRounds") : tr("txt.scheduleGroup", {g: g}));
       const rounds = {};
       matches.forEach(m => { (rounds[m.round] = rounds[m.round] || []).push(m); });
       Object.keys(rounds).sort((x, y) => x - y).forEach(r => {
-        L.push("  " + (Number(r) + 1) + ". kolo");
+        L.push(tr("txt.roundN", {n: Number(r) + 1}));
         rounds[r].forEach(m => {
           if(m.bye){
-            L.push("    " + pad(teamName(m.a) || teamName(m.b), 18) + " voľno v tomto kole");
+            L.push("    " + pad(teamName(m.a) || teamName(m.b), 18) + " " + tr("txt.freeRound"));
             return;
           }
           const line = "    " + pad(teamName(m.a), 18) + " vs " + pad(teamName(m.b), 18);
           L.push(m.done
-            ? line + " " + m.cupsA + ":" + m.cupsB + (isDraw(m) ? " REMÍZA" : "")
-              + "  (vyfuk. " + m.blowsA + ":" + m.blowsB + ")"
+            ? line + " " + m.cupsA + ":" + m.cupsB + (isDraw(m) ? " " + tr("txt.tie") : "")
+              + "  " + tr("txt.blows", {a: m.blowsA, b: m.blowsB})
             : line + " ____");
         });
       });
       L.push("");
 
       const rows = standings(g);
-      L.push((g === null ? "PRIEBEŽNÁ TABUĽKA" : "TABUĽKA — SKUPINA " + g)
-        + "   (výhra 3 b., remíza 1 b.)");
-      L.push("    " + pad("Tím", 18) + pad("Z", 3) + pad("V", 3) + pad("R", 3) + pad("P", 3)
-        + pad("Poháre", 10) + pad("+/-", 6) + pad("Vyfuk.", 8) + "B");
+      L.push((g === null ? tr("txt.standings") : tr("txt.standingsGroup", {g: g}))
+        + "   " + tr("txt.pointsNote"));
+      L.push("    " + pad(tr("txt.hTeam"), 18) + pad(tr("col.played"), 3) + pad(tr("col.wins"), 3)
+        + pad(tr("col.draws"), 3) + pad(tr("col.losses"), 3)
+        + pad(tr("txt.hCups"), 10) + pad("+/-", 6) + pad(tr("txt.hBlows"), 8) + tr("col.points"));
       rows.forEach((r, i) => {
         L.push("  " + (i + 1) + "." + " " + pad(r.name, 18) + pad(r.played, 3) + pad(r.wins, 3)
           + pad(r.draws, 3) + pad(r.losses, 3)
@@ -4717,15 +5349,15 @@ function buildPlainText(){
     const line1 = m => {
       const a = teamName(m.a) || "—";
       const b = teamName(m.b) || "—";
-      if(m.bye) return "    " + pad(a === "—" ? b : a, 18) + " voľný žreb → postup";
+      if(m.bye) return "    " + pad(a === "—" ? b : a, 18) + " " + tr("txt.byeAdvance");
       const line = "    " + pad(a, 18) + " vs " + pad(b, 18);
       return m.done
-        ? line + " " + m.cupsA + ":" + m.cupsB + "  (vyfuk. " + m.blowsA + ":" + m.blowsB + ")"
+        ? line + " " + m.cupsA + ":" + m.cupsB + "  " + tr("txt.blows", {a: m.blowsA, b: m.blowsB})
         : line + " ____";
     };
 
     rule("-");
-    L.push(br.double ? "HORNÝ PAVÚK" : "PAVÚK — postupujú všetky tímy");
+    L.push(br.double ? tr("txt.bracketUpper") : tr("txt.bracket"));
     br.rounds.forEach((rnd, r) => {
       L.push("  " + roundTitle(r, total).toUpperCase());
       rnd.forEach(m => L.push(line1(m)));
@@ -4733,21 +5365,21 @@ function buildPlainText(){
 
     if(br.losers){
       L.push("");
-      L.push("SPODNÝ PAVÚK — kto prehrá hore, padá sem");
+      L.push(tr("txt.bracketLower"));
       br.losers.forEach((rnd, r) => {
-        L.push("  " + (r + 1) + ". KOLO");
+        L.push(tr("txt.roundN", {n: r + 1}).toUpperCase());
         rnd.forEach(m => L.push(line1(m)));
       });
     }
 
     if(br.grandFinal){
       L.push("");
-      L.push("  VEĽKÉ FINÁLE");
+      L.push(tr("txt.grand"));
       L.push(line1(br.grandFinal));
     }
 
     if(br.third){
-      L.push("  O 3. MIESTO");
+      L.push(tr("txt.third"));
       L.push(line1(br.third));
     }
     L.push("");
@@ -4757,10 +5389,10 @@ function buildPlainText(){
     const leaders = tracksScorers() ? topScorers() : topBlowers();
     if(leaders.some(r => r.cups > 0 || r.blows > 0)){
       rule("-");
-      L.push(tracksScorers() ? "NAJLEPŠÍ STRELCI" : "BLOWJOB KING");
-      L.push("    " + pad("Hráč", 18) + pad("Tím", 18) + pad("Z", 3)
-        + pad(tracksScorers() ? "Poháre" : "Vyfuk.", 8)
-        + (tracksScorers() && tracksBlowKing() ? "Vyfuk." : ""));
+      L.push(tracksScorers() ? tr("txt.topScorers") : tr("txt.blowKing"));
+      L.push("    " + pad(tr("txt.hPlayer"), 18) + pad(tr("txt.hTeam"), 18) + pad(tr("col.played"), 3)
+        + pad(tracksScorers() ? tr("txt.hCups") : tr("txt.hBlows"), 8)
+        + (tracksScorers() && tracksBlowKing() ? tr("txt.hBlows") : ""));
       leaders.forEach((r, i) => {
         L.push(pad("  " + (i + 1) + ".", 5) + pad(r.name, 18) + pad(r.teamName, 18)
           + pad(r.matches, 3) + pad(tracksScorers() ? r.cups : r.blows, 8)
@@ -4769,7 +5401,7 @@ function buildPlainText(){
       L.push("");
 
       if(tracksScorers() && tracksBlowKing()){
-        L.push("BLOWJOB KING");
+        L.push(tr("txt.blowKing"));
         topBlowers().slice(0, 5).forEach((r, i) => {
           L.push(pad("  " + (i + 1) + ".", 5) + pad(r.name, 18) + pad(r.teamName, 18) + r.blows);
         });
@@ -4782,14 +5414,15 @@ function buildPlainText(){
   const champ = champion();
   if(champ){
     rule("=");
-    L.push("VÍŤAZ TURNAJA: " + teamName(champ).toUpperCase());
+    L.push(tr("txt.champion", {name: teamName(champ).toUpperCase()}));
     rule("=");
     L.push("");
 
     const ranking = finalRanking();
-    L.push("FINÁLNA TABUĽKA");
-    L.push("    " + pad("Tím", 18) + pad("Skončil", 14) + pad("Z", 3) + pad("V", 3)
-      + pad("R", 3) + pad("P", 3) + pad("Poháre", 10) + pad("+/-", 6) + "B");
+    L.push(tr("txt.finalTable"));
+    L.push("    " + pad(tr("txt.hTeam"), 18) + pad(tr("txt.hEnded"), 14) + pad(tr("col.played"), 3)
+      + pad(tr("col.wins"), 3) + pad(tr("col.draws"), 3) + pad(tr("col.losses"), 3)
+      + pad(tr("txt.hCups"), 10) + pad("+/-", 6) + tr("col.points"));
     ranking.forEach(r => {
       L.push(pad("  " + r.rank + ".", 5) + pad(r.name, 18) + pad(r.exitLabel, 14)
         + pad(r.s.played, 3) + pad(r.s.wins, 3) + pad(r.s.draws, 3) + pad(r.s.losses, 3)
@@ -4803,14 +5436,14 @@ function buildPlainText(){
 }
 
 function exportText(){
-  download("beerpong-rozpis_" + stamp() + ".txt", buildPlainText(), "text/plain");
+  download(tr("file.text") + "_" + stamp() + ".txt", buildPlainText(), "text/plain");
 }
 
 function copyText(btn){
   const text = buildPlainText();
   const done = () => {
     const original = btn.textContent;
-    btn.textContent = "Skopírované ✓";
+    btn.textContent = tr("results.copied");
     setTimeout(() => { btn.textContent = original; }, 1600);
   };
   if(navigator.clipboard && window.isSecureContext){
@@ -4828,24 +5461,25 @@ function fallbackCopy(text, done){
   document.body.appendChild(ta);
   ta.select();
   try{ document.execCommand("copy"); done(); }
-  catch(e){ alert("Kopírovanie sa nepodarilo — použi Stiahnuť TXT."); }
+  catch(e){ alert(tr("act.copyFailed")); }
   document.body.removeChild(ta);
 }
 
 function exportPlayersCsv(){
-  const rows = [["Poradie","Hráč","Tím","Zápasov","Trafené poháre","Priemer na zápas","Vyfuknutia"]];
+  const rows = [[tr("csv.order"), tr("csv.player"), tr("csv.teamName"), tr("col.matches"),
+                 tr("csv.cupsHit"), tr("csv.avg"), tr("csv.blows")]];
   topScorers().forEach((r, i) => {
     rows.push([
       i + 1, r.name, r.teamName, r.matches, r.cups,
       r.matches ? (r.cups / r.matches).toFixed(1) : "", r.blows
     ]);
   });
-  download("beerpong-hraci_" + stamp() + ".csv", csvFrom(rows), "text/csv");
+  download(tr("file.players") + "_" + stamp() + ".csv", csvFrom(rows), "text/csv");
 }
 
 function exportJson(){
   const payload = { app:"beerpong-turnaj", version:1, exportedAt:new Date().toISOString(), state };
-  download("beerpong-turnaj_" + stamp() + ".json", JSON.stringify(payload, null, 2), "application/json");
+  download(tr("file.json") + "_" + stamp() + ".json", JSON.stringify(payload, null, 2), "application/json");
 }
 
 function triggerImport(){
@@ -4859,14 +5493,14 @@ function handleImport(file){
       const parsed = JSON.parse(String(reader.result));
       const incoming = parsed && parsed.state ? parsed.state : parsed;
       if(!incoming || !Array.isArray(incoming.teams)) throw new Error("bad shape");
-      if(!confirm("Načítať turnaj zo súboru? Aktuálny turnaj sa prepíše.")) return;
+      if(!confirm(tr("act.importConfirm"))) return;
       state = Object.assign(emptyState(), incoming);
       if(state.bracket) propagate();
       save();
       activeTab = "teams";
       render();
     }catch(e){
-      alert("Súbor sa nepodarilo načítať — nevyzerá ako záloha tohto turnaja.");
+      alert(tr("act.importFailed"));
     }
   };
   reader.readAsText(file);
@@ -4880,9 +5514,9 @@ function onBuildBracket(){
   const prog = groupProgress();
   if(!prog.complete){
     const left = prog.total - prog.done;
-    if(!confirm(`V skupinách ostáva ${left} nedohraných zápasov. Vygenerovať pavúk aj tak? Nasadenie bude podľa priebežnej tabuľky.`)) return;
+    if(!confirm(tr("act.bracketIncomplete", {n: left}))) return;
   }
-  if(state.bracket && !confirm("Pavúk už existuje. Pregenerovanie zmaže všetky jeho výsledky. Pokračovať?")) return;
+  if(state.bracket && !confirm(tr("act.bracketExists"))) return;
 
   buildBracket();
   save();
@@ -4891,7 +5525,7 @@ function onBuildBracket(){
 }
 
 function onDraw(){
-  if(state.drawn && !confirm("Nové losovanie zmaže všetky zápasy aj výsledky. Pokračovať?")) return;
+  if(state.drawn && !confirm(tr("act.redrawConfirm"))) return;
   drawGroups();
   save();
   render();
@@ -4905,7 +5539,7 @@ function onAdvanceSwiss(){
 }
 
 function onReset(){
-  if(!confirm("Zmazať celý turnaj a začať odznova?")) return;
+  if(!confirm(tr("act.resetConfirm"))) return;
   const keep = Object.assign({}, cfg());     // keep the format the user set up
   state = emptyState();
   state.config = keep;
@@ -4932,7 +5566,7 @@ document.getElementById("team-form").addEventListener("submit", e => {
   const name = input.value.trim();
   if(!name) return;
   if(state.teams.some(t => t.name.toLowerCase() === name.toLowerCase())){
-    alert("Tím s týmto názvom už existuje.");
+    alert(tr("teams.dupName"));
     return;
   }
 
@@ -4958,8 +5592,8 @@ document.getElementById("team-list").addEventListener("click", e => {
   const btn = e.target.closest("[data-remove]");
   if(!btn) return;
   const id = btn.dataset.remove;
-  const t = teamById(id);
-  if(state.drawn && !confirm(`Zmazať tím „${t ? t.name : ""}“? Losovanie aj všetky výsledky sa zrušia.`)) return;
+  const victim = teamById(id);
+  if(state.drawn && !confirm(tr("teams.deleteConfirm", {name: victim ? victim.name : ""}))) return;
   state.teams = state.teams.filter(x => x.id !== id);
   if(state.drawn){
     state.teams.forEach(x => { x.group = null; });
@@ -5025,8 +5659,16 @@ document.getElementById("import-file").addEventListener("change", e => {
   e.target.value = "";
 });
 
+document.querySelectorAll("#lang-switch button").forEach(btn => {
+  btn.onclick = () => { if(btn.dataset.lang !== LANG) setLang(btn.dataset.lang); };
+});
+
 // The same file serves two roles: the operator's app, and — behind #board —
 // the read-only display for the second screen.
+document.documentElement.lang = LANG;
+applyStaticText();
+renderLangSwitch();
+
 if(isBoardWindow()){
   document.querySelector(".wrap").hidden = true;
   startBoardWindow();
