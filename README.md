@@ -29,10 +29,16 @@ Počet tímov je ľubovoľný. Ak nevyjde na mocninu dvojky, najlepšie nasaden�
 | **Jedna skupina** | Všetci proti všetkým, vyhráva najlepšia tabuľka. Bez vyraďovačky. | do 8 tímov |
 | **Skupiny + pavúk** | 2–4 skupiny každý s každým, potom postupujú všetci do pavúka. | 8–16 tímov |
 | **Rovno pavúk** | Bez skupín, hneď vyraďovačka. Jedna prehra a koniec. | keď je málo času |
-| **Dvojitá eliminácia** | Dva pavúky — kto prehrá hore, padá do spodného. Koniec až po druhej prehre. | 6–12 tímov |
+| **Dvojitá eliminácia** | Dva pavúky — kto prehrá hore, padá do spodného a hrá ďalej. Vo finále sa stretnú víťazi oboch a tam už prehra znamená koniec. | 6–12 tímov |
 | **Švajčiarsky systém** | Pevný počet kôl, nikto nevypadáva, súper podľa bilancie. Bez opakovaných zápasov. | 12+ tímov |
 
 Formát sa dá meniť, kým nerozlosuješ. Potom sa zamkne, aby sa nerozbil rozohraný turnaj.
+
+> **Pozn. k dvojitej eliminácii:** vo veľkom finále sa nehrá odveta. Aj tím, ktorý prešiel horným pavúkom bez prehry, teda vypadne prvou prehrou vo finále. Je to vedomé zjednodušenie — turnaj sa tým nenaťahuje.
+
+## Súpiska
+
+Tímy pridávaš a premenúvaš, kým nerozlosuješ. Po rozlosovaní sa súpiska zamkne — nové tímy sa pridať nedajú a názvy tímov sa nedajú meniť, lebo by prestali sedieť s rozpisom a odohranými výsledkami. Mená hráčov opraviť môžeš aj potom. Ak treba súpisku naozaj zmeniť, rozlosuj turnaj nanovo.
 
 ## Stoly
 

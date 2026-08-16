@@ -364,6 +364,25 @@ h2.section{
 .team-form.players-row{margin-top:-2px}
 .team-form.players-row input{border-right:var(--stroke) solid var(--ink)}
 .team-form.players-row input+input{border-left:0}
+.team-list .name-input{
+  flex:1;
+  min-width:0;
+  border:1px solid var(--hair);
+  background:var(--paper);
+  padding:6px 9px;
+  font-size:14px;
+  font-weight:600;
+  outline:none;
+}
+.team-list .name-input:focus{background:var(--wash)}
+.locked-note{
+  border-left:var(--stroke) solid var(--ink);
+  padding:10px 0 10px 14px;
+  margin:0;
+  font-size:13px;
+  color:var(--muted);
+  max-width:60ch;
+}
 .team-list .players{display:flex;gap:0;flex:1.2;min-width:0}
 .team-list .player-input{
   flex:1;
@@ -1089,6 +1108,11 @@ hr.rule{border:0;border-top:var(--stroke) solid var(--ink);margin:44px 0 28px}
         <input id="player-2" placeholder="2. hráč" maxlength="30">
       </div>
     </form>
+    <p class="locked-note" id="roster-locked" hidden>
+      Turnaj je rozlosovaný — nové tímy sa už pridať nedajú a názvy tímov sa nedajú meniť,
+      rozhodilo by to rozpis aj odohrané výsledky. Mená hráčov opraviť môžeš.
+      Ak treba súpisku naozaj zmeniť, rozlosuj turnaj nanovo.
+    </p>
     <p class="note" id="teams-hint">Pridaj aspoň 4 tímy — po dva do každej skupiny.</p>
 
     <div class="toolbar" style="margin-top:26px">
@@ -1245,9 +1269,9 @@ const MODES = {
   },
   "double-elim": {
     name: "Dvojitá eliminácia",
-    tagline: "Vypadneš až po druhej prehre",
-    how: "Dva pavúky. Kto prehrá v hornom, padá do spodného a hrá ďalej. Končíš až po druhej prehre. Vo finále sa stretnú víťazi oboch.",
-    best: "6–12 tímov. Najférovejšie — nikoho nevyradí jeden zlý zápas.",
+    tagline: "Druhá šanca v spodnom pavúku",
+    how: "Dva pavúky. Kto prehrá v hornom, padá do spodného a hrá ďalej. Vo finále sa stretnú víťazi oboch — a tam už platí, že kto prehrá, končí.",
+    best: "6–12 tímov. Jeden zlý zápas ťa z turnaja nevyradí, ale finále je za všetko.",
     groups: false, bracket: true, swiss: false
   },
   "swiss": {
@@ -2608,6 +2632,12 @@ function renderTeams(){
   const list = document.getElementById("team-list");
   const hint = document.getElementById("teams-hint");
   const drawBtn = document.getElementById("btn-draw");
+
+  // Once the draw is done the roster is frozen: adding or renaming a team
+  // would no longer match the schedule and the results already recorded.
+  const locked = !!state.drawn;
+  document.getElementById("team-form").hidden = locked;
+  document.getElementById("roster-locked").hidden = !locked;
   document.getElementById("new-players").hidden = !usesPlayers();
 
   if(state.teams.length === 0){
@@ -2616,7 +2646,10 @@ function renderTeams(){
     list.innerHTML = state.teams.map((t, i) => `
       <li class="${usesPlayers() && !teamComplete(t) ? "needs-players" : ""}">
         <span class="num">${String(i + 1).padStart(2, "0")}</span>
-        <span class="name">${esc(t.name)}</span>
+        ${locked
+          ? `<span class="name">${esc(t.name)}</span>`
+          : `<input class="name-input" data-rename="${t.id}" value="${esc(t.name)}"
+                    maxlength="40" aria-label="Názov tímu">`}
         ${usesPlayers() ? `
           <span class="players">
             ${teamPlayers(t).map((p, pi) => `
@@ -2629,6 +2662,29 @@ function renderTeams(){
         <button class="btn ghost sm" data-remove="${t.id}">Zmazať</button>
       </li>
     `).join("");
+
+    list.querySelectorAll("[data-rename]").forEach(input => {
+      const commit = () => {
+        const team = teamById(input.dataset.rename);
+        if(!team) return;
+        const next = input.value.trim();
+        if(!next){
+          input.value = team.name;                    // a team must keep a name
+          return;
+        }
+        if(state.teams.some(t => t.id !== team.id && t.name.toLowerCase() === next.toLowerCase())){
+          alert("Tím s názvom „" + next + "“ už existuje.");
+          input.value = team.name;
+          return;
+        }
+        if(next === team.name) return;
+        team.name = next;
+        save();
+        render();
+      };
+      input.onchange = commit;
+      input.onblur = commit;
+    });
 
     list.querySelectorAll(".player-input").forEach(input => {
       const commit = () => {
@@ -4216,6 +4272,7 @@ document.getElementById("btn-setup-next").onclick = () => setTab("teams");
 
 document.getElementById("team-form").addEventListener("submit", e => {
   e.preventDefault();
+  if(state.drawn) return;                 // roster is frozen after the draw
   const input = document.getElementById("team-name");
   const name = input.value.trim();
   if(!name) return;
