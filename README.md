@@ -4,9 +4,13 @@ Jednosúborová appka na vedenie beerpongového turnaja — od nastavenia formá
 
 Celá appka je jeden HTML súbor. Žiadny build, žiadny server, žiadne závislosti — stačí ho otvoriť v prehliadači.
 
+**Vyskúšaj online:** <https://onddrej.github.io/beerpong-tournament/>
+
 ## Rýchly štart
 
-Stiahni `index.html` a otvor ho dvojklikom. To je všetko.
+Najrýchlejšie je otvoriť [online verziu](https://onddrej.github.io/beerpong-tournament/) — beží na GitHub Pages a aktualizuje sa sama po každom pushi na `main`. Turnaj sa ukladá len v tvojom prehliadači, takže každý, kto odkaz otvorí, začína s vlastným prázdnym turnajom.
+
+Alebo stiahni `index.html` a otvor ho dvojklikom. To je všetko.
 
 Funguje aj offline a aj na mobile, takže sa dá obsluhovať priamo pri stole.
 
